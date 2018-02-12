@@ -27,11 +27,6 @@ class RevisionField extends ParentRevisionField
     ];
 
     /**
-     * @var array
-     */
-    protected $multilangConfig = null;
-
-    /**
      * Prepare data
      *
      * @param array $params
@@ -118,22 +113,8 @@ class RevisionField extends ParentRevisionField
     protected function getMultilangFields(): array
     {
         // get config
-        $config = $this->getMultilangConfig();
+        $config = $this->getConfig()->get('modules');
 
-        return (!empty($config['multilangFields'])) ? $config['multilangFields'] : [];
-    }
-
-    /**
-     * Get multilang config
-     *
-     * @return array
-     */
-    protected function getMultilangConfig(): array
-    {
-        if (is_null($this->multilangConfig)) {
-            $this->multilangConfig = include 'application/Espo/Modules/Multilang/Configs/Config.php';
-        }
-
-        return $this->multilangConfig;
+        return (!empty($config['multilangFields'])) ? array_keys($config['multilangFields']) : [];
     }
 }

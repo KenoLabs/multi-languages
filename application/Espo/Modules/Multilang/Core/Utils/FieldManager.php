@@ -75,7 +75,7 @@ class FieldManager extends TreoFieldManager
         // get config
         $config = $this->getMultilangConfig();
 
-        return (!empty($config['multilangFields'])) ? $config['multilangFields'] : [];
+        return (!empty($config['multilangFields'])) ? array_keys($config['multilangFields']) : [];
     }
 
     /**
@@ -86,7 +86,7 @@ class FieldManager extends TreoFieldManager
     protected function getMultilangConfig(): array
     {
         if (is_null($this->multilangConfig)) {
-            $this->multilangConfig = include 'application/Espo/Modules/Multilang/Configs/Config.php';
+            $this->multilangConfig = include 'application/Espo/Modules/Multilang/Configs/ModuleConfig.php';
         }
 
         return $this->multilangConfig;
