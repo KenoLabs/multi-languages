@@ -1,7 +1,7 @@
 {
   "actualFields": [],
   "fields": {},
-  "filter": true,
+  "filter": false,
   "fieldDefs": {
     "type": "varchar"
   },

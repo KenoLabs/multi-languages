@@ -44,7 +44,7 @@
     ],
     "notMergeable": true,
     "notCreatable": false,
-    "filter": true,
+    "filter": false,
     "fieldDefs": {
         "type": "text"
     },
