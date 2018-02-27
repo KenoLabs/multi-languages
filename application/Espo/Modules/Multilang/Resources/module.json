@@ -1,5 +1,5 @@
 {
-    "required": [],
+    "extends": ["Revisions"],
     "disabled": false,
-    "order": 170
+    "order": 5110
 }

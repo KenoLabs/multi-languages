@@ -9,5 +9,16 @@
     ],
     "require": {
         "php": "^7.1"
+    },
+    "extra": {
+        "treoId": "Multilang",
+        "name": {
+            "default": "Multi-language",
+            "de_DE": "Mehrsprachigkeit"
+        },
+        "description": {
+            "default": "Multi-language for TreoCRM",
+            "de_DE": "Mehrsprachigkeit für TreoCRM"
+        }
     }
 }
