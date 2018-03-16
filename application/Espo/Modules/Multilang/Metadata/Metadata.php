@@ -18,7 +18,7 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Metadata;
 
@@ -99,17 +99,16 @@ class Metadata extends AbstractMetadata
         if ($config->get('isMultilangActive')) {
             // get languages
             $languages = $config->get('inputLanguageList');
-            if (!empty($languages)) {
-                // add get MultiLang metadata
-                $multilangMetadata = $this->getMultiLangMetadata($languages);
+            // add get MultiLang metadata
+            $multilangMetadata = $this->getMultiLangMetadata($languages);
 
-                // load additional metadata for multilang fields
-                foreach ($multilangMetadata as $fieldName => $fieldData) {
-                    if (isset($data['fields'][$fieldName])) {
-                        $data['fields'][$fieldName] = array_merge_recursive($data['fields'][$fieldName], $fieldData);
-                    }
+            // load additional metadata for multilang fields
+            foreach ($multilangMetadata as $fieldName => $fieldData) {
+                if (isset($data['fields'][$fieldName])) {
+                    $data['fields'][$fieldName] = array_merge_recursive($data['fields'][$fieldName], $fieldData);
                 }
             }
+
 
             // modify fields in entity to multilang type
             $data['entityDefs'] = $this->modifyEntityFieldsToMultilang($data['entityDefs'], $multilangMetadata);
@@ -187,26 +186,18 @@ class Metadata extends AbstractMetadata
     protected function getMultiLangMetadata(array $languages = [])
     {
         $metadataFields = [];
-        //Parameters for if need set default data
-        $defaultParameters = [];
 
-        foreach ($languages as $language) {
-            $language = strtolower($language);
-            foreach ($this->fieldsMultiLang as $fields => $data) {
-                //Set default option
-                $defaultParameters[$fields]['paramsDefault'] = isset($defaultParameters[$fields]['paramsDefault']) ?
-                    $defaultParameters[$fields]['paramsDefault'] :
-                    $data['paramsDefault'];
+        foreach ($this->fieldsMultiLang as $fields => $data) {
+            $metadataFields[$fields]['actualFields'] = [];
+            $metadataFields[$fields]['fields'] = [];
 
-                //Set data for all type multiLang fields
+            //Set data for all type multiLang fields
+            foreach ($languages as $language) {
+                $language = strtolower($language);
                 $metadataFields[$fields]['actualFields'][] = $language;
                 $metadataFields[$fields]['fields'][$language] = $this->multiLangFieldDefs;
                 $metadataFields[$fields]['fields'][$language]['type'] = $data['typeNestedFields'];
 
-                //Set default params if this option is in config for field
-                if ($defaultParameters[$fields]['paramsDefault']) {
-                    $defaultParameters[$fields]['paramsDefault'] = false;
-                }
                 //If fields is enum and multiEnum - set options
                 if ($data['isOptions']) {
                     $metadataFields[$fields]['params'][] = $this->getOptionsMultiLang($language);

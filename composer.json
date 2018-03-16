@@ -5,6 +5,14 @@
         {
             "name": "Roman Ratsun",
             "email": "r.ratsun@zinitsolutions.com"
+        },
+        {
+            "name": "Yuri Haiduchyk",
+            "email": "y.haiduchyk@zinitsolutions.com"
+        },
+        {
+            "name": "Yuri Kondratskyi",
+            "email": "y.kondratskyi@zinitsolutions.com"
         }
     ],
     "require": {
