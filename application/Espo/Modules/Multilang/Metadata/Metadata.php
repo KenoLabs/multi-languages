@@ -134,7 +134,7 @@ class Metadata extends AbstractMetadata
         foreach ($entityDefs as $entityName => $defs) {
             foreach ($defs['fields'] as $fieldName => $feidsDefs) {
                 // check is a multilang field
-                if ($feidsDefs['isMultilang']) {
+                if (isset($feidsDefs['isMultilang']) ?? false) {
                     $multilangType = $this->getMultilangTypeName($feidsDefs['type']);
 
                     if (isset($multilangType)) {
@@ -199,7 +199,7 @@ class Metadata extends AbstractMetadata
                 $metadataFields[$fields]['fields'][$language]['type'] = $data['typeNestedFields'];
 
                 //If fields is enum and multiEnum - set options
-                if ($data['isOptions']) {
+                if ($data['isOptions'] ?? false) {
                     $metadataFields[$fields]['params'][] = $this->getOptionsMultiLang($language);
                 }
             }

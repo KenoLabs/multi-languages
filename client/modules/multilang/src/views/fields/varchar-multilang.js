@@ -17,8 +17,8 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/fields/varchar-multilang', 'views/fields/varchar',
-    Dep => Dep.extend({
+Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar', 'multilang:views/fields/shared-multilang'],
+    (Dep, SharedMultilang) => Dep.extend({
 
         listTemplate: 'multilang:fields/varchar-multilang/list',
 
@@ -49,6 +49,7 @@ Espo.define('multilang:views/fields/varchar-multilang', 'views/fields/varchar',
                     }
                 });
             }.bind(this);
+            SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
         data() {

@@ -17,8 +17,8 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/fields/multi-enum-multilang', 'views/fields/multi-enum',
-    Dep => Dep.extend({
+Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-enum', 'multilang:views/fields/shared-multilang'],
+    (Dep, SharedMultilang) => Dep.extend({
 
         allTranslatedOptions : {},
 
@@ -45,6 +45,7 @@ Espo.define('multilang:views/fields/multi-enum-multilang', 'views/fields/multi-e
                 this.langFieldNameList.forEach(name => data[name] = this.defs.params.default, this);
                 this.model.set(data);
             }
+            SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
         data() {
