@@ -17,8 +17,8 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/fields/text-multilang', 'views/fields/text',
-    Dep => Dep.extend({
+Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'multilang:views/fields/shared-multilang'],
+    (Dep, SharedMultilang) => Dep.extend({
 
         listTemplate: 'multilang:fields/text-multilang/list',
 
@@ -58,6 +58,7 @@ Espo.define('multilang:views/fields/text-multilang', 'views/fields/text',
                     }
                 });
             }.bind(this);
+            SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
         data() {

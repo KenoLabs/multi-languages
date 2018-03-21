@@ -1,9 +1,13 @@
-<div>{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}</div>
-{{#each valueList}}
+<div class="main-field" style="cursor: pointer">{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}<span class="caret"></span></div>
+{{#if valueList}}
+    <div class="multilang-labels hidden">
+    {{#each valueList}}
     <div>
         <label class="control-label" data-name="{{name}}">
             <span class="label-text">{{shortLang}}:</span>
         </label>
         <span>{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}</span>
     </div>
-{{/each}}
+    {{/each}}
+    </div>
+{{/if}}
