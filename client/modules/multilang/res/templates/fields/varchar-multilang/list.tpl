@@ -1,6 +1,6 @@
-<div id="main-field">{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}</div>
+<div class="main-field" style="cursor: pointer">{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}<span class="caret"></span></div>
 {{#if valueList}}
-    <div id="multilang-labels" class="hidden">
+    <div class="multilang-labels hidden">
     {{#each valueList}}
     <div>
         <label class="control-label" data-name="{{name}}">

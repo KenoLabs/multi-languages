@@ -1,6 +1,6 @@
-{{#if isNotEmpty}}<div id="main-field">{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}</div>{{/if}}
+{{#if isNotEmpty}}<div class="main-field" style="cursor: pointer">{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}<span class="caret"></span></div>{{/if}}
 {{#if valueList}}
-    <div id="multilang-labels" class="hidden">
+    <div class="multilang-labels hidden">
     {{#each valueList}}
         {{#if isNotEmpty}}
         <div>

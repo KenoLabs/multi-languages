@@ -2,7 +2,7 @@
     {{#if isNotEmpty}}<span class="complex-text">{{complexText value}}</span>{{else}}{{translate 'None'}}{{/if}}
 </div>
 {{#if valueList}}
-    <div id="multilang-labels" class="hidden">
+    <div class="multilang-labels hidden">
     {{#each valueList}}
     <div data-field="{{name}}">
         <label class="control-label" data-name="{{name}}">

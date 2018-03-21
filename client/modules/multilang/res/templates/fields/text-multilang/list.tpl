@@ -1,8 +1,9 @@
-<div id="main-field" data-field="{{name}}">
+<div class="main-field" style="cursor: pointer" data-field="{{name}}">
     {{#if isNotEmpty}}<span class="complex-text">{{complexText value}}</span>{{/if}}
+    <span class="caret"></span>
 </div>
 {{#if valueList}}
-    <div id="multilang-labels" class="hidden">
+    <div class="multilang-labels hidden">
     {{#each valueList}}
     <div data-field="{{name}}">
         <label class="control-label" data-name="{{name}}">

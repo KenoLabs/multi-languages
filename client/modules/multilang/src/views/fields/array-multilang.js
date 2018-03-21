@@ -17,8 +17,8 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/fields/array-multilang', 'views/fields/array',
-    Dep => Dep.extend({
+Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'multilang:views/fields/shared-multilang'],
+    (Dep, SharedMultilang) => Dep.extend({
 
         allTranslatedOptions : {},
 
@@ -70,40 +70,7 @@ Espo.define('multilang:views/fields/array-multilang', 'views/fields/array',
                 this.getLangFieldNameList().forEach(name => data[name] = this.defs.params.default, this);
                 this.model.set(data);
             }
-            this.listenTo(this, 'after:render', function () {
-                if (this.mode === 'edit') {
-                    this.getLabelElement().find('.caret').remove();
-                    this.getLabelElement().css('cursor', 'default');
-                } else if (this.mode === 'detail') {
-                    this.getLabelElement().append(' <span class="caret"></span>');
-                    this.getLabelElement().css('cursor', 'pointer');
-                } else if (this.mode === 'list') {
-                    this.$el.find('#main-field').css('cursor', 'pointer');
-                    this.$el.find('#main-field').append(' <span class="caret"></span>');
-                    this.$el.find('#main-field').click(function () {
-                        if (this.$el.find('#multilang-labels').hasClass('hidden')) {
-                            this.$el.find('#multilang-labels').removeClass('hidden');
-                            this.$el.find('.caret').addClass('caret-up')
-                        } else {
-                            this.$el.find('#multilang-labels').addClass('hidden');
-                            this.$el.find('.caret').removeClass('caret-up')
-                        }
-                    }.bind(this));
-                }
-            }, this);
-            this.listenToOnce(this, 'after:render', function () {
-                if (this.mode === 'detail') {
-                    this.getLabelElement().click(function () {
-                        if (this.$el.find('#multilang-labels').hasClass('hidden')) {
-                            this.$el.find('#multilang-labels').removeClass('hidden');
-                            this.$el.parent().find('.caret').addClass('caret-up')
-                        } else {
-                            this.$el.find('#multilang-labels').addClass('hidden');
-                            this.$el.parent().find('.caret').removeClass('caret-up')
-                        }
-                    }.bind(this));
-                }
-            }, this);
+            SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
         data() {
