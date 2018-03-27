@@ -22,7 +22,7 @@ declare(strict_types = 1);
 
 namespace Espo\Modules\Multilang\Controllers;
 
-use Espo\Modules\TreoCrm\Controllers\Settings as MultilangSettings;
+use Espo\Modules\TreoCore\Controllers\Settings as MultilangSettings;
 
 /**
  * Settings controller

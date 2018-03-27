@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Metadata;
 
-use Espo\Modules\TreoCrm\Metadata\AbstractMetadata;
+use Espo\Modules\TreoCore\Metadata\AbstractMetadata;
 use Espo\Core\Utils\Util;
 
 /**
