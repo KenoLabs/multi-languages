@@ -22,7 +22,7 @@ declare(strict_types = 1);
 
 namespace Espo\Modules\Multilang\Core\Utils;
 
-use Espo\Modules\TreoCrm\Core\Utils\FieldManager as TreoFieldManager;
+use Espo\Modules\TreoCore\Core\Utils\FieldManager as TreoFieldManager;
 use Espo\Core\Utils\Util;
 
 /**

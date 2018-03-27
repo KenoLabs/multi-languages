@@ -1,32 +1,33 @@
 {
-    "name": "treo-module/multilang",
-    "description": "Multilang module for TreoPIM",
-    "authors": [
-        {
-            "name": "Roman Ratsun",
-            "email": "r.ratsun@zinitsolutions.com"
-        },
-        {
-            "name": "Yuri Haiduchyk",
-            "email": "y.haiduchyk@zinitsolutions.com"
-        },
-        {
-            "name": "Yuri Kondratskyi",
-            "email": "y.kondratskyi@zinitsolutions.com"
-        }
-    ],
-    "require": {
-        "php": "^7.1"
+  "name": "treo-module/multilang",
+  "description": "Multilang module for TreoPIM",
+  "authors": [
+    {
+      "name": "Roman Ratsun",
+      "email": "r.ratsun@zinitsolutions.com"
     },
-    "extra": {
-        "treoId": "Multilang",
-        "name": {
-            "default": "Multi-language",
-            "de_DE": "Mehrsprachigkeit"
-        },
-        "description": {
-            "default": "Multi-language for TreoCRM",
-            "de_DE": "Mehrsprachigkeit für TreoCRM"
-        }
+    {
+      "name": "Yuri Haiduchyk",
+      "email": "y.haiduchyk@zinitsolutions.com"
+    },
+    {
+      "name": "Yuri Kondratskyi",
+      "email": "y.kondratskyi@zinitsolutions.com"
     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "treo/treopim": "^1.7.2"
+  },
+  "extra": {
+    "treoId": "Multilang",
+    "name": {
+      "default": "Multi-language",
+      "de_DE": "Mehrsprachigkeit"
+    },
+    "description": {
+      "default": "Multi-language for TreoCRM",
+      "de_DE": "Mehrsprachigkeit für TreoCRM"
+    }
+  }
 }
