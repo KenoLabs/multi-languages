@@ -17,7 +17,7 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:controllers/settings', ['treo-crm:controllers/settings', 'multilang:models/settings'],
+Espo.define('multilang:controllers/settings', ['treo-core:controllers/settings', 'multilang:models/settings'],
     (Dep, Settings) => Dep.extend({
 
         inputLanguage() {
