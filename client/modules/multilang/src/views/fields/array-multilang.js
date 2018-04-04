@@ -70,6 +70,22 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                 this.getLangFieldNameList().forEach(name => data[name] = this.defs.params.default, this);
                 this.model.set(data);
             }
+
+            this.on('customInvalid', function (name) {
+                let label = this.getCellElement().find('.control-label[data-name="'+ name + '"]');
+                let input = this.getCellElement().find('.form-control[data-name="'+ name + '"]');
+                label.addClass('multilang-error-label');
+                input.addClass('multilang-error-form-control');
+                this.$el.one('click', function () {
+                    label.removeClass('multilang-error-label');
+                    input.removeClass('multilang-error-form-control');
+                });
+                this.once('render', function () {
+                    label.removeClass('multilang-error-label');
+                    input.removeClass('multilang-error-form-control');
+                });
+            }, this);
+
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
@@ -212,23 +228,39 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             return this.fetchFromDom();
         },
 
+        validate: function () {
+            for (var i in this.validations) {
+                var method = 'validate' + Espo.Utils.upperCaseFirst(this.validations[i]);
+                if (this[method].call(this)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
         validateRequired() {
             let error = false;
             if (this.isRequired()) {
-                let value = this.model.get(this.name);
-                if (!value || value.length == 0) {
-                    error = true;
+                let errorMainField = false;
+                if (!this.model.get(this.name) || this.model.get(this.name).length === 0) {
+                    errorMainField = true;
                 }
-
-                this.getLangFieldNameList().forEach(name => {
-                    let value = this.model.get(name);
-                    error = error || !value || value.length == 0;
-                }, this);
-
-                if (error) {
+                if (errorMainField) {
                     let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name));
-                    this.showValidationMessage(msg);
+                    this.showValidationMessage(msg, '[data-name="' + this.name + '"].main-element');
+                    this.trigger('customInvalid', this.name);
                 }
+                let errorMultiFields = false;
+                this.langFieldNameList.forEach(name => {
+                    if (!this.model.get(name)|| this.model.get(name).length === 0) {
+                        let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
+                            + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
+                        this.showValidationMessage(msg, '[data-name="' + name + '"].main-element');
+                        this.trigger('customInvalid', name);
+                        errorMultiFields = true;
+                    }
+                });
+                error = errorMainField || errorMultiFields;
             }
             return error;
         },
