@@ -1,3 +1,6 @@
+1.4.0  2018-04-06 14:35:44 Europe/Kiev
+    * UST #59855 : При валідації мультимовних полів, кожне поле потрібно валідувати окремо (Valeriy Shamota)
+
 1.3.0  2018-03-27 16:20:22 Europe/Kiev
     * FEA #61304 : TreoCRM перейменувати в TreoCore (Multilang) (Roman Ratsun)
 
