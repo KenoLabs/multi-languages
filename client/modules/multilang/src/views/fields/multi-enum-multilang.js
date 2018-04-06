@@ -45,6 +45,22 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                 this.langFieldNameList.forEach(name => data[name] = this.defs.params.default, this);
                 this.model.set(data);
             }
+
+            this.on('customInvalid', function (name) {
+                let label = this.getCellElement().find('.control-label[data-name="'+ name + '"]');
+                let input = this.getCellElement().find('[data-name="'+ name + '"].selectize-input');
+                label.addClass('multilang-error-label');
+                input.addClass('multilang-error-form-control');
+                this.$el.one('click', function () {
+                    label.removeClass('multilang-error-label');
+                    input.removeClass('multilang-error-form-control');
+                });
+                this.once('render', function () {
+                    label.removeClass('multilang-error-label');
+                    input.removeClass('multilang-error-form-control');
+                });
+            }, this);
+
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
@@ -104,6 +120,8 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                     }
                 });
 
+                this.$element.next().find('.selectize-input').attr('data-name', this.name);
+
                 this.$element.on('change', function () {
                     this.trigger('change');
                 }.bind(this));
@@ -141,6 +159,8 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                         }
                     });
 
+                    element.next().find('.selectize-input').attr('data-name', name);
+
                     element.on('change', function () {
                         this.trigger('change');
                     }.bind(this));
@@ -171,23 +191,39 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
             return data;
         },
 
+        validate: function () {
+            for (var i in this.validations) {
+                var method = 'validate' + Espo.Utils.upperCaseFirst(this.validations[i]);
+                if (this[method].call(this)) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
         validateRequired() {
             let error = false;
             if (this.isRequired()) {
-                let value = this.model.get(this.name);
-                if (!value || value.length == 0) {
-                    error = true;
+                let errorMainField = false;
+                if (!this.model.get(this.name) || this.model.get(this.name).length === 0) {
+                    errorMainField = true;
                 }
-
-                this.langFieldNameList.forEach(name => {
-                    let value = this.model.get(name);
-                    error = error || !value || value.length == 0;
-                }, this);
-
-                if (error) {
+                if (errorMainField) {
                     let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name));
-                    this.showValidationMessage(msg, '.selectize-control');
+                    this.showValidationMessage(msg, '[data-name="' + this.name + '"].selectize-input');
+                    this.trigger('customInvalid', this.name);
                 }
+                let errorMultiFields = false;
+                this.langFieldNameList.forEach(name => {
+                    if (!this.model.get(name) || this.model.get(name).length === 0) {
+                        let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
+                            + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
+                        this.showValidationMessage(msg, '[data-name="' + name + '"].selectize-input');
+                        this.trigger('customInvalid', name);
+                        errorMultiFields = true;
+                    }
+                });
+                error = errorMainField || errorMultiFields;
             }
             return error;
         },
