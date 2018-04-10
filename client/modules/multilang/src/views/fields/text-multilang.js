@@ -30,6 +30,8 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
 
         expandedFields: [],
 
+        hiddenLocales: [],
+
         events: {
             'click a[data-action="seeMoreText"]': function (e) {
                 this.expandedFields.push($(e.currentTarget).closest('[data-field]').data('field'));
@@ -40,7 +42,9 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
         setup() {
             Dep.prototype.setup.call(this);
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList') : [];
+            this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
+
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
             this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
