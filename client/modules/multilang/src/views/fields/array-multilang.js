@@ -30,6 +30,8 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         editTemplate: 'multilang:fields/array-multilang/edit',
 
+        hiddenLocales: [],
+
         events: {
             'click [data-action="removeValue"]': function (e) {
                 let name = $(e.currentTarget).data('name');
@@ -62,7 +64,9 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
             this.translatedOptions = this.allTranslatedOptions['options'];
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList') : [];
+            this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
+
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
             this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
