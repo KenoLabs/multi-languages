@@ -30,6 +30,8 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
 
         detailTemplate: 'multilang:fields/multi-enum-multilang/detail',
 
+        hiddenLocales: [],
+
         setup() {
             Dep.prototype.setup.call(this);
 
@@ -37,7 +39,9 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
 
             this.translatedOptions = this.allTranslatedOptions['options'];
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList') : [];
+            this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
+
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
             this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
