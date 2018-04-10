@@ -17,12 +17,10 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'views/admin/field-manager/fields/options',
+Espo.define('multilang:views/admin/field-manager/fields/mainOptionMultiLang', 'views/admin/field-manager/fields/options',
     Dep => Dep.extend({
 
-        editTemplate: 'multilang:admin/field-manager/fields/optionMultilang/edit',
-
-        setup() {
+        setup: function () {
             Dep.prototype.setup.call(this);
 
             this.translatedOptions = {};
@@ -30,12 +28,13 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             list.forEach(function (value) {
                 this.translatedOptions[value] = this.translateMultilangOption(value, this.name, this.options.field, this.options.scope);
             }, this);
-            this.on('addValueToOptions', (value) => {
-                this.addValue(value);
-            });
-            this.on('removeValueFromOptions', (value) => {
+            this.events['click [data-action="removeValue"]'] = function (e) {
+                var value = $(e.currentTarget).data('value').toString();
                 this.removeValue(value);
-            })
+                this.getParentView().fieldList.forEach(function (field) {
+                    this.getParentView().getView(field).trigger('removeValueFromOptions', value);
+                }, this);
+            };
         },
 
         fetch: function () {
@@ -62,22 +61,40 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             return data;
         },
 
-        getItemHtml: function (value) {
-            var valueSanitized = this.getHelper().stripTags(value);
-            var translatedValue = this.translatedOptions[value] || valueSanitized;
+        afterRender: function () {
+            if (this.mode === 'edit') {
+                this.$list = this.$el.find('.list-group');
+                var $select = this.$select = this.$el.find('.select');
 
-            var valueSanitized = valueSanitized.replace(/"/g, '&quot;');
+                if (!this.params.options) {
+                    $select.on('keypress', function (e) {
+                        if (e.keyCode === 13) {
+                            var value = $select.val().toString();
+                            if (this.noEmptyString) {
+                                if (value === '') {
+                                    return;
+                                }
+                            }
+                            this.addValue(value);
+                            this.getParentView().fieldList.forEach(function (field) {
+                                this.getParentView().getView(field).trigger('addValueToOptions', value);
+                            }, this);
+                            $select.val('');
+                        }
+                    }.bind(this));
+                }
 
-            var html = '' +
-            '<div class="list-group-item link-with-role form-inline" data-value="' + valueSanitized + '">' +
-                '<div class="pull-left" style="width: 92%; display: inline-block;">' +
-                    '<input name="translatedValue" data-value="' + valueSanitized + '" class="role form-control input-sm pull-right" value="'+translatedValue+'">' +
-                    '<div>' + valueSanitized + '</div>' +
-                '</div>' +
-                '<br style="clear: both;" />' +
-            '</div>';
+                this.$list.sortable({
+                    stop: function () {
+                        this.fetchFromDom();
+                        this.trigger('change');
+                    }.bind(this)
+                });
+            }
 
-            return html;
+            if (this.mode === 'search') {
+                this.renderSearch();
+            }
         },
 
         translateMultilangOption: function (value, category, field, scope) {
