@@ -255,7 +255,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                     this.trigger('customInvalid', this.name);
                 }
                 let errorMultiFields = false;
-                this.langFieldNameList.forEach(name => {
+                this.getLangFieldNameList().forEach(name => {
                     if (!this.model.get(name)|| this.model.get(name).length === 0) {
                         let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
                             + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
