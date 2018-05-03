@@ -46,7 +46,6 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                     }
                 }, this);
                 this.listenToOnce(this, 'after:render', function () {
-                    debugger;
                     if (this.mode === 'detail') {
                         this.getLabelElement().click(function () {
                             if (this.$el.find('.multilang-labels').hasClass('hidden')) {
