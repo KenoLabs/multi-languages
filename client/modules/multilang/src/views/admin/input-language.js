@@ -22,5 +22,16 @@ Espo.define('multilang:views/admin/input-language', 'views/settings/record/edit'
 
         layoutName: 'inputLanguage',
 
+        setup: function () {
+            Dep.prototype.setup.call(this);
+
+            this.listenTo(this.model, 'after:save', function () {
+                Espo.Ui.success(this.translate('successAndReload', 'messages', 'Global').replace('{value}', 2));
+                setTimeout(function () {
+                    window.location.reload(true);
+                }, 2000);
+            }.bind(this));
+        },
+
     })
 );
