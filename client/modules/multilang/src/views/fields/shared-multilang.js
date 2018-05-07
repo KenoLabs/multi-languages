@@ -31,8 +31,10 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                         this.getLabelElement().find('.caret').remove();
                         this.getLabelElement().css('cursor', 'default');
                     } else if (this.mode === 'detail') {
-                        this.getLabelElement().append(' <span class="caret"></span>');
-                        this.getLabelElement().css('cursor', 'pointer');
+                        if (!this.getLabelElement().find('.caret').length) {
+                            this.getLabelElement().append(' <span class="caret"></span>');
+                            this.getLabelElement().css('cursor', 'pointer');
+                        }
                     } else if (this.mode === 'list') {
                         this.$el.find('.main-field').click(function () {
                             if (this.$el.find('.multilang-labels').hasClass('hidden')) {
