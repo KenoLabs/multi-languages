@@ -16,7 +16,6 @@
     }
   ],
   "require": {
-    "php": "^7.1",
     "treo/treo": "^1.7.2"
   },
   "extra": {
