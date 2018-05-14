@@ -1,3 +1,5 @@
+    * UST #63557 : Update module to TreoCore 1.11.* (Roman Ratsun)
+
 1.6.2  2018-05-07 17:09:04 Europe/Kiev
     * BUG #62986 : При неактивных настройках http://treopim.zinit1.com/#Settings/inputLanguage но активном модуле комплитнесс с выведенными полями в лояутах - ошибка при переходе в список продуктов (Valeriy Shamota)
     * BUG #62862 : При редактировании атрибутов продукта в блоке COMPLETE появляются дополнительные стрелки  (Valeriy Shamota)
