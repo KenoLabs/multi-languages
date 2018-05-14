@@ -39,36 +39,37 @@ class Metadata extends AbstractMetadata
      * @access protected
      * @var array
      */
-    protected $fieldsMultiLang = [
-        'textMultiLang'      => [
-            'fieldType'        => 'text',
-            'typeNestedFields' => 'text',
-            'paramsDefault'    => false
-        ],
-        'varcharMultiLang'   => [
-            'fieldType'        => 'varchar',
-            'typeNestedFields' => 'varchar',
-            'paramsDefault'    => false
-        ],
-        'enumMultiLang'      => [
-            'typeNestedFields' => 'varchar',
-            'fieldType'        => 'enum',
-            'isOptions'        => true,
-            'paramsDefault'    => true
-        ],
-        'multiEnumMultiLang' => [
-            'typeNestedFields' => 'jsonArray',
-            'fieldType'        => 'multiEnum',
-            'isOptions'        => true,
-            'paramsDefault'    => true
-        ],
-        'arrayMultiLang'     => [
-            'typeNestedFields' => 'jsonArray',
-            'fieldType'        => 'array',
-            'isOptions'        => true,
-            'paramsDefault'    => true
-        ]
-    ];
+    protected $fieldsMultiLang
+        = [
+            'textMultiLang'      => [
+                'fieldType'        => 'text',
+                'typeNestedFields' => 'text',
+                'paramsDefault'    => false
+            ],
+            'varcharMultiLang'   => [
+                'fieldType'        => 'varchar',
+                'typeNestedFields' => 'varchar',
+                'paramsDefault'    => false
+            ],
+            'enumMultiLang'      => [
+                'typeNestedFields' => 'varchar',
+                'fieldType'        => 'enum',
+                'isOptions'        => true,
+                'paramsDefault'    => true
+            ],
+            'multiEnumMultiLang' => [
+                'typeNestedFields' => 'jsonArray',
+                'fieldType'        => 'multiEnum',
+                'isOptions'        => true,
+                'paramsDefault'    => true
+            ],
+            'arrayMultiLang'     => [
+                'typeNestedFields' => 'jsonArray',
+                'fieldType'        => 'array',
+                'isOptions'        => true,
+                'paramsDefault'    => true
+            ]
+        ];
 
 
     /**
@@ -77,13 +78,14 @@ class Metadata extends AbstractMetadata
      * @access protected
      * @var string
      */
-    protected $multiLangFieldDefs = [
-        'layoutListDisabled'       => true,
-        'layoutDetailDisabled'     => true,
-        'layoutFiltersDisabled'    => true,
-        'layoutMassUpdateDisabled' => true,
-        'customizationDisabled'    => true
-    ];
+    protected $multiLangFieldDefs
+        = [
+            'layoutListDisabled'       => true,
+            'layoutDetailDisabled'     => true,
+            'layoutFiltersDisabled'    => true,
+            'layoutMassUpdateDisabled' => true,
+            'customizationDisabled'    => true
+        ];
 
     /**
      * Modify
@@ -94,28 +96,21 @@ class Metadata extends AbstractMetadata
      */
     public function modify(array $data): array
     {
-        $config = $this->getContainer()->get('config');
+        // get languages
+        $languages = $this->getContainer()->get('config')->get('inputLanguageList');
 
-        if ($config->get('isMultilangActive')) {
-            // get languages
-            $languages = $config->get('inputLanguageList');
-            // add get MultiLang metadata
-            $multilangMetadata = $this->getMultiLangMetadata($languages);
+        // add get MultiLang metadata
+        $multilangMetadata = $this->getMultiLangMetadata($languages);
 
-            // load additional metadata for multilang fields
-            foreach ($multilangMetadata as $fieldName => $fieldData) {
-                if (isset($data['fields'][$fieldName])) {
-                    $data['fields'][$fieldName] = array_merge_recursive($data['fields'][$fieldName], $fieldData);
-                }
+        // load additional metadata for multilang fields
+        foreach ($multilangMetadata as $fieldName => $fieldData) {
+            if (isset($data['fields'][$fieldName])) {
+                $data['fields'][$fieldName] = array_merge_recursive($data['fields'][$fieldName], $fieldData);
             }
-
-
-            // modify fields in entity to multilang type
-            $data['entityDefs'] = $this->modifyEntityFieldsToMultilang($data['entityDefs'], $multilangMetadata);
-        } else {
-            // deactivete MultiLang if not exists
-            $data['fields'] = $this->deactivateMultilangFields($data['fields']);
         }
+
+        // modify fields in entity to multilang type
+        $data['entityDefs'] = $this->modifyEntityFieldsToMultilang($data['entityDefs'], $multilangMetadata);
 
         return $data;
     }
@@ -130,6 +125,9 @@ class Metadata extends AbstractMetadata
      */
     protected function modifyEntityFieldsToMultilang(array $entityDefs, array $multilangMetadata): array
     {
+        // get isMultilangActive param
+        $isMultilangActive = $this->getContainer()->get('config')->get('isMultilangActive');
+
         // search multilang fields in entity
         foreach ($entityDefs as $entityName => $defs) {
             foreach ($defs['fields'] as $fieldName => $feidsDefs) {
@@ -139,7 +137,9 @@ class Metadata extends AbstractMetadata
 
                     if (isset($multilangType)) {
                         // change fields type  on type multilang
-                        $entityDefs[$entityName]['fields'][$fieldName]['type'] = $multilangType;
+                        if ($isMultilangActive) {
+                            $entityDefs[$entityName]['fields'][$fieldName]['type'] = $multilangType;
+                        }
 
                         // load additional multilang fields to entity
                         foreach ($multilangMetadata[$multilangType]['fields'] as $languagePrefix => $additionalData) {
@@ -223,21 +223,5 @@ class Metadata extends AbstractMetadata
         $options['view'] = 'multilang:views/admin/field-manager/fields/optionsMultiLang';
 
         return $options;
-    }
-
-    /**
-     * Remove Multilang fields form metadata if Multilang is not active
-     *
-     * @param array $fieldsDefs
-     *
-     * @return array
-     */
-    protected function deactivateMultilangFields(array $fieldsDefs): array
-    {
-        foreach ($this->fieldsMultiLang as $fieldName => $data) {
-            unset($fieldsDefs[$fieldName]);
-        }
-
-        return $fieldsDefs;
     }
 }
