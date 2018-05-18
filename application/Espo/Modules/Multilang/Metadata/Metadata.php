@@ -97,7 +97,7 @@ class Metadata extends AbstractMetadata
     public function modify(array $data): array
     {
         // get languages
-        $languages = $this->getContainer()->get('config')->get('inputLanguageList');
+        $languages = $this->getContainer()->get('config')->get('inputLanguageList') ?? [];
 
         // add get MultiLang metadata
         $multilangMetadata = $this->getMultiLangMetadata($languages);
