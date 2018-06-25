@@ -37,5 +37,6 @@
   },
   "isMultilang": true,
   "hookClassName": "\\Espo\\Modules\\Multilang\\FieldManager\\Hooks\\VarcharMultilang",
-  "view": "multilang:views/fields/varchar-multilang"
+  "view": "multilang:views/fields/varchar-multilang",
+  "defaultFieldType": "varchar"
 }

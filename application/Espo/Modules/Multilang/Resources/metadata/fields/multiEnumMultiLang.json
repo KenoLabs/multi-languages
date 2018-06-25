@@ -27,5 +27,6 @@
     }
   ],
   "hookClassName": "\\Espo\\Modules\\Multilang\\FieldManager\\Hooks\\MultiEnumMultilang",
-  "view": "multilang:views/fields/multi-enum-multilang"
+  "view": "multilang:views/fields/multi-enum-multilang",
+  "defaultFieldType": "multiEnum"
 }
