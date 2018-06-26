@@ -75,6 +75,8 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                 this.model.set(data);
             }
 
+            this.addNumberOfOptionsValidation();
+
             this.on('customInvalid', function (name) {
                 let label = this.getCellElement().find('.control-label[data-name="'+ name + '"]');
                 let input = this.getCellElement().find('.form-control[data-name="'+ name + '"]');
@@ -233,13 +235,35 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         validate: function () {
-            for (var i in this.validations) {
-                var method = 'validate' + Espo.Utils.upperCaseFirst(this.validations[i]);
+            for (let i in this.validations) {
+                let method = 'validate' + Espo.Utils.upperCaseFirst(this.validations[i]);
                 if (this[method].call(this)) {
                     return true;
                 }
             }
             return false;
+        },
+
+        addNumberOfOptionsValidation() {
+            this.validations = Espo.Utils.clone(this.validations);
+            if (!this.validations.includes('numberOfOptions')) {
+                this.validations.push('numberOfOptions');
+            } else {
+                this.validations.splice(this.validations.indexOf('numberOfOptions'), 1);
+            }
+        },
+
+        validateNumberOfOptions() {
+            let error = false;
+            this.langFieldNameList.some(lang => {
+                if (this.model.get(this.name).length !== this.model.get(lang).length) {
+                    let msg = this.translate('sameNumberOptions', 'messages');
+                    this.showValidationMessage(msg);
+                    this.trigger('invalid');
+                    return error = true;
+                }
+            });
+            return error;
         },
 
         validateRequired() {

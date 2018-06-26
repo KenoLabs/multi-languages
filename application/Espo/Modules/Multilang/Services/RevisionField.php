@@ -89,7 +89,8 @@ class RevisionField extends ParentRevisionField
                             "userName" => $note->get('createdBy')->get('name'),
                             "locale"   => '',
                             "was"      => $data['attributes']['was'][$params['field']],
-                            "became"   => $data['attributes']['became'][$params['field']]
+                            "became"   => $data['attributes']['became'][$params['field']],
+                            "field"    => $params['field']
                         ];
                     }
                     $result['total'] = $result['total'] + 1;
@@ -109,7 +110,8 @@ class RevisionField extends ParentRevisionField
                                     "userName" => $note->get('createdBy')->get('name'),
                                     "locale"   => $locale,
                                     "was"      => $data['attributes']['was'][$fieldName],
-                                    "became"   => $data['attributes']['became'][$fieldName]
+                                    "became"   => $data['attributes']['became'][$fieldName],
+                                    "field"    => $fieldName
                                 ];
                             }
                             $result['total'] = $result['total'] + 1;
