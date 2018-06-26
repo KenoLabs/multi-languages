@@ -49,5 +49,6 @@
         "type": "text"
     },
     "hookClassName": "\\Espo\\Modules\\Multilang\\FieldManager\\Hooks\\TextMultilang",
-    "view": "multilang:views/fields/text-multilang"
+    "view": "multilang:views/fields/text-multilang",
+    "defaultFieldType": "text"
 }
