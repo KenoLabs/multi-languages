@@ -1,6 +1,5 @@
 {
   "name": "treo-module/multilang",
-  "description": "Multilang module for TreoPIM",
   "authors": [
     {
       "name": "Roman Ratsun",
@@ -21,12 +20,10 @@
   "extra": {
     "treoId": "Multilang",
     "name": {
-      "default": "Multi-language",
-      "de_DE": "Mehrsprachigkeit"
+      "default": "Multilanguage and Locales"
     },
     "description": {
-      "default": "Multi-language for TreoCRM",
-      "de_DE": "Mehrsprachigkeit für TreoCRM"
+      "default": "The module enables to store multilanguage and locale field values."
     }
   }
 }
