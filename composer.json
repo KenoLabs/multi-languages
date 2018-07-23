@@ -14,9 +14,6 @@
       "email": "y.kondratskyi@zinitsolutions.com"
     }
   ],
-  "require": {
-    "treo/treo": "^1.7.2"
-  },
   "extra": {
     "treoId": "Multilang",
     "name": {
