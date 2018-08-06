@@ -27,7 +27,7 @@ Espo.define('multilang:views/admin/fields/input-language-list', 'views/fields/mu
         },
 
         setupOptions() {
-            this.params.options = Espo.Utils.clone(this.getConfig().get('languageList'));
+            this.params.options = Espo.Utils.clone(this.getConfig().get('modules').Multilang.languageList);
             this.translatedOptions = Espo.Utils.clone(this.getLanguage().translate('language', 'options') || {});
         }
 
