@@ -130,23 +130,25 @@ class Metadata extends AbstractMetadata
 
         // search multilang fields in entity
         foreach ($entityDefs as $entityName => $defs) {
-            foreach ($defs['fields'] as $fieldName => $feidsDefs) {
-                // check is a multilang field
-                if (isset($feidsDefs['isMultilang']) ?? false) {
-                    $multilangType = $this->getMultilangTypeName($feidsDefs['type']);
+            if (!empty($defs['fields']) && is_array($defs['fields'])) {
+                foreach ($defs['fields'] as $fieldName => $feidsDefs) {
+                    // check is a multilang field
+                    if (isset($feidsDefs['isMultilang']) ?? false) {
+                        $multilangType = $this->getMultilangTypeName($feidsDefs['type']);
 
-                    if (isset($multilangType)) {
-                        // change fields type  on type multilang
-                        if ($isMultilangActive) {
-                            $entityDefs[$entityName]['fields'][$fieldName]['type'] = $multilangType;
-                        }
+                        if (isset($multilangType)) {
+                            // change fields type  on type multilang
+                            if ($isMultilangActive) {
+                                $entityDefs[$entityName]['fields'][$fieldName]['type'] = $multilangType;
+                            }
 
-                        // load additional multilang fields to entity
-                        foreach ($multilangMetadata[$multilangType]['fields'] as $languagePrefix => $additionalData) {
-                            $entityDefs[$entityName]['fields'] = array_merge(
-                                $entityDefs[$entityName]['fields'],
-                                [$fieldName . ucfirst(Util::toCamelCase($languagePrefix)) => $additionalData]
-                            );
+                            // load additional multilang fields to entity
+                            foreach ($multilangMetadata[$multilangType]['fields'] as $languagePrefix => $additionalData) {
+                                $entityDefs[$entityName]['fields'] = array_merge(
+                                    $entityDefs[$entityName]['fields'],
+                                    [$fieldName . ucfirst(Util::toCamelCase($languagePrefix)) => $additionalData]
+                                );
+                            }
                         }
                     }
                 }
