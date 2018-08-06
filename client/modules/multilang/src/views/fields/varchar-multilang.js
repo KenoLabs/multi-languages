@@ -81,7 +81,7 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
                     value: value,
                     isNotEmpty: value !== null && value !== '',
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
-                    customLabel: this.options.customLabel
+                    customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel
                 }
             }, this);
             return data;

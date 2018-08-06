@@ -91,7 +91,7 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
                     value: this.getTextValueForDisplay(value, name),
                     isNotEmpty: value !== null && value !== '',
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
-                    customLabel: this.options.customLabel
+                    customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel
                 }
             }, this);
             return data;
