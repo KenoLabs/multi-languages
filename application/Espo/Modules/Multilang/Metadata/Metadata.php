@@ -143,10 +143,10 @@ class Metadata extends AbstractMetadata
                             }
 
                             // load additional multilang fields to entity
-                            foreach ($multilangMetadata[$multilangType]['fields'] as $languagePrefix => $additionalData) {
+                            foreach ($multilangMetadata[$multilangType]['fields'] as $lPrefix => $additionalData) {
                                 $entityDefs[$entityName]['fields'] = array_merge(
                                     $entityDefs[$entityName]['fields'],
-                                    [$fieldName . ucfirst(Util::toCamelCase($languagePrefix)) => $additionalData]
+                                    [$fieldName . ucfirst(Util::toCamelCase($lPrefix)) => $additionalData]
                                 );
                             }
                         }
