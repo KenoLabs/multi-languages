@@ -75,7 +75,7 @@ Espo.define('multilang:views/fields/enum-multilang', ['views/fields/enum', 'mult
                     value: value,
                     isNotEmpty: value !== null && value !== '',
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
-                    customLabel: this.options.customLabel
+                    customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel
                 }
             }, this);
             data.translatedOptions = (data.translatedOptions || {})['options'];

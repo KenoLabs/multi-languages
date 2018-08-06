@@ -114,8 +114,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                     name: name,
                     value: value.map(val => val in translatedOptions ? translatedOptions[val] : val).join(', '),
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
-                    customLabel: this.options.customLabel,
-                    isEmpty: value.length === 0,
+                    customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel
                 }
             }, this);
             return data;
