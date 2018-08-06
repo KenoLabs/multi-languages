@@ -77,7 +77,7 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                 return {
                     name: name,
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
-                    customLabel: this.options.customLabel,
+                    customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel,
                     value: value.map(val => val in translatedOptions ? translatedOptions[val] : val).join(', '),
                     isEmpty: value.length === 0,
                 }
