@@ -40,7 +40,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             },
             'click [data-action="showAddModal"]': function (e) {
                 let name = $(e.currentTarget).data('name');
-                let value = this.model.get(name) || [];
+                let value = this.fetchFromDom()[name] || [];
                 let options = (this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`) || []).filter(item => value.indexOf(item) < 0);
                 let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});
 
@@ -166,7 +166,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         addValue(value, name) {
             name = this.getHelper().stripTags(name).replace(/"/g, '\\"');
-            let modelValue = this.model.get(name) || [];
+            let modelValue = this.fetchFromDom()[name] || [];
             if (modelValue.indexOf(value) == -1) {
                 let html = this.getItemHtml(value, name);
                 this.$list.filter(`[data-name="${name}"]`).append(html);
@@ -308,7 +308,47 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         getLangFieldNameList() {
             return this.langFieldNameList;
-        }
+        },
+
+        showValidationMessage: function (message, target) {
+            var $el;
+
+            target = target || '.array-control-container';
+
+            if (typeof target === 'string' || target instanceof String) {
+                $el = this.$el.find(target);
+            } else {
+                $el = $(target);
+            }
+
+            if (!$el.size() && this.$element) {
+                $el = this.$element;
+            }
+            $el.popover({
+                placement: 'bottom',
+                container: 'body',
+                content: message,
+                trigger: 'manual'
+            }).popover('show');
+
+            $el.closest('.field').one('mousedown click', function () {
+                $el.popover('destroy');
+            });
+
+            this.once('render remove', function () {
+                if ($el) {
+                    $el.popover('destroy');
+                }
+            });
+
+            if (this._timeout) {
+                clearTimeout(this._timeout);
+            }
+
+            this._timeout = setTimeout(function () {
+                $el.popover('destroy');
+            }, 3000);
+        },
     })
 );
 
