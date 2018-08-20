@@ -10,7 +10,8 @@
     "varcharMultiLang": "Varchar MultiLang",
     "enumMultiLang": "Enum MultiLang",
     "multiEnumMultiLang": "Multi-Enum MultiLang",
-    "arrayMultiLang": "Array MultiLang"
+    "arrayMultiLang": "Array MultiLang",
+    "wysiwygMultiLang": "Wysiwyg MultiLang"
   },
   "fields": {
     "optionsEnUs": "Option English",

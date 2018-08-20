@@ -68,6 +68,11 @@ class Metadata extends AbstractMetadata
                 'fieldType'        => 'array',
                 'isOptions'        => true,
                 'paramsDefault'    => true
+            ],
+            'wysiwygMultiLang'     => [
+                'typeNestedFields' => 'text',
+                'fieldType'        => 'wysiwyg',
+                'paramsDefault'    => false
             ]
         ];
 
