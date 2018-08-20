@@ -1,0 +1,35 @@
+{
+  "params":[
+    {
+      "name": "required",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "default",
+      "type": "text"
+    },
+    {
+      "name": "height",
+      "type": "int"
+    },
+    {
+      "name": "minHeight",
+      "type": "int"
+    },
+    {
+      "name":"readOnly",
+      "type":"bool"
+    }
+  ],
+  "notMergeable": true,
+  "notCreatable": false,
+  "filter": false,
+  "fieldDefs":{
+    "type":"text"
+  },
+  "isMultilang": true,
+  "hookClassName": "\\Espo\\Modules\\Multilang\\FieldManager\\Hooks\\WysiwygMultilang",
+  "view": "multilang:views/fields/wysiwyg-multilang",
+  "defaultFieldType": "wysiwyg"
+}
