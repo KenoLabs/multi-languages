@@ -55,6 +55,7 @@
   ![Multi-language Fields Edit](_assets/multilanguage-fields-edit.jpg)
 
 - При просмотре сущности мультиязычные поля скрыты, как список.
+
   ![Multi-language Fields Hide](_assets/multilanguage-fields-hide.jpg)
 
 - При необходимости просмотра значений для всех языков  необходимо развернуть поле нажав на иконку разворота.
