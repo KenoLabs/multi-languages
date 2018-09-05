@@ -640,7 +640,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
         },
 
         getTextValueForDisplay(text) {
-            if (text && (this.mode == 'detail' || this.mode == 'list')) {
+            if (text && (this.mode == 'detail' || this.mode == 'list') && !this.seeMoreText && !this.seeMoreDisabled) {
                 let isCut = false;
 
                 if (text.length > this.detailMaxLength) {
