@@ -1,3 +1,4 @@
+1.7.2  2018-09-10 16:21:54 Europe/Kiev
     * BUG #68148 : 1. При створенні поля типу Wysywyg Multilang біля Height (px) та Min Height (px) немає поруч і з Tooltip  2. При додаванні великої таблиці дані інших мов відображаються не всі внесенні дані (Valeriy Shamota)
     * UST #68716 : Оновити еспо до 5.2.5 (модуль Treo Multilanguage and Locale Fields) (Yurii Kondratskyi)
 
