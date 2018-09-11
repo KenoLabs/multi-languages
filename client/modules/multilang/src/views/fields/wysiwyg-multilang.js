@@ -41,6 +41,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 this.minHeight = this.params.minHeight;
             }
 
+            this.useIframe = this.params.useIframe || this.useIframe;
+
             this.toolbar = this.params.toolbar || [
                 ['style', ['style']],
                 ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -51,6 +53,29 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 ['table', ['table', 'link', 'picture', 'hr']],
                 ['misc',['codeview', 'fullscreen']]
             ];
+
+            this.buttons = {};
+
+            if (!this.params.toolbar) {
+                if (this.params.attachmentField) {
+                    this.toolbar.push([
+                        'attachment',
+                        ['attachment']
+                    ]);
+                    var AttachmentButton = function (context) {
+                        var ui = $.summernote.ui;
+                        var button = ui.button({
+                            contents: '<i class="glyphicon glyphicon-paperclip"></i>',
+                            tooltip: this.translate('Attach File'),
+                            click: function () {
+                                this.attachFile();
+                            }.bind(this)
+                        });
+                        return button.render();
+                    }.bind(this);
+                    this.buttons['attachment'] = AttachmentButton;
+                }
+            }
 
             this.listenTo(this.model, 'change:isHtml', function (model) {
                 if (this.mode === 'edit') {
@@ -112,6 +137,9 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
             this.once('remove', function () {
                 $(window).off('resize.' + this.cid);
+                if (this.$scrollable) {
+                    this.$scrollable.off('scroll.' + this.cid + '-edit');
+                }
             }.bind(this));
 
             this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
@@ -238,19 +266,27 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                         let $document = $(documentElement);
 
                         let increaseHeightStep = 10;
-                        let processIncreaseHeight = function (iteration) {
+                        let processIncreaseHeight = function (iteration, previousDiff) {
                             iteration = iteration || 0;
 
-                            if (iteration > 20) {
+                            if (iteration > 200) {
                                 return;
                             }
 
                             iteration ++;
 
-                            if (iframeElement.scrollHeight < $document.height()) {
-                                let height = iframeElement.scrollHeight + increaseHeightStep;
+                            var diff = $document.height() - iframeElement.scrollHeight;
+
+                            if (typeof previousDiff !== 'undefined') {
+                                if (diff === previousDiff) {
+                                    return;
+                                }
+                            }
+
+                            if (diff) {
+                                var height = iframeElement.scrollHeight + increaseHeightStep;
                                 iframeElement.style.height = height + 'px';
-                                processIncreaseHeight(iteration);
+                                processIncreaseHeight(iteration, diff);
                             }
                         };
 
@@ -484,11 +520,22 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                         this.trigger('change')
                     }.bind(this),
                 },
-                toolbar: this.toolbar
+                toolbar: this.toolbar,
+                buttons: this.buttons
             };
 
             if (this.height) {
                 options.height = this.height;
+            } else {
+                var $scrollable = this.$el.closest('.modal-body');
+                if (!$scrollable.size()) {
+                    $scrollable = $(window);
+                }
+                this.$scrollable = $scrollable;
+                $scrollable.off('scroll.' + this.cid + '-edit');
+                $scrollable.on('scroll.' + this.cid + '-edit', function (e) {
+                    this.onScrollEdit(e);
+                }.bind(this));
             }
 
             if (this.minHeight) {
@@ -496,6 +543,9 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
             }
 
             summernote.summernote(options);
+
+            this.$toolbar = this.$el.find('.note-toolbar');
+            this.$area = this.$el.find('.note-editing-area');
         },
 
         disableWysiwygMode(name) {
@@ -507,6 +557,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 summernote.addClass('hidden');
             }
             element.removeClass('hidden');
+
+            if (this.$scrollable) {
+                this.$scrollable.off('scroll.' + this.cid + '-edit');
+            }
         },
 
         fetch() {
@@ -586,7 +640,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
         },
 
         getTextValueForDisplay(text) {
-            if (text && (this.mode == 'detail' || this.mode == 'list')) {
+            if (text && (this.mode == 'detail' || this.mode == 'list') && !this.seeMoreText && !this.seeMoreDisabled) {
                 let isCut = false;
 
                 if (text.length > this.detailMaxLength) {

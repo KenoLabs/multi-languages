@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": "^7.1"
+    "treo/treo": ">=1.14.1"
   },
   "extra": {
     "treoId": "Multilang",
