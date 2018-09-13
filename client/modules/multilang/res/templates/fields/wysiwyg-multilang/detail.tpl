@@ -3,10 +3,10 @@
         {{#if useIframe}}
         <iframe data-name="{{name}}" frameborder="0"  style="width: 100%;" class="hidden" scrolling="no"></iframe>
         {{else}}
-        <div class="html-container" data-name="{{name}}">{{{value}}}</div>
+    {{#if isNotEmpty}}<div class="html-container" data-name="{{name}}">{{{value}}}</div>{{else}}{{translate 'None'}}{{/if}}
         {{/if}}
     {{else}}
-    <div class="plain complex-text hidden" data-name="{{name}}">{{complexText value}}</div>
+    {{#if isNotEmpty}}<div class="plain complex-text hidden" data-name="{{name}}">{{complexText value}}</div>{{else}}{{translate 'None'}}{{/if}}
     {{/unless}}
 </div>
 {{#if valueList}}
@@ -20,10 +20,10 @@
                 {{#if ../useIframe}}
                 <iframe data-name="{{name}}" frameborder="0"  style="width: 100%;" class="hidden" scrolling="no"></iframe>
                 {{else}}
-                <div class="html-container" data-name="{{name}}">{{{value}}}</div>
+            {{#if isNotEmpty}}<div class="html-container" data-name="{{name}}">{{{value}}}</div>{{else}}{{translate 'None'}}{{/if}}
                 {{/if}}
             {{else}}
-            <div class="plain complex-text hidden" data-name="{{name}}">{{complexText value}}</div>
+            {{#if isNotEmpty}}<div class="plain complex-text hidden" data-name="{{name}}">{{complexText value}}</div>{{else}}{{translate 'None'}}{{/if}}
             {{/unless}}
         </div>
     {{/each}}
