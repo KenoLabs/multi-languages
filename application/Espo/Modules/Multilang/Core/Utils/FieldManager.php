@@ -22,8 +22,8 @@ declare(strict_types = 1);
 
 namespace Espo\Modules\Multilang\Core\Utils;
 
-use Espo\Modules\TreoCore\Core\Utils\FieldManager as TreoFieldManager;
 use Espo\Core\Utils\Util;
+use Treo\Core\Utils\FieldManager as TreoFieldManager;
 
 /**
  * FieldManager util
