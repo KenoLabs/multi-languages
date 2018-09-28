@@ -263,10 +263,23 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                         documentElement.write(body);
                         documentElement.close();
 
+                        let $body = $iframe.contents().find('html body');
+
                         let $document = $(documentElement);
+
+                        let processWidth = function () {
+                            var bodyElement = $body.get(0);
+                            if (bodyElement) {
+                                if (bodyElement.clientWidth !== iframeElement.scrollWidth) {
+                                    iframeElement.style.height = (iframeElement.scrollHeight + 20) + 'px';
+                                }
+                            }
+                        };
 
                         let increaseHeightStep = 10;
                         let processIncreaseHeight = function (iteration, previousDiff) {
+                            $body.css('height', '');
+
                             iteration = iteration || 0;
 
                             if (iteration > 200) {
@@ -279,6 +292,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
                             if (typeof previousDiff !== 'undefined') {
                                 if (diff === previousDiff) {
+                                    $body.css('height', (iframeElement.clientHeight - increaseHeightStep) + 'px');
+                                    processWidth();
                                     return;
                                 }
                             }
@@ -287,6 +302,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                 var height = iframeElement.scrollHeight + increaseHeightStep;
                                 iframeElement.style.height = height + 'px';
                                 processIncreaseHeight(iteration, diff);
+                            } else {
+                                processWidth();
                             }
                         };
 
@@ -296,7 +313,6 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                     overflowY: 'hidden',
                                     overflowX: 'hidden'
                                 });
-                                $iframe.attr('scrolling', 'no');
 
                                 iframeElement.style.height = '0px';
                             } else {
@@ -320,7 +336,6 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                     overflowY: 'hidden',
                                     overflowX: 'scroll'
                                 });
-                                $iframe.attr('scrolling', 'yes');
                             }
                         };
 
