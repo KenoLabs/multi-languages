@@ -22,8 +22,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Listeners;
 
-use Espo\Modules\TreoCore\Listeners\AbstractListener;
-use Espo\Core\Utils\Json;
+use Treo\Listeners\AbstractListener;
 
 /**
  * Settings listener
