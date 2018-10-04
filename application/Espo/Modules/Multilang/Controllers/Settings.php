@@ -18,17 +18,15 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Controllers;
 
-use Espo\Modules\TreoCore\Controllers\Settings as MultilangSettings;
-
 /**
- * Settings controller
+ * Controller Settings
  *
  * @author r.ratsun <r.ratsun@zinitsolutions.com>
  */
-class Settings extends MultilangSettings
+class Settings extends \Espo\Controllers\Settings
 {
 }

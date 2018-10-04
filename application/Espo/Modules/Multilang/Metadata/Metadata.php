@@ -22,8 +22,8 @@ declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Metadata;
 
-use Espo\Modules\TreoCore\Metadata\AbstractMetadata;
 use Espo\Core\Utils\Util;
+use Treo\Metadata\AbstractMetadata;
 
 /**
  * Class Metadata

@@ -18,19 +18,18 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Espo\Modules\Multilang\Listeners;
 
-use Espo\Modules\TreoCore\Listeners\AbstractListener;
-use Espo\Core\Utils\Json;
+use Treo\Listeners\AbstractListener;
 
 /**
- * SettingsController listener
+ * Settings listener
  *
  * @author r.ratsun <r.ratsun@zinitsolutions.com>
  */
-class SettingsController extends AbstractListener
+class Settings extends AbstractListener
 {
 
     /**
@@ -40,11 +39,10 @@ class SettingsController extends AbstractListener
      *
      * @return void
      */
-    public function afterUpdate(array $data): void
+    public function afterActionUpdate(array $data): void
     {
         // regenerate multilang fields
-        $data = Json::decode(Json::encode($data), true);
-        if (isset($data['data']['inputLanguageList']) || $data['data']['isMultilangActive']) {
+        if (isset($data['data']->inputLanguageList) || !empty($data['data']->isMultilangActive)) {
             $this->getContainer()->get('dataManager')->rebuild();
         }
     }
