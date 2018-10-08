@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "treo/treopim": ">=1.14.3"
+    "treo/treopim": "^1.14.5"
   },
   "extra": {
     "treoId": "Multilang",
