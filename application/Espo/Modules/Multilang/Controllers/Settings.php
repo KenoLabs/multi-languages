@@ -27,6 +27,39 @@ namespace Espo\Modules\Multilang\Controllers;
  *
  * @author r.ratsun <r.ratsun@zinitsolutions.com>
  */
-class Settings extends \Espo\Controllers\Settings
+class Settings extends \Treo\Controllers\Settings
 {
+    /**
+     * @inheritdoc
+     */
+    protected function prepareTabList(array $config): array
+    {
+        // get config
+        $config = parent::prepareTabList($config);
+
+        if (!empty($config['twoLevelTabList'])) {
+            $newTabList = [];
+            foreach ($config['twoLevelTabList'] as $item) {
+                if (is_string($item)) {
+                    if ($this->getMetadata()->get("scopes.$item.tab")) {
+                        $newTabList[] = $item;
+                    }
+                } else {
+                    if (!empty($item->items)) {
+                        $newSubItems = [];
+                        foreach ($item->items as $subItem) {
+                            if ($this->getMetadata()->get("scopes.$subItem.tab")) {
+                                $newSubItems[] = $subItem;
+                            }
+                        }
+                        $item->items = $newSubItems;
+                    }
+                    $newTabList[] = $item;
+                }
+            }
+            $config['twoLevelTabList'] = $newTabList;
+        }
+
+        return $config;
+    }
 }
