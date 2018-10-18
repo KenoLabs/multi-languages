@@ -597,6 +597,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                         data[name + 'Plain'] = data[name];
                     }
                 }
+
+                data = this.checkDataForDefaultTagsValue(data, name);
             });
             return data;
         },
