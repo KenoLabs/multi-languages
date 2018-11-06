@@ -195,13 +195,11 @@ class Metadata extends AbstractMetadata
         $metadataFields = [];
 
         foreach ($this->fieldsMultiLang as $fields => $data) {
-            $metadataFields[$fields]['actualFields'] = [];
             $metadataFields[$fields]['fields'] = [];
 
             //Set data for all type multiLang fields
             foreach ($languages as $language) {
                 $language = strtolower($language);
-                $metadataFields[$fields]['actualFields'][] = $language;
                 $metadataFields[$fields]['fields'][$language] = $this->multiLangFieldDefs;
                 $metadataFields[$fields]['fields'][$language]['type'] = $data['typeNestedFields'];
 
