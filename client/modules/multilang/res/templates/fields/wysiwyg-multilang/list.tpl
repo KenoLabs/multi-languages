@@ -5,7 +5,7 @@
 {{#if valueList}}
 <div class="multilang-labels hidden">
     {{#each valueList}}
-    <div data-field="{{name}}">
+    <div class="lang-field" data-field="{{name}}">
         <label class="control-label" data-name="{{name}}">
             <span class="label-text">{{shortLang}}:</span>
         </label>
