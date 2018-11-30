@@ -1,7 +1,7 @@
 /*
  * Multilang
  * Free Extension
- * Copyright (c) Zinit Solutions GmbH
+ * Copyright (c) TreoLabs GmbH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,23 +23,25 @@ Espo.define('multilang:views/record/list', 'class-replace!multilang:views/record
 
         fetchAttributeListFromLayout() {
             let list = [];
-            this.listLayout.forEach(item => {
-                if (!item.name) return;
-                let field = item.name;
-                let fieldType = this.getMetadata().get(['entityDefs', this.scope, 'fields', field, 'type']);
-                if (!fieldType) return;
-                let isMultiLang = this.getMetadata().get(['entityDefs', this.scope, 'fields', field, 'isMultilang']);
-                if (isMultiLang) {
-                    list.push(field);
-                    (this.getConfig().get('inputLanguageList') || []).forEach(lang => {
-                        list.push(lang.split('_').reduce((prev, curr) => prev + Espo.Utils.upperCaseFirst(curr.toLowerCase()), field));
-                    });
-                } else {
-                    this.getFieldManager().getAttributeList(fieldType, field).forEach(attribute => {
-                        list.push(attribute);
-                    });
-                }
-            });
+            if (!this.getMetadata().get(['clientDefs', this.scope, 'disabledSelectList'])) {
+                this.listLayout.forEach(item => {
+                    if (!item.name) return;
+                    let field = item.name;
+                    let fieldType = this.getMetadata().get(['entityDefs', this.scope, 'fields', field, 'type']);
+                    if (!fieldType) return;
+                    let isMultiLang = this.getMetadata().get(['entityDefs', this.scope, 'fields', field, 'isMultilang']);
+                    if (isMultiLang) {
+                        list.push(field);
+                        (this.getConfig().get('inputLanguageList') || []).forEach(lang => {
+                            list.push(lang.split('_').reduce((prev, curr) => prev + Espo.Utils.upperCaseFirst(curr.toLowerCase()), field));
+                        });
+                    } else {
+                        this.getFieldManager().getAttributeList(fieldType, field).forEach(attribute => {
+                            list.push(attribute);
+                        });
+                    }
+                });
+            }
             return list;
         },
     });
