@@ -195,9 +195,11 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
             let data = Dep.prototype.data.call(this);
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
+                let valueSanitized = this.sanitizeHtml(this.getTextValueForDisplay(value));
                 return {
                     name: name,
-                    value: this.sanitizeHtml(this.getTextValueForDisplay(value)),
+                    value: valueSanitized,
+                    valueWithoutTags: this.removeTags(valueSanitized),
                     isNotEmpty: value !== null && value !== '',
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
                     customLabel: typeof this.options.multilangLabels === 'object' ? this.options.multilangLabels[name] : this.options.customLabel
