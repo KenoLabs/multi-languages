@@ -1,7 +1,7 @@
 /*
  * Multilang
  * Free Extension
- * Copyright (c) Zinit Solutions GmbH
+ * Copyright (c) TreoLabs GmbH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,28 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
         langFieldNameList: [],
 
         hiddenLocales: [],
+
+        showMoreTextMultiLang: {},
+
+        reopenMultiLangLabels: false,
+
+        events: {
+            'click a[data-action="seeMoreText"]': function (e) {
+                this.reopenMultiLangLabels = !this.$el.find('.multilang-labels').hasClass('hidden');
+                let link = $(e.currentTarget);
+                let name = link.data('name');
+                if (!name) {
+                    let parent = link.parents('.lang-field');
+                    name = parent.size() ? parent.data('field') : this.name;
+                }
+                if (name === this.name) {
+                    this.showMoreText = true;
+                } else {
+                    this.showMoreTextMultiLang[name] = true;
+                }
+                this.reRender();
+            }
+        },
 
         setup() {
             TextField.prototype.setup.call(this);
@@ -76,6 +98,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     this.buttons['attachment'] = AttachmentButton;
                 }
             }
+
+            this.detailMaxHeight = this.params.displayedHeight || this.detailMaxHeight;
+            this.showMoreDisabled = this.showMoreDisabled || this.params.showMoreDisabled;
+            this.showMoreTextMultiLang = {};
 
             this.listenTo(this.model, 'change:isHtml', function (model) {
                 if (this.mode === 'edit') {
@@ -189,6 +215,15 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
             }, this);
 
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
+            this.listenTo(this, 'multilang-labels-visibility', () => {
+                this.langFieldNameList.forEach(name => {
+                    if (this.mode === 'detail' && (!this.model.has('isHtml') || this.model.get('isHtml'))) {
+                        if (!this.showMoreTextMultiLang[name] && !this.showMoreDisabled) {
+                            this.applyFieldPartHiding(name);
+                        }
+                    }
+                })
+            });
         },
 
         data() {
@@ -235,8 +270,15 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 }
             }
 
+            if (this.reopenMultiLangLabels) {
+                this.$el.find('.multilang-labels').removeClass('hidden');
+            }
+
             if (this.mode === 'detail') {
                 if (!this.model.has('isHtml') || this.model.get('isHtml')) {
+                    if (!this.showMoreText && !this.showMoreDisabled) {
+                        this.applyFieldPartHiding(this.name);
+                    }
                     if (!this.useIframe) {
                         this.$element = this.$el.find(`.html-container[data-name="${this.name}"]`);
                     } else {
@@ -366,7 +408,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
             this.langFieldNameList.forEach(name => {
                 if (this.mode === 'edit') {
-                    let text = this.getTextValueForDisplay(this.model.get(name));
+                    let text = this.getTextValueForDisplay(this.model.get(name), name);
                     if (text) {
                         this.$el.find(`[name="${name}"]`).val(text);
                     }
@@ -382,12 +424,15 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
                 if (this.mode === 'detail') {
                     if (!this.model.has('isHtml') || this.model.get('isHtml')) {
+                        if (!this.showMoreTextMultiLang[name] && !this.showMoreDisabled) {
+                            this.applyFieldPartHiding(name);
+                        }
                         if (this.useIframe) {
                             this.$el.find(`iframe[data-name="${name}"]`).removeClass('hidden');
 
                             let $iframe = this.$el.find(`iframe[data-name="${name}"]`);
 
-                            let iframeElement = this.iframe = $iframe.get(0);
+                            let iframeElement = $iframe.get(0);
                             if (!iframeElement) return;
 
                             $iframe.load(function () {
@@ -408,22 +453,47 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                             documentElement.write(body);
                             documentElement.close();
 
+                            let $body = $iframe.contents().find('html body');
+
                             let $document = $(documentElement);
 
+                            let processWidth = function () {
+                                let bodyElement = $body.get(0);
+                                if (bodyElement) {
+                                    if (bodyElement.clientWidth !== iframeElement.scrollWidth) {
+                                        iframeElement.style.height = (iframeElement.scrollHeight + 20) + 'px';
+                                    }
+                                }
+                            };
+
                             let increaseHeightStep = 10;
-                            let processIncreaseHeight = function (iteration) {
+                            let processIncreaseHeight = function (iteration, previousDiff) {
+                                $body.css('height', '');
+
                                 iteration = iteration || 0;
 
-                                if (iteration > 20) {
+                                if (iteration > 200) {
                                     return;
                                 }
 
                                 iteration ++;
 
-                                if (iframeElement.scrollHeight < $document.height()) {
+                                let diff = $document.height() - iframeElement.scrollHeight;
+
+                                if (typeof previousDiff !== 'undefined') {
+                                    if (diff === previousDiff) {
+                                        $body.css('height', (iframeElement.clientHeight - increaseHeightStep) + 'px');
+                                        processWidth();
+                                        return;
+                                    }
+                                }
+
+                                if (diff) {
                                     let height = iframeElement.scrollHeight + increaseHeightStep;
                                     iframeElement.style.height = height + 'px';
-                                    processIncreaseHeight(iteration);
+                                    processIncreaseHeight(iteration, diff);
+                                } else {
+                                    processWidth();
                                 }
                             };
 
@@ -433,7 +503,6 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                         overflowY: 'hidden',
                                         overflowX: 'hidden'
                                     });
-                                    $iframe.attr('scrolling', 'no');
 
                                     iframeElement.style.height = '0px';
                                 } else {
@@ -457,9 +526,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                         overflowY: 'hidden',
                                         overflowX: 'scroll'
                                     });
-                                    $iframe.attr('scrolling', 'yes');
                                 }
-                            };
+                            }.bind(this);
 
                             $iframe.css({
                                 visibility: 'hidden'
@@ -484,7 +552,6 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     }
                 }
             });
-
         },
 
         enableWysiwygMode: function (name) {
@@ -599,6 +666,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                         data[name + 'Plain'] = data[name];
                     }
                 }
+
+                data = this.checkDataForDefaultTagsValue(data, name);
             });
             return data;
         },
@@ -656,24 +725,26 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
             return lang.split('_').reduce((prev, curr) => prev + Espo.utils.upperCaseFirst(curr.toLowerCase()), this.name);
         },
 
-        getTextValueForDisplay(text) {
-            if (text && (this.mode == 'detail' || this.mode == 'list') && !this.seeMoreText && !this.seeMoreDisabled) {
-                let isCut = false;
+        getTextValueForDisplay(text, field) {
+            if (this.mode === 'list' || (this.mode === 'detail' && (this.model.has('isHtml') && !this.model.get('isHtml')))) {
+                if (text && !this.showMoreTextMultiLang[field] && !this.showMoreDisabled) {
+                    let isCut = false;
 
-                if (text.length > this.detailMaxLength) {
-                    text = text.substr(0, this.detailMaxLength);
-                    isCut = true;
-                }
+                    if (text.length > this.detailMaxLength) {
+                        text = text.substr(0, this.detailMaxLength);
+                        isCut = true;
+                    }
 
-                let nlCount = (text.match(/\n/g) || []).length;
-                if (nlCount > this.detailMaxNewLineCount) {
-                    let a = text.split('\n').slice(0, this.detailMaxNewLineCount);
-                    text = a.join('\n');
-                    isCut = true;
-                }
+                    let nlCount = (text.match(/\n/g) || []).length;
+                    if (nlCount > this.detailMaxNewLineCount) {
+                        let a = text.split('\n').slice(0, this.detailMaxNewLineCount);
+                        text = a.join('\n');
+                        isCut = true;
+                    }
 
-                if (isCut) {
-                    text += ' ...\n[#see-more-text]';
+                    if (isCut) {
+                        text += ' ...\n[#see-more-text]';
+                    }
                 }
             }
             return text || '';

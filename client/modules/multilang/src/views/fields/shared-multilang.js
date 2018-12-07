@@ -1,7 +1,7 @@
 /*
  * Multilang
  * Free Extension
- * Copyright (c) Zinit Solutions GmbH
+ * Copyright (c) TreoLabs GmbH
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,10 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                             this.getLabelElement().css('cursor', 'pointer');
                         }
                     } else if (this.mode === 'list') {
-                        this.$el.find('.main-field').click(function () {
+                        this.$el.find('.main-field').click(function (e) {
+                            if (e.target.tagName.toLocaleLowerCase() === 'a' && $(e.target).data('action') === 'seeMoreText') {
+                                return;
+                            }
                             if (this.$el.find('.multilang-labels').hasClass('hidden')) {
                                 this.$el.find('.multilang-labels').removeClass('hidden');
                                 this.$el.find('.caret').addClass('caret-up')
@@ -44,6 +47,7 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                                 this.$el.find('.multilang-labels').addClass('hidden');
                                 this.$el.find('.caret').removeClass('caret-up')
                             }
+                            this.trigger('multilang-labels-visibility');
                         }.bind(this));
                     }
                 }, this);
@@ -57,6 +61,7 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                                 this.$el.find('.multilang-labels').addClass('hidden');
                                 this.$el.parent().find('.caret').removeClass('caret-up')
                             }
+                            this.trigger('multilang-labels-visibility');
                         }.bind(this));
                     }
                 }, this);

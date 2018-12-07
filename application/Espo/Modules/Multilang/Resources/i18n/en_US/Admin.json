@@ -15,6 +15,8 @@
   },
   "fields": {
     "optionsEnUs": "Option English",
-    "optionsDeDe": "Option Deutsch"
+    "optionsDeDe": "Option Deutsch",
+    "showMoreDisabled": "Disable text hiding",
+    "displayedHeight": "Displayed Height (px)"
   }
 }

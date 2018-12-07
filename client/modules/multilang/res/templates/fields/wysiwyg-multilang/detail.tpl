@@ -1,7 +1,7 @@
 <div class="main-field">
     {{#unless isPlain}}
         {{#if useIframe}}
-        <iframe data-name="{{name}}" frameborder="0"  style="width: 100%;" class="hidden" scrolling="no"></iframe>
+        <iframe data-name="{{name}}" frameborder="0"  style="width: 100%; overflow-x: hidden; overflow-y: hidden;" class="hidden"></iframe>
         {{else}}
     {{#if isNotEmpty}}<div class="html-container" data-name="{{name}}">{{{value}}}</div>{{else}}{{translate 'None'}}{{/if}}
         {{/if}}
@@ -15,10 +15,10 @@
         <label class="control-label" data-name="{{name}}">
             <span class="label-text">{{#if customLabel}}{{customLabel}}{{else}}{{translate ../../name category='fields' scope=../../scope}}{{/if}} &rsaquo; {{shortLang}}</span>
         </label>
-        <div>
+        <div class="lang-field" data-field="{{name}}">
             {{#unless ../isPlain}}
                 {{#if ../useIframe}}
-                <iframe data-name="{{name}}" frameborder="0"  style="width: 100%;" class="hidden" scrolling="no"></iframe>
+                <iframe data-name="{{name}}" frameborder="0"  style="width: 100%; overflow-x: hidden; overflow-y: hidden;" class="hidden"></iframe>
                 {{else}}
             {{#if isNotEmpty}}<div class="html-container" data-name="{{name}}">{{{value}}}</div>{{else}}{{translate 'None'}}{{/if}}
                 {{/if}}
