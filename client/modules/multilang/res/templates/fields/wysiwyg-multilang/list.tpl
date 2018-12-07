@@ -1,5 +1,5 @@
 <div class="main-field" style="cursor: pointer" data-field="{{name}}">
-    {{#if isNotEmpty}}<span class="complex-text">{{complexText value}}</span>{{else}}{{translate 'None'}}{{/if}}
+    {{#if isNotEmpty}}<span class="complex-text">{{complexText valueWithoutTags}}</span>{{else}}{{translate 'None'}}{{/if}}
     <span class="caret"></span>
 </div>
 {{#if valueList}}
@@ -9,7 +9,7 @@
         <label class="control-label" data-name="{{name}}">
             <span class="label-text">{{shortLang}}:</span>
         </label>
-        <span>{{#if isNotEmpty}}<span class="complex-text">{{complexText value}}</span>{{else}}{{translate 'None'}}{{/if}}</span>
+        <span>{{#if isNotEmpty}}<span class="complex-text">{{complexText valueWithoutTags}}</span>{{else}}{{translate 'None'}}{{/if}}</span>
     </div>
     {{/each}}
 </div>
