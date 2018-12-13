@@ -228,6 +228,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
         data() {
             let data = Dep.prototype.data.call(this);
+            data.hasLangValues = !!this.langFieldNameList.length;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {

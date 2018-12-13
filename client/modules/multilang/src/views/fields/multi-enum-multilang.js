@@ -70,7 +70,7 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
 
         data() {
             let data = Dep.prototype.data.call(this);
-
+            data.hasLangValues = !!this.langFieldNameList.length;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name) || [];
                 let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});
