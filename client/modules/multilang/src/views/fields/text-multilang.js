@@ -84,6 +84,7 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
         data() {
             let data = Dep.prototype.data.call(this);
             data.value = this.getTextValueForDisplay(this.model.get(this.name), this.name);
+            data.hasLangValues = !!this.langFieldNameList.length;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {

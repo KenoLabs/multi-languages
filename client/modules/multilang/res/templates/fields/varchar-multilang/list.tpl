@@ -1,4 +1,7 @@
-<div class="main-field" style="cursor: pointer">{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}<span class="caret"></span></div>
+<div class="main-field" style="cursor: pointer">
+	{{#if isNotEmpty}}{{value}}{{else}}{{translate 'None'}}{{/if}}
+	{{#if hasLangValues}}<span class="caret"></span>{{/if}}
+</div>
 {{#if valueList}}
     <div class="multilang-labels hidden">
     {{#each valueList}}

@@ -1,6 +1,6 @@
 <div class="main-field" style="cursor: pointer" data-field="{{name}}">
     {{#if isNotEmpty}}<span class="complex-text">{{complexText valueWithoutTags}}</span>{{else}}{{translate 'None'}}{{/if}}
-    <span class="caret"></span>
+    {{#if hasLangValues}}<span class="caret"></span>{{/if}}
 </div>
 {{#if valueList}}
 <div class="multilang-labels hidden">

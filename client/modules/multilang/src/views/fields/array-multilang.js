@@ -100,7 +100,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             let data = Dep.prototype.data.call(this);
             data.itemHtmlList = value.map(item => this.getItemHtml(item, this.name));
             data.isEmpty = value.length === 0
-
+            data.hasLangValues = !!this.langFieldNameList.length;
             data.valueList = this.getLangFieldNameList().map(name => {
                 let value = this.model.get(name) || [];
                 let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});
