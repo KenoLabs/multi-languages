@@ -44,15 +44,14 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
                 this.model.set(data);
             }
 
-            this.events[`focusout [name="${this.name}"]`] = function (e) {
-                let mainField = $(e.currentTarget);
+            this.listenTo(this.model, `change:${this.name}`, () => {
+                const value = this.model.get(this.name);
                 this.langFieldNameList.forEach(item => {
-                    let secondaryField = this.$el.find(`[name="${item}"]`);
-                    if (!secondaryField.val()) {
-                        secondaryField.val(mainField.val());
+                    if (!this.model.get(item)) {
+                        this.model.set({[item]: value});
                     }
                 });
-            }.bind(this);
+            });
 
             this.on('customInvalid', function (name) {
                 let label = this.getCellElement().find('.control-label[data-name="'+ name + '"]');
