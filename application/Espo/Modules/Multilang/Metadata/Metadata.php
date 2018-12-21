@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Espo\Modules\Multilang\Metadata;
 
 use Espo\Core\Utils\Util;
+use function foo\func;
 use Treo\Metadata\AbstractMetadata;
 
 /**
@@ -195,12 +196,12 @@ class Metadata extends AbstractMetadata
         $metadataFields = [];
 
         foreach ($this->fieldsMultiLang as $fields => $data) {
-            $metadataFields[$fields]['actualFields'] = [];
+            $metadataFields[$fields]['actualFields'] = [''];
             $metadataFields[$fields]['fields'] = [];
 
             //Set data for all type multiLang fields
             foreach ($languages as $language) {
-                $language = strtolower($language);
+                $language = Util::toCamelCase(strtolower($language));
                 $metadataFields[$fields]['actualFields'][] = $language;
                 $metadataFields[$fields]['fields'][$language] = $this->multiLangFieldDefs;
                 $metadataFields[$fields]['fields'][$language]['type'] = $data['typeNestedFields'];
@@ -225,7 +226,7 @@ class Metadata extends AbstractMetadata
     protected function getOptionsMultiLang(string $language): array
     {
         $options = [];
-        $options['name'] = Util::toCamelCase('options_' . $language);
+        $options['name'] = 'options' . ucfirst($language);
         $options['type'] = 'array';
         $options['view'] = 'multilang:views/admin/field-manager/fields/optionsMultiLang';
 

@@ -179,25 +179,14 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 this.model.set(data);
             }
 
-            this.events[`focusout .summernote[data-name="${this.name}"] + .note-editor`] = function (e) {
+            this.listenTo(this.model, `change:${this.name}`, () => {
+                const value = this.model.get(this.name);
                 this.langFieldNameList.forEach(item => {
-                    let summernote = this.$el.find(`.summernote[data-name="${item}"]`);
-                    let value = summernote.summernote('code');
-                    if (!value || !value.replace(/<\/?p>|<br>/g, '')) {
-                        summernote.summernote('code', this.$summernote.summernote('code'));
+                    if (!this.model.get(item)) {
+                        this.model.set({[item]: value});
                     }
                 });
-            }.bind(this);
-
-            this.events[`focusout [name="${this.name}"]`] = function (e) {
-                let mainField = $(e.currentTarget);
-                this.langFieldNameList.forEach(item => {
-                    let secondaryField = this.$el.find(`[name="${item}"]`);
-                    if (!secondaryField.val()) {
-                        secondaryField.val(mainField.val());
-                    }
-                });
-            }.bind(this);
+            });
 
             this.on('customInvalid', function (name) {
                 let label = this.getCellElement().find('.control-label[data-name="'+ name + '"]');
