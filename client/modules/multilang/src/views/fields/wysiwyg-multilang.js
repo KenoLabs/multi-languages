@@ -34,6 +34,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
         reopenMultiLangLabels: false,
 
+        $toolbar: {},
+
+        $area: {},
+
         events: {
             'click a[data-action="seeMoreText"]': function (e) {
                 this.reopenMultiLangLabels = !this.$el.find('.multilang-labels').hasClass('hidden');
@@ -627,9 +631,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
             }
 
             summernote.summernote(options);
-
-            this.$toolbar = this.$el.find('.note-toolbar');
-            this.$area = this.$el.find('.note-editing-area');
+            this.$toolbar[name] = this.$el.find(`.summernote[data-name="${name}"]`).next('.note-editor').find('.note-toolbar');
+            this.$area[name] = this.$el.find(`.summernote[data-name="${name}"]`).next('.note-editor').find('.note-editing-area');
         },
 
         disableWysiwygMode(name) {
@@ -748,7 +751,65 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 }
             }
             return text || '';
-        }
+        },
+
+        onScrollEdit:function (e) {
+            this.onScrollEditAdditional(e, this.name);
+            this.langFieldNameList.forEach(name => {
+                this.onScrollEditAdditional(e, name);
+            });
+        },
+
+        onScrollEditAdditional: function (e, name) {
+            var $target = $(e.target);
+            var toolbarHeight = this.$toolbar[name].height();
+            var toolbarWidth = this.$toolbar[name].parent().width();
+            var edgeTop, edgeTopAbsolute;
+
+            if ($target.get(0) === window.document) {
+                var $buttonContainer = $target.find('.detail-button-container:not(.hidden)');
+                var offset = $buttonContainer.offset();
+                if (offset) {
+                    edgeTop = offset.top + $buttonContainer.height();
+                    edgeTopAbsolute = edgeTop - $(window).scrollTop();
+                }
+            } else {
+                var offset = $target.offset();
+                if (offset) {
+                    edgeTop = offset.top;
+                    edgeTopAbsolute = edgeTop - $(window).scrollTop();
+                }
+            }
+
+            var top = this.$el.find(`.summernote[data-name="${name}"]`).next('.note-editor').offset().top;
+            var bottom = top + this.$el.find(`.summernote[data-name="${name}"]`).next('.note-editor').height() - toolbarHeight;
+
+            var toStick = false;
+            if (edgeTop > top && bottom > edgeTop) {
+                toStick = true;
+            }
+
+            if (toStick) {
+                this.$toolbar[name].css({
+                    top: edgeTopAbsolute + 'px',
+                    width: toolbarWidth + 'px'
+                });
+                this.$toolbar[name].addClass('sticked');
+                this.$area[name].css({
+                    marginTop: toolbarHeight + 'px',
+                    backgroundColor: ''
+                });
+            } else {
+                this.$toolbar[name].css({
+                    top: '',
+                    width: ''
+                });
+                this.$toolbar[name].removeClass('sticked');
+                this.$area[name].css({
+                    marginTop: ''
+                });
+            }
+        },
 
     })
 );
