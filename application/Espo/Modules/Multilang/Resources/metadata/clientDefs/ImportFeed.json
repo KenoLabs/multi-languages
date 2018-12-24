@@ -1,26 +1,25 @@
 {
     "defaultValueFields": {
         "arrayMultiLang": {
-            "view": "views/fields/array",
-            "withoutRandomView": true
+            "view": "views/fields/array"
         },
         "enumMultiLang": {
             "view": "views/fields/enum",
-            "isRequiredOptions": true,
-            "withoutRandomView": true
+            "isRequiredOptions": true
         },
         "multiEnumMultiLang": {
             "view": "views/fields/multi-enum",
-            "isRequiredOptions": true,
-            "withoutRandomView": true
+            "isRequiredOptions": true
         },
         "textMultiLang": {
             "view": "views/fields/text",
-            "default": ""
+            "default": "",
+            "withDefaultHash": true
         },
         "varcharMultiLang": {
             "view": "views/fields/varchar",
-            "default": ""
+            "default": "",
+            "withDefaultHash": true
         }
     }
 }
