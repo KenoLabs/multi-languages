@@ -545,6 +545,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     }
                 }
             });
+
+            if (this.mode === 'detail' && this.$scrollable) {
+                this.$scrollable.off('scroll.' + this.cid + '-edit');
+            }
         },
 
         enableWysiwygMode: function (name) {
