@@ -64,6 +64,8 @@ Espo.define('multilang:views/fields/enum-multilang', ['views/fields/enum', 'mult
 
         data() {
             let data = Dep.prototype.data.call(this);
+            let fontSize = this.model.getFieldParam(this.name, 'fontSize');
+            data.fontSize = fontSize ? fontSize + 'em' : '100%';
             data.hasLangValues = !!this.langFieldNameList.length;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);

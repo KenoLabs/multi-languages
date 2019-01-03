@@ -1,20 +1,16 @@
-{{#if isNotEmpty}}
-<div class="main-field" style="cursor: pointer">
-	{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}
+<div class="main-field" style="cursor: pointer;">
+    {{#if isNotEmpty}}<span style="font-size: {{fontSize}};">{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}</span>{{else}}{{translate 'None'}}{{/if}}
 	{{#if hasLangValues}}<span class="caret"></span>{{/if}}
 </div>
-{{/if}}
 {{#if valueList}}
     <div class="multilang-labels hidden">
     {{#each valueList}}
-        {{#if isNotEmpty}}
         <div>
             <label class="control-label" data-name="{{name}}">
                 <span class="label-text">{{shortLang}}:</span>
             </label>
-            <span>{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}</span>
+            {{#if isNotEmpty}}<span style="font-size: {{fontSize}};">{{translateOption value scope=scope field=name translatedOptions=translatedOptions}}</span>{{else}}{{translate 'None'}}{{/if}}
         </div>
-        {{/if}}
     {{/each}}
     </div>
 {{/if}}
