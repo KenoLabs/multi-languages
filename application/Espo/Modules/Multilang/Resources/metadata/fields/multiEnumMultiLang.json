@@ -13,6 +13,14 @@
       "default": "false"
     },
     {
+      "name": "fontSize",
+      "type": "float",
+      "min": 0.7,
+      "max": 2,
+      "default": 1,
+      "tooltip": true
+    },
+    {
       "name": "audited",
       "type": "bool"
     },
