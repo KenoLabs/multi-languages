@@ -1,4 +1,4 @@
-<div class="main-field">
+<div class="main-field{{#if hideMainOption}} hidden{{/if}}">
     {{#unless isPlain}}
         {{#if useIframe}}
         <iframe data-name="{{name}}" frameborder="0"  style="width: 100%; overflow-x: hidden; overflow-y: hidden;" class="hidden"></iframe>
@@ -10,7 +10,7 @@
     {{/unless}}
 </div>
 {{#if valueList}}
-<div class="multilang-labels hidden">
+<div class="multilang-labels{{#unless expandLocales}} hidden{{/unless}}">
     {{#each valueList}}
         <label class="control-label" data-name="{{name}}">
             <span class="label-text">{{#if customLabel}}{{customLabel}}{{else}}{{translate ../../name category='fields' scope=../../scope}}{{/if}} &rsaquo; {{shortLang}}</span>

@@ -1,4 +1,4 @@
-<select name="{{name}}" class="form-control main-element">
+<select name="{{name}}" class="form-control main-element{{#if hideMainOption}} hidden{{/if}}">
     {{options params.options value scope=scope field=name translatedOptions=translatedOptions}}
 </select>
 {{#each valueList}}

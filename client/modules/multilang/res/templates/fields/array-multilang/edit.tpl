@@ -1,9 +1,9 @@
-<div class="link-container list-group" data-name="{{name}}">
+<div class="link-container list-group{{#if hideMainOption}} hidden{{/if}}" data-name="{{name}}">
     {{#each itemHtmlList}}
         {{{./this}}}
     {{/each}}
 </div>
-<div class="array-control-container">
+<div class="array-control-container{{#if hideMainOption}} hidden{{/if}}">
     {{#if hasOptions}}
         <button class="btn btn-default btn-block" type="button" data-action="showAddModal" data-name="{{../name}}">{{translate 'Add'}}</button>
     {{else}}

@@ -1,4 +1,4 @@
-<input name="{{name}}" type="text">
+<input name="{{name}}" type="text" class="{{#if hideMainOption}}hidden{{/if}}">
 {{#each valueList}}
     <label class="control-label" data-name="{{name}}">
         <span class="label-text">{{#if customLabel}}{{customLabel}}{{else}}{{translate ../../name category='fields' scope=../../scope}}{{/if}} &rsaquo; {{shortLang}}</span>

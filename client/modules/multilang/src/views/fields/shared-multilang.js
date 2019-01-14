@@ -31,9 +31,17 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                         this.getLabelElement().find('.caret').remove();
                         this.getLabelElement().css('cursor', 'default');
                     } else if (this.mode === 'detail') {
-                        if (!this.getLabelElement().find('.caret').length) {
+                        this.getLabelElement().find('.caret').remove();
+                        if (this.$el.find('.multilang-labels').hasClass('hidden')) {
                             this.getLabelElement().append(' <span class="caret"></span>');
-                            this.getLabelElement().css('cursor', 'pointer');
+                        } else {
+                            this.getLabelElement().append(' <span class="caret caret-up"></span>');
+                        }
+                        this.getLabelElement().css('cursor', 'pointer');
+                        if (this.hideMainOption) {
+                            this.getLabelElement().addClass('hidden');
+                        } else {
+                            this.getLabelElement().removeClass('hidden');
                         }
                     } else if (this.mode === 'list') {
                         this.$el.find('.main-field').click(function (e) {
@@ -66,7 +74,16 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                     }
                 }, this);
             }
+        },
+
+        setHiddenLocales(hiddenLocales) {
+            if (Array.isArray(hiddenLocales)) {
+                this.hiddenLocales = hiddenLocales;
+            } else if (typeof hiddenLocales === 'string') {
+                this.hiddenLocales = hiddenLocales ? [hiddenLocales]: [];
+            }
         }
+
     });
 
     return SharedMultilang;
