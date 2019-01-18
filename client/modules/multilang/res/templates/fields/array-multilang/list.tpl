@@ -1,9 +1,9 @@
-<div class="main-field" style="cursor: pointer">
+<div class="main-field{{#if hideMainOption}} hidden{{/if}}" style="cursor: pointer">
 	{{#unless isEmpty}}{{{value}}}{{else}}{{translate 'None'}}{{/unless}}
 	{{#if hasLangValues}}<span class="caret"></span>{{/if}}
 </div>
 {{#if valueList}}
-    <div class="multilang-labels hidden">
+    <div class="multilang-labels{{#unless expandLocales}} hidden{{/unless}}">
     {{#each valueList}}
         <div>
             <label class="control-label" data-name="{{name}}">

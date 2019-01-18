@@ -22,13 +22,15 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         allTranslatedOptions : {},
 
-        langFieldNameList: [],
-
         listTemplate: 'multilang:fields/array-multilang/list',
 
         detailTemplate: 'multilang:fields/array-multilang/detail',
 
         editTemplate: 'multilang:fields/array-multilang/edit',
+
+        langFieldNameList: [],
+
+        hideMainOption: false,
 
         hiddenLocales: [],
 
@@ -66,12 +68,11 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
             this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
-            this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
+            this.langFieldNameList = this.getLangFieldNameList();
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
                 let data = {};
-                this.getLangFieldNameList().forEach(name => data[name] = this.defs.params.default, this);
+                this.langFieldNameList.forEach(name => data[name] = this.defs.params.default, this);
                 this.model.set(data);
             }
 
@@ -92,6 +93,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                 });
             }, this);
 
+            Dep.prototype.setHiddenLocales = SharedMultilang.prototype.setHiddenLocales;
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
@@ -99,9 +101,11 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             let value = this.model.get(this.name) || [];
             let data = Dep.prototype.data.call(this);
             data.itemHtmlList = value.map(item => this.getItemHtml(item, this.name));
-            data.isEmpty = value.length === 0
+            data.isEmpty = value.length === 0;
             data.hasLangValues = !!this.langFieldNameList.length;
-            data.valueList = this.getLangFieldNameList().map(name => {
+            data.hideMainOption = this.hideMainOption;
+            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
+            data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name) || [];
                 let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});
                 let options = this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`);
@@ -220,7 +224,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         fetchFromDom() {
             let data = {};
             data[this.name] = [];
-            this.getLangFieldNameList().forEach(item => data[item] = []);
+            this.langFieldNameList.forEach(item => data[item] = []);
             this.$el.find('.list-group .list-group-item').each(function (i, el) {
                 let name = $(el).data('name').toString();
                 let value = $(el).data('value').toString();
@@ -278,7 +282,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                     this.trigger('customInvalid', this.name);
                 }
                 let errorMultiFields = false;
-                this.getLangFieldNameList().forEach(name => {
+                this.langFieldNameList.forEach(name => {
                     if (!this.model.get(name)|| this.model.get(name).length === 0) {
                         let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
                             + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
@@ -294,12 +298,12 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         showRequiredSign() {
             Dep.prototype.showRequiredSign.call(this);
-            this.getLangFieldNameList().forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).show(), this);
+            this.langFieldNameList.forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).show(), this);
         },
 
         hideRequiredSign() {
             Dep.prototype.hideRequiredSign.call(this);
-            this.getLangFieldNameList().forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).hide(), this);
+            this.langFieldNameList.forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).hide(), this);
         },
 
         getInputLangName(lang) {
@@ -307,7 +311,8 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         getLangFieldNameList() {
-            return this.langFieldNameList;
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
+            return Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
         },
 
         showValidationMessage: function (message, target) {

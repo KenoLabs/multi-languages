@@ -28,6 +28,8 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
         langFieldNameList: [],
 
+        hideMainOption: false,
+
         hiddenLocales: [],
 
         showMoreTextMultiLang: {},
@@ -174,8 +176,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
             this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
-            this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
+            this.langFieldNameList = this.getLangFieldNameList();
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
                 let data = {};
@@ -207,7 +208,6 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 });
             }, this);
 
-            SharedMultilang.prototype.addClickAndCaretToField.call(this);
             this.listenTo(this, 'multilang-labels-visibility', () => {
                 this.langFieldNameList.forEach(name => {
                     if (this.mode === 'detail' && (!this.model.has('isHtml') || this.model.get('isHtml'))) {
@@ -217,11 +217,16 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     }
                 })
             });
+
+            Dep.prototype.setHiddenLocales = SharedMultilang.prototype.setHiddenLocales;
+            SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
         data() {
             let data = Dep.prototype.data.call(this);
             data.hasLangValues = !!this.langFieldNameList.length;
+            data.hideMainOption = this.hideMainOption;
+            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {
@@ -715,6 +720,11 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
         hideRequiredSign() {
             Dep.prototype.hideRequiredSign.call(this);
             this.langFieldNameList.forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).hide(), this);
+        },
+
+        getLangFieldNameList() {
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
+            return Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
         },
 
         getInputLangName(lang) {

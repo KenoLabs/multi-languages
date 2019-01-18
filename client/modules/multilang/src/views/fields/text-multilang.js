@@ -30,6 +30,8 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
 
         expandedFields: [],
 
+        hideMainOption: false,
+
         hiddenLocales: [],
 
         events: {
@@ -44,8 +46,7 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
 
             this.hiddenLocales = this.options.hiddenLocales || this.model.getFieldParam(this.name, 'hiddenLocales') || this.hiddenLocales;
 
-            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
-            this.langFieldNameList = Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
+            this.langFieldNameList = this.getLangFieldNameList();
 
             if (this.model.isNew() && this.defs.params && this.defs.params.default) {
                 let data = {};
@@ -77,6 +78,7 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
                 });
             }, this);
 
+            Dep.prototype.setHiddenLocales = SharedMultilang.prototype.setHiddenLocales;
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
@@ -84,6 +86,8 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
             let data = Dep.prototype.data.call(this);
             data.value = this.getTextValueForDisplay(this.model.get(this.name), this.name);
             data.hasLangValues = !!this.langFieldNameList.length;
+            data.hideMainOption = this.hideMainOption;
+            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {
@@ -150,6 +154,11 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
         hideRequiredSign() {
             Dep.prototype.hideRequiredSign.call(this);
             this.langFieldNameList.forEach(name => this.$el.find(`[data-name=${name}] .required-sign`).hide(), this);
+        },
+
+        getLangFieldNameList() {
+            let inputLanguageList = this.getConfig().get('isMultilangActive') ? this.getConfig().get('inputLanguageList').filter(lang => !this.hiddenLocales.includes(lang)) : [];
+            return Array.isArray(inputLanguageList) ? inputLanguageList.map(lang => this.getInputLangName(lang)) : [];
         },
 
         getInputLangName(lang) {
