@@ -93,7 +93,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     var AttachmentButton = function (context) {
                         var ui = $.summernote.ui;
                         var button = ui.button({
-                            contents: '<i class="glyphicon glyphicon-paperclip"></i>',
+                            contents: '<i class="fas fa-paperclip"></i>',
                             tooltip: this.translate('Attach File'),
                             click: function () {
                                 this.attachFile();
@@ -588,6 +588,9 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                                 attachment.set('role', 'Inline Attachment');
                                 attachment.set('global', true);
                                 attachment.set('size', file.size);
+                                if (this.model.id) {
+                                    attachment.set('relatedId', this.model.id);
+                                }
                                 attachment.set('relatedType', this.model.name);
                                 attachment.set('file', e.target.result);
                                 attachment.set('field', name);
