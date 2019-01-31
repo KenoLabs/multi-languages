@@ -217,7 +217,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             }
 
             return `<div class="list-group-item" data-value="${valueSanitized}" data-name="${name}" style="cursor: default;">${label}&nbsp;
-                <a href="javascript:" class="pull-right" data-value="${valueSanitized}" data-name="${name}" data-action="removeValue"><span class="glyphicon glyphicon-remove"></a>
+                <a href="javascript:" class="pull-right" data-value="${valueSanitized}" data-name="${name}" data-action="removeValue"><span class="fas fa-times"></a>
                 </div>`;
         },
 
