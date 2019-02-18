@@ -336,13 +336,19 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
                 trigger: 'manual'
             }).popover('show');
 
+            var isDestroyed = false;
+
             $el.closest('.field').one('mousedown click', function () {
+                if (isDestroyed) return;
                 $el.popover('destroy');
+                isDestroyed = true;
             });
 
             this.once('render remove', function () {
+                if (isDestroyed) return;
                 if ($el) {
                     $el.popover('destroy');
+                    isDestroyed = true;
                 }
             });
 
@@ -351,7 +357,9 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             }
 
             this._timeout = setTimeout(function () {
+                if (isDestroyed) return;
                 $el.popover('destroy');
+                isDestroyed = true;
             }, 3000);
         },
     })
