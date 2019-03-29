@@ -27,40 +27,42 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
         addClickAndCaretToField() {
             if (this.langFieldNameList.length) {
                 this.listenTo(this, 'after:render', function () {
-                    if (this.mode === 'edit') {
-                        this.getLabelElement().find('.caret').remove();
-                        this.getLabelElement().css('cursor', 'default');
-                    } else if (this.mode === 'detail') {
-                        this.getLabelElement().find('.caret').remove();
-                        if (this.$el.find('.multilang-labels').hasClass('hidden')) {
-                            this.getLabelElement().append(' <span class="caret"></span>');
-                        } else {
-                            this.getLabelElement().append(' <span class="caret caret-up"></span>');
-                        }
-                        this.getLabelElement().css('cursor', 'pointer');
-                        if (this.hideMainOption) {
-                            this.getLabelElement().addClass('hidden');
-                        } else {
-                            this.getLabelElement().removeClass('hidden');
-                        }
-                    } else if (this.mode === 'list') {
-                        this.$el.find('.main-field').click(function (e) {
-                            if (e.target.tagName.toLocaleLowerCase() === 'a' && $(e.target).data('action') === 'seeMoreText') {
-                                return;
-                            }
+                    if (!this.disableMultiLang) {
+                        if (this.mode === 'edit') {
+                            this.getLabelElement().find('.caret').remove();
+                            this.getLabelElement().css('cursor', 'default');
+                        } else if (this.mode === 'detail') {
+                            this.getLabelElement().find('.caret').remove();
                             if (this.$el.find('.multilang-labels').hasClass('hidden')) {
-                                this.$el.find('.multilang-labels').removeClass('hidden');
-                                this.$el.find('.caret').addClass('caret-up')
+                                this.getLabelElement().append(' <span class="caret"></span>');
                             } else {
-                                this.$el.find('.multilang-labels').addClass('hidden');
-                                this.$el.find('.caret').removeClass('caret-up')
+                                this.getLabelElement().append(' <span class="caret caret-up"></span>');
                             }
-                            this.trigger('multilang-labels-visibility');
-                        }.bind(this));
+                            this.getLabelElement().css('cursor', 'pointer');
+                            if (this.hideMainOption) {
+                                this.getLabelElement().addClass('hidden');
+                            } else {
+                                this.getLabelElement().removeClass('hidden');
+                            }
+                        } else if (this.mode === 'list') {
+                            this.$el.find('.main-field').click(function (e) {
+                                if (e.target.tagName.toLocaleLowerCase() === 'a' && $(e.target).data('action') === 'seeMoreText') {
+                                    return;
+                                }
+                                if (this.$el.find('.multilang-labels').hasClass('hidden')) {
+                                    this.$el.find('.multilang-labels').removeClass('hidden');
+                                    this.$el.find('.caret').addClass('caret-up')
+                                } else {
+                                    this.$el.find('.multilang-labels').addClass('hidden');
+                                    this.$el.find('.caret').removeClass('caret-up')
+                                }
+                                this.trigger('multilang-labels-visibility');
+                            }.bind(this));
+                        }
                     }
                 }, this);
                 this.listenToOnce(this, 'after:render', function () {
-                    if (this.mode === 'detail') {
+                    if (this.mode === 'detail' && !this.disableMultiLang) {
                         this.getLabelElement().click(function () {
                             if (this.$el.find('.multilang-labels').hasClass('hidden')) {
                                 this.$el.find('.multilang-labels').removeClass('hidden');
