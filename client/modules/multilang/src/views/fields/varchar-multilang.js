@@ -32,6 +32,10 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
 
         hiddenLocales: [],
 
+        _timeouts: {},
+
+        areDestroyed: {},
+
         setup() {
             Dep.prototype.setup.call(this);
 
@@ -140,6 +144,10 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
                 error = errorMainField || errorMultiFields;
             }
             return error;
+        },
+
+        showValidationMessage(message, target) {
+            SharedMultilang.prototype.showValidationMessage.call(this, message, target);
         },
 
         showRequiredSign() {

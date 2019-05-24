@@ -84,7 +84,61 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
             } else if (typeof hiddenLocales === 'string') {
                 this.hiddenLocales = hiddenLocales ? [hiddenLocales]: [];
             }
-        }
+        },
+
+        showValidationMessage: function (message, target) {
+            let $el;
+
+            target = target || '.main-element';
+
+            if (typeof target === 'string' || target instanceof String) {
+                $el = this.$el.find(target);
+            } else {
+                $el = $(target);
+            }
+
+            if (!$el.size() && this.$element) {
+                $el = this.$element;
+            }
+            $el.popover({
+                placement: 'bottom',
+                container: 'body',
+                content: message,
+                trigger: 'manual'
+            }).popover('show');
+
+            this.areDestroyed[target] = false;
+
+            $el.closest('.field').one('mousedown click', () => {
+                if (this.areDestroyed[target]) {
+                    return;
+                }
+                $el.popover('destroy');
+                this.areDestroyed[target] = true;
+            });
+
+            this.once('render remove', () => {
+                if (this.areDestroyed[target]) {
+                    return;
+                }
+                if ($el) {
+                    $el.popover('destroy');
+                    this.areDestroyed[target] = true;
+                }
+            });
+
+            if (this._timeouts[target]) {
+                clearTimeout(this._timeouts[target]);
+            }
+
+            this._timeouts[target] = setTimeout(() => {
+                if (this.areDestroyed[target]) {
+                    return;
+                }
+                $el.popover('destroy');
+                this.areDestroyed[target] = true;
+            }, 3000);
+        },
 
     });
 

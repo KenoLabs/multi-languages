@@ -34,6 +34,10 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
 
         hiddenLocales: [],
 
+        _timeouts: {},
+
+        areDestroyed: {},
+
         setup() {
             Dep.prototype.setup.call(this);
 
@@ -236,6 +240,10 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                 error = errorMainField || errorMultiFields;
             }
             return error;
+        },
+
+        showValidationMessage(message, target) {
+            SharedMultilang.prototype.showValidationMessage.call(this, message, target);
         },
 
         showRequiredSign() {

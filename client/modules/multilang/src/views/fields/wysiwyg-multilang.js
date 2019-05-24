@@ -40,6 +40,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
 
         $area: {},
 
+        _timeouts: {},
+
+        areDestroyed: {},
+
         events: {
             'click a[data-action="seeMoreText"]': function (e) {
                 this.reopenMultiLangLabels = !this.$el.find('.multilang-labels').hasClass('hidden');
@@ -139,6 +143,20 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     }
                 }
             }.bind(this));
+
+            this.once('render remove', function () {
+                let targets = [`.summernote[data-name="${this.name}"] + .note-editor`]
+                    .concat(this.langFieldNameList.map(name => `.summernote[data-name="${name}"] + .note-editor`));
+
+                targets.forEach(target => {
+                    if (this.areDestroyed[target]) return;
+                    let el = this.$el.find(target);
+                    if (el) {
+                        el.popover('destroy');
+                        this.areDestroyed[target] = true;
+                    }
+                });
+            });
 
             this.once('remove', function () {
                 if (this.$summernote) {
@@ -713,6 +731,10 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                 error = errorMainField || errorMultiFields;
             }
             return error;
+        },
+
+        showValidationMessage(message, target) {
+            SharedMultilang.prototype.showValidationMessage.call(this, message, target);
         },
 
         showRequiredSign() {

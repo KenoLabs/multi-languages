@@ -34,6 +34,10 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         hiddenLocales: [],
 
+        _timeouts: {},
+
+        areDestroyed: {},
+
         events: {
             'click [data-action="removeValue"]': function (e) {
                 let name = $(e.currentTarget).data('name');
@@ -316,51 +320,8 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         showValidationMessage: function (message, target) {
-            var $el;
-
             target = target || '.array-control-container';
-
-            if (typeof target === 'string' || target instanceof String) {
-                $el = this.$el.find(target);
-            } else {
-                $el = $(target);
-            }
-
-            if (!$el.size() && this.$element) {
-                $el = this.$element;
-            }
-            $el.popover({
-                placement: 'bottom',
-                container: 'body',
-                content: message,
-                trigger: 'manual'
-            }).popover('show');
-
-            var isDestroyed = false;
-
-            $el.closest('.field').one('mousedown click', function () {
-                if (isDestroyed) return;
-                $el.popover('destroy');
-                isDestroyed = true;
-            });
-
-            this.once('render remove', function () {
-                if (isDestroyed) return;
-                if ($el) {
-                    $el.popover('destroy');
-                    isDestroyed = true;
-                }
-            });
-
-            if (this._timeout) {
-                clearTimeout(this._timeout);
-            }
-
-            this._timeout = setTimeout(function () {
-                if (isDestroyed) return;
-                $el.popover('destroy');
-                isDestroyed = true;
-            }, 3000);
+            SharedMultilang.prototype.showValidationMessage.call(this, message, target);
         },
     })
 );
