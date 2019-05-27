@@ -34,6 +34,10 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
 
         hiddenLocales: [],
 
+        _timeouts: {},
+
+        areDestroyed: {},
+
         events: {
             'click a[data-action="seeMoreText"]': function (e) {
                 this.expandedFields.push($(e.currentTarget).closest('[data-field]').data('field'));
@@ -144,6 +148,10 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
                 error = errorMainField || errorMultiFields;
             }
             return error;
+        },
+
+        showValidationMessage(message, target) {
+            SharedMultilang.prototype.showValidationMessage.call(this, message, target);
         },
 
         showRequiredSign() {
