@@ -23,7 +23,7 @@
       "default": "Multilanguage and Locales"
     },
     "description": {
-      "default": "The module enables to store multilanguage and locale field values."
+      "default": "The module enables storing multi-language and locale field values."
     }
   }
 }
