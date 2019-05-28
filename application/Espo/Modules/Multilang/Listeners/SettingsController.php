@@ -32,7 +32,6 @@ use Treo\Core\EventManager\Event;
  */
 class SettingsController extends AbstractListener
 {
-
     /**
      * @param Event $event
      */
