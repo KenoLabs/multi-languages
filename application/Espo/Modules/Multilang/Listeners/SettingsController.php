@@ -23,26 +23,23 @@ declare(strict_types=1);
 namespace Espo\Modules\Multilang\Listeners;
 
 use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 
 /**
- * Settings listener
+ * Class SettingsController
  *
- * @author r.ratsun <r.ratsun@zinitsolutions.com>
+ * @author r.ratsun <r.ratsun@treolabs.com>
  */
-class Settings extends AbstractListener
+class SettingsController extends AbstractListener
 {
 
     /**
-     * Before update
-     *
-     * @param array $data
-     *
-     * @return void
+     * @param Event $event
      */
-    public function afterActionUpdate(array $data): void
+    public function afterActionUpdate(Event $event): void
     {
         // regenerate multilang fields
-        if (isset($data['data']->inputLanguageList) || !empty($data['data']->isMultilangActive)) {
+        if (isset($event->getArgument('data')->inputLanguageList) || !empty($event->getArgument('data')->isMultilangActive)) {
             $this->getContainer()->get('dataManager')->rebuild();
         }
     }
