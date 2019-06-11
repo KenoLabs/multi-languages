@@ -34,7 +34,7 @@
       "view": "multilang:views/admin/field-manager/fields/mainOptionMultiLang"
     }
   ],
-  "hookClassName": "\\Espo\\Modules\\Multilang\\FieldManager\\Hooks\\EnumMultilang",
+  "hookClassName": "\\Multilang\\FieldManager\\Hooks\\EnumMultilang",
   "view": "multilang:views/fields/enum-multilang",
   "defaultFieldType": "enum"
 }
