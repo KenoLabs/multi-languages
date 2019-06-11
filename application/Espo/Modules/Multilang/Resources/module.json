@@ -1,5 +1,0 @@
-{
-    "extends": ["Revisions"],
-    "disabled": false,
-    "order": 5110
-}

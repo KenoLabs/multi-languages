@@ -20,19 +20,19 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\FieldManager\Hooks;
+namespace Multilang\FieldManager\Hooks;
 
 /**
- * Class WysiwygMultilang
+ * Class TextMultilang
  *
- * @author v.shamota <v.shamota@zinitsolutions.com>
+ * @author y.haiduchyk <y.haiduchyk@zinitsolutions.com>
  */
-class WysiwygMultilang extends AbstractMultilangHook
+class TextMultilang extends AbstractMultilangHook
 {
     /**
      * Modified fieldsDefs
      *
      * @var array
      */
-    protected $modifedFieldsDefs = ['type' => 'wysiwyg'];
+    protected $modifedFieldsDefs = ['type' => 'text'];
 }

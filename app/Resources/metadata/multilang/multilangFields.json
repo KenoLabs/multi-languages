@@ -1,0 +1,17 @@
+{
+  "varcharMultiLang": {
+    "fieldType": "varchar"
+  },
+  "textMultiLang": {
+    "fieldType": "text"
+  },
+  "enumMultiLang": {
+    "fieldType": "enum"
+  },
+  "multiEnumMultiLang": {
+    "fieldType": "multiEnum"
+  },
+  "arrayMultiLang": {
+    "fieldType": "array"
+  }
+}

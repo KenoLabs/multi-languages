@@ -20,19 +20,19 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\FieldManager\Hooks;
+namespace Multilang\FieldManager\Hooks;
 
 /**
- * Class ArrayMultilang
+ * Class MultiEnumMultilang
  *
  * @author y.haiduchyk <y.haiduchyk@zinitsolutions.com>
  */
-class ArrayMultilang extends AbstractMultilangHook
+class MultiEnumMultilang extends AbstractMultilangHook
 {
     /**
      * Modified fieldsDefs
      *
      * @var array
      */
-    protected $modifedFieldsDefs = ['type' => 'array'];
+    protected $modifedFieldsDefs = ['type' => 'multiEnum'];
 }

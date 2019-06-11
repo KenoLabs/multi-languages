@@ -3,19 +3,15 @@
   "authors": [
     {
       "name": "Roman Ratsun",
-      "email": "r.ratsun@zinitsolutions.com"
-    },
-    {
-      "name": "Yuri Haiduchyk",
-      "email": "y.haiduchyk@zinitsolutions.com"
+      "email": "r.ratsun@treolabs.com"
     },
     {
       "name": "Yuri Kondratskyi",
-      "email": "y.kondratskyi@zinitsolutions.com"
+      "email": "y.kondratskyi@treolabs.com"
     }
   ],
   "require": {
-    "treolabs/treocore": "~3.18.0"
+    "treolabs/treocore": "~3.19.0"
   },
   "extra": {
     "treoId": "Multilang",

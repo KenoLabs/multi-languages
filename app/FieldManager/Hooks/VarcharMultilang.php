@@ -20,7 +20,7 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\FieldManager\Hooks;
+namespace Multilang\FieldManager\Hooks;
 
 /**
  * Class VarcharMultilang

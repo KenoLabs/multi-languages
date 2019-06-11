@@ -20,7 +20,7 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\Services;
+namespace Multilang\Services;
 
 use Espo\Modules\Revisions\Services\RevisionField as ParentRevisionField;
 use Espo\ORM\EntityCollection;
@@ -133,9 +133,6 @@ class RevisionField extends ParentRevisionField
      */
     protected function getMultilangFields(): array
     {
-        // get config
-        $config = $this->getConfig()->get('modules');
-
-        return (!empty($config['multilangFields'])) ? array_keys($config['multilangFields']) : [];
+        return $this->getInjection('metadata')->get('multilang.multilangFields');
     }
 }

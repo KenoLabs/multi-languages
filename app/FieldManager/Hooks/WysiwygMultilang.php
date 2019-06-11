@@ -20,26 +20,19 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\Loaders;
-
-use Espo\Core\Loaders\Base;
-use Espo\Modules\Multilang\Core\Utils\FieldManager;
+namespace Multilang\FieldManager\Hooks;
 
 /**
- * FieldManager loader
+ * Class WysiwygMultilang
  *
- * @author r.ratsun <r.ratsun@zinitsolutions.com>
+ * @author v.shamota <v.shamota@zinitsolutions.com>
  */
-class FieldManagerLoader extends Base
+class WysiwygMultilang extends AbstractMultilangHook
 {
-
     /**
-     * Load FieldManager
+     * Modified fieldsDefs
      *
-     * @return FieldManager
+     * @var array
      */
-    public function load()
-    {
-        return (new FieldManager())->setContainer($this->getContainer());
-    }
+    protected $modifedFieldsDefs = ['type' => 'wysiwyg'];
 }

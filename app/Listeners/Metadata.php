@@ -20,20 +20,20 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\Multilang\Metadata;
+namespace Multilang\Listeners;
 
+use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 use Espo\Core\Utils\Util;
 use function foo\func;
-use Treo\Metadata\AbstractMetadata;
 
 /**
  * Class Metadata
  *
- * @author y.haiduchyk <y.haiduchyk@zinitsolutions.com>
+ * @author r.ratsun@treolabs.com
  */
-class Metadata extends AbstractMetadata
+class Metadata extends AbstractListener
 {
-
     /**
      * All MultiLang fields
      *
@@ -70,7 +70,7 @@ class Metadata extends AbstractMetadata
                 'isOptions'        => true,
                 'paramsDefault'    => true
             ],
-            'wysiwygMultiLang'     => [
+            'wysiwygMultiLang'   => [
                 'typeNestedFields' => 'text',
                 'fieldType'        => 'wysiwyg',
                 'paramsDefault'    => false
@@ -96,12 +96,13 @@ class Metadata extends AbstractMetadata
     /**
      * Modify
      *
-     * @param array $data
-     *
-     * @return array
+     * @param Event $event
      */
-    public function modify(array $data): array
+    public function modify(Event $event)
     {
+        // get data
+        $data = $event->getArgument('data');
+
         // get languages
         $languages = $this->getContainer()->get('config')->get('inputLanguageList') ?? [];
 
@@ -118,7 +119,8 @@ class Metadata extends AbstractMetadata
         // modify fields in entity to multilang type
         $data['entityDefs'] = $this->modifyEntityFieldsToMultilang($data['entityDefs'], $multilangMetadata);
 
-        return $data;
+        // set data
+        $event->setArgument('data', $data);
     }
 
     /**

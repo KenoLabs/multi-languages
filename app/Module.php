@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * Multilang
  * Free Extension
  * Copyright (c) TreoLabs GmbH
@@ -17,19 +18,24 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/admin/fields/input-language-list', 'views/fields/multi-enum',
-    Dep => Dep.extend({
+declare(strict_types=1);
 
-        data() {
-            return _.extend({
-                optionList: this.model.options || []
-            }, Dep.prototype.data.call(this));
-        },
+namespace Multilang;
 
-        setupOptions() {
-            this.params.options = Espo.Utils.clone(this.getMetadata().get(['multilang', 'languageList']));
-            this.translatedOptions = Espo.Utils.clone(this.getLanguage().translate('language', 'options') || {});
-        }
+use Treo\Core\ModuleManager\AbstractModule;
 
-    })
-);
+/**
+ * Class Module
+ *
+ * @author r.ratsun <r.ratsun@treolabs.com>
+ */
+class Module extends AbstractModule
+{
+    /**
+     * @inheritdoc
+     */
+    public static function getLoadOrder(): int
+    {
+        return 5110;
+    }
+}

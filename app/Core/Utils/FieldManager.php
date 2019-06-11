@@ -18,9 +18,9 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Espo\Modules\Multilang\Core\Utils;
+namespace Multilang\Core\Utils;
 
 use Espo\Core\Utils\Util;
 use Treo\Core\Utils\FieldManager as TreoFieldManager;
@@ -33,11 +33,6 @@ use Treo\Core\Utils\FieldManager as TreoFieldManager;
 class FieldManager extends TreoFieldManager
 {
     /**
-     * @var array
-     */
-    protected $multilangConfig = null;
-
-    /**
      * Get attribute list by type
      *
      * @param string $scope
@@ -49,7 +44,7 @@ class FieldManager extends TreoFieldManager
     protected function getAttributeListByType(string $scope, string $name, string $type): array
     {
         // get field type
-        $fieldType = $this->getMetadata()->get('entityDefs.'.$scope.'.fields.'.$name.'.type');
+        $fieldType = $this->getMetadata()->get('entityDefs.' . $scope . '.fields.' . $name . '.type');
 
         // prepare result
         $result = parent::getAttributeListByType($scope, $name, $type);
@@ -57,9 +52,9 @@ class FieldManager extends TreoFieldManager
         // for multilang fields
         if (in_array($fieldType, $this->getMultilangFields()) && !empty($defs = $this->getMFieldDefs($fieldType))) {
             $result = [$name];
-            if (isset($defs[$type.'Fields'])) {
-                foreach ($defs[$type.'Fields'] as $locale) {
-                    $result[] = Util::toCamelCase($name.'_'.$locale);
+            if (isset($defs[$type . 'Fields'])) {
+                foreach ($defs[$type . 'Fields'] as $locale) {
+                    $result[] = Util::toCamelCase($name . '_' . $locale);
                 }
             }
         }
@@ -76,7 +71,7 @@ class FieldManager extends TreoFieldManager
      */
     protected function getMFieldDefs(string $fieldType): array
     {
-        $defs = $this->getMetadata()->get('fields.'.$fieldType);
+        $defs = $this->getMetadata()->get('fields.' . $fieldType);
         if (is_object($defs)) {
             $defs = get_object_vars($defs);
         }
@@ -91,23 +86,6 @@ class FieldManager extends TreoFieldManager
      */
     protected function getMultilangFields(): array
     {
-        // get config
-        $config = $this->getMultilangConfig();
-
-        return (!empty($config['multilangFields'])) ? array_keys($config['multilangFields']) : [];
-    }
-
-    /**
-     * Get multilang config
-     *
-     * @return array
-     */
-    protected function getMultilangConfig(): array
-    {
-        if (is_null($this->multilangConfig)) {
-            $this->multilangConfig = include 'application/Espo/Modules/Multilang/Configs/ModuleConfig.php';
-        }
-
-        return $this->multilangConfig;
+        return $this->getMetadata()->get('multilang.multilangFields');
     }
 }

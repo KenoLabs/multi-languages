@@ -20,19 +20,26 @@
 
 declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\FieldManager\Hooks;
+namespace Multilang\Loaders;
+
+use Espo\Core\Loaders\Base;
+use Espo\Modules\Multilang\Core\Utils\FieldManager;
 
 /**
- * Class TextMultilang
+ * FieldManager loader
  *
- * @author y.haiduchyk <y.haiduchyk@zinitsolutions.com>
+ * @author r.ratsun <r.ratsun@zinitsolutions.com>
  */
-class TextMultilang extends AbstractMultilangHook
+class FieldManagerLoader extends Base
 {
+
     /**
-     * Modified fieldsDefs
+     * Load FieldManager
      *
-     * @var array
+     * @return FieldManager
      */
-    protected $modifedFieldsDefs = ['type' => 'text'];
+    public function load()
+    {
+        return (new FieldManager())->setContainer($this->getContainer());
+    }
 }

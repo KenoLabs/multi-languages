@@ -18,28 +18,21 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace Espo\Modules\Multilang\Listeners;
-
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+namespace Multilang\FieldManager\Hooks;
 
 /**
- * Class SettingsController
+ * Class ArrayMultilang
  *
- * @author r.ratsun <r.ratsun@treolabs.com>
+ * @author y.haiduchyk <y.haiduchyk@zinitsolutions.com>
  */
-class SettingsController extends AbstractListener
+class ArrayMultilang extends AbstractMultilangHook
 {
     /**
-     * @param Event $event
+     * Modified fieldsDefs
+     *
+     * @var array
      */
-    public function afterActionUpdate(Event $event): void
-    {
-        // regenerate multilang fields
-        if (isset($event->getArgument('data')->inputLanguageList) || !empty($event->getArgument('data')->isMultilangActive)) {
-            $this->getContainer()->get('dataManager')->rebuild();
-        }
-    }
+    protected $modifedFieldsDefs = ['type' => 'array'];
 }
