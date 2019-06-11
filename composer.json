@@ -13,6 +13,11 @@
   "require": {
     "treolabs/treocore": "~3.19.0"
   },
+  "autoload": {
+    "psr-4": {
+      "Multilang\\": "app/"
+    }
+  },
   "extra": {
     "treoId": "Multilang",
     "name": {
