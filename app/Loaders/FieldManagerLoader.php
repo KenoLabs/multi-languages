@@ -23,7 +23,7 @@ declare(strict_types = 1);
 namespace Multilang\Loaders;
 
 use Espo\Core\Loaders\Base;
-use Espo\Modules\Multilang\Core\Utils\FieldManager;
+use Multilang\Core\Utils\FieldManager;
 
 /**
  * FieldManager loader
