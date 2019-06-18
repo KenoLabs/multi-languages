@@ -22,7 +22,7 @@ declare(strict_types = 1);
 
 namespace Multilang\Services;
 
-use Espo\Modules\Revisions\Services\RevisionField as ParentRevisionField;
+use Revisions\Services\RevisionField as ParentRevisionField;
 use Espo\ORM\EntityCollection;
 use Espo\Core\Utils\Util;
 use Espo\Core\Utils\Json;
