@@ -45,6 +45,7 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             data.translatedOptions[this.name] = {};
             (data[this.name] || []).forEach(function (value) {
                 var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
+                valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
                 data.translatedOptions[this.name][value] = this.$el.find('input[name="translatedValue"][data-value="' + valueSanitized + '"]').val() || value;
                 data.translatedOptions[this.name][value] = data.translatedOptions[this.name][value].toString();
 
@@ -67,6 +68,7 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             var translatedValue = this.translatedOptions[value] || valueSanitized;
 
             var valueSanitized = valueSanitized.replace(/"/g, '&quot;');
+            valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
 
             var html = '' +
             '<div class="list-group-item link-with-role form-inline" data-value="' + valueSanitized + '">' +
