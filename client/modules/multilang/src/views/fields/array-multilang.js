@@ -173,7 +173,8 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         addValue(value, name) {
-            name = this.getHelper().stripTags(name).replace(/"/g, '\\"');
+            name = this.getHelper().stripTags(name).replace(/\\/g, '\\\\');
+            name = name.replace(/"/g, '\\"');
             let modelValue = this.fetchFromDom()[name] || [];
             if (modelValue.indexOf(value) == -1) {
                 let html = this.getItemHtml(value, name);
@@ -187,8 +188,10 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         removeValue(value, name) {
-            name = this.getHelper().stripTags(name).replace(/"/g, '\\"');
-            let valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '\\"');
+            name = this.getHelper().stripTags(name).replace(/\\/g, '\\\\');
+            name = name.replace(/"/g, '\\"');
+            let valueSanitized = this.getHelper().stripTags(value).replace(/\\/g, '\\\\');
+            valueSanitized = valueSanitized.replace(/"/g, '\\"');
             let modelValue = this.model.get(name) || [];
             this.$list.filter(`[data-name="${name}"]`).children('[data-value="' + valueSanitized + '"]').remove();
             var index = modelValue.indexOf(value);
@@ -214,6 +217,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             value = value.toString();
 
             var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
+            valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
 
             var label = valueSanitized;
             if (translatedOptions) {

@@ -44,6 +44,7 @@ Espo.define('multilang:views/admin/field-manager/fields/mainOptionMultiLang', 'v
             data.translatedOptions[this.name] = {};
             (data[this.name] || []).forEach(function (value) {
                 var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
+                valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
                 data.translatedOptions[this.name][value] = this.$el.find('input[name="translatedValue"][data-value="' + valueSanitized + '"]').val() || value;
                 data.translatedOptions[this.name][value] = data.translatedOptions[this.name][value].toString();
 
