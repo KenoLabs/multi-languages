@@ -173,31 +173,29 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         },
 
         addValue(value, name) {
-            name = this.getHelper().stripTags(name).replace(/\\/g, '\\\\');
-            name = name.replace(/"/g, '\\"');
+            name = this.getHelper().stripTags(name);
             let modelValue = this.fetchFromDom()[name] || [];
-            if (modelValue.indexOf(value) == -1) {
+            if (modelValue.indexOf(value) === -1) {
                 let html = this.getItemHtml(value, name);
                 this.$list.filter(`[data-name="${name}"]`).append(html);
-                modelValue.push(value)
+                modelValue.push(value);
                 let data = {};
-                data[name] = modelValue
+                data[name] = modelValue;
                 this.model.set(data);
                 this.trigger('change');
             }
         },
 
         removeValue(value, name) {
-            name = this.getHelper().stripTags(name).replace(/\\/g, '\\\\');
-            name = name.replace(/"/g, '\\"');
-            let valueSanitized = this.getHelper().stripTags(value).replace(/\\/g, '\\\\');
-            valueSanitized = valueSanitized.replace(/"/g, '\\"');
+            name = this.getHelper().stripTags(name);
+            let valueSanitized = this.getHelper().stripTags(value);
+            let valueInternal = valueSanitized.replace(/"/g, '-quote-').replace(/\\/g, '-backslash-');
             let modelValue = this.model.get(name) || [];
-            this.$list.filter(`[data-name="${name}"]`).children('[data-value="' + valueSanitized + '"]').remove();
+            this.$list.filter(`[data-name="${name}"]`).children(`[data-value="${valueInternal}"]`).remove();
             var index = modelValue.indexOf(value);
             modelValue.splice(index, 1);
             let data = {};
-            data[name] = modelValue
+            data[name] = modelValue;
             this.model.set(data);
             this.trigger('change');
         },
@@ -207,7 +205,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             let translatedOptions = this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {};
             if (translatedOptions != null) {
                 for (var item in translatedOptions) {
-                    if (translatedOptions[item] == value) {
+                    if (translatedOptions[item] === value) {
                         value = item;
                         break;
                     }
@@ -216,16 +214,18 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
             value = value.toString();
 
-            var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
-            valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
+            let valueSanitized = this.getHelper().stripTags(value);
+            let valueInternal = valueSanitized.replace(/"/g, '-quote-').replace(/\\/g, '-backslash-');
 
-            var label = valueSanitized;
+            let label = valueSanitized.replace(/"/g, '&quot;').replace(/\\/g, '&bsol;');
             if (translatedOptions) {
                 label = ((value in translatedOptions) ? translatedOptions[value] : label);
             }
 
-            return `<div class="list-group-item" data-value="${valueSanitized}" data-name="${name}" style="cursor: default;">${label}&nbsp;
-                <a href="javascript:" class="pull-right" data-value="${valueSanitized}" data-name="${name}" data-action="removeValue"><span class="fas fa-times"></a>
+            return `
+                <div class="list-group-item" data-value="${valueInternal}" data-name="${name}" style="cursor: default;">
+                    ${label}&nbsp;
+                    <a href="javascript:" class="pull-right" data-value="${valueInternal}" data-name="${name}" data-action="removeValue"><span class="fas fa-times"></a>
                 </div>`;
         },
 
@@ -235,7 +235,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             this.langFieldNameList.forEach(item => data[item] = []);
             this.$el.find('.list-group .list-group-item').each(function (i, el) {
                 let name = $(el).data('name').toString();
-                let value = $(el).data('value').toString();
+                let value = $(el).data('value').toString().replace(/-quote-/g, '"').replace(/-backslash-/g, '\\');
                 data[name].push(value);
             });
             return data;

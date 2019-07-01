@@ -35,21 +35,20 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             });
             this.on('removeValueFromOptions', (value) => {
                 this.removeValue(value);
-            })
+            });
         },
 
-        fetch: function () {
-            var data = Dep.prototype.fetch.call(this) || {};
+        fetch() {
+            let data = Dep.prototype.fetch.call(this) || {};
 
             data.translatedOptions = {};
             data.translatedOptions[this.name] = {};
-            (data[this.name] || []).forEach(function (value) {
-                var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
-                valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
-                data.translatedOptions[this.name][value] = this.$el.find('input[name="translatedValue"][data-value="' + valueSanitized + '"]').val() || value;
-                data.translatedOptions[this.name][value] = data.translatedOptions[this.name][value].toString();
-
-            }, this);
+            (data[this.name] || []).forEach(value => {
+                let valueSanitized = this.getHelper().stripTags(value);
+                let valueInternal = valueSanitized.replace(/"/g, '-quote-').replace(/\\/g, '-backslash-');
+                let translatedValue = this.$el.find('input[name="translatedValue"][data-value="'+valueInternal+'"]').val() || value;
+                data.translatedOptions[this.name][value] = translatedValue.toString();
+            });
 
             //Check if exists other options and add it
             if (typeof this.model.attributes.translatedOptions === 'object') {
@@ -61,25 +60,6 @@ Espo.define('multilang:views/admin/field-manager/fields/optionsMultiLang', 'view
             }
 
             return data;
-        },
-
-        getItemHtml: function (value) {
-            var valueSanitized = this.getHelper().stripTags(value);
-            var translatedValue = this.translatedOptions[value] || valueSanitized;
-
-            var valueSanitized = valueSanitized.replace(/"/g, '&quot;');
-            valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
-
-            var html = '' +
-            '<div class="list-group-item link-with-role form-inline" data-value="' + valueSanitized + '">' +
-                '<div class="pull-left" style="width: 92%; display: inline-block;">' +
-                    '<input name="translatedValue" data-value="' + valueSanitized + '" class="role form-control input-sm pull-right" value="'+translatedValue+'">' +
-                    '<div>' + valueSanitized + '</div>' +
-                '</div>' +
-                '<br style="clear: both;" />' +
-            '</div>';
-
-            return html;
         },
 
         translateMultilangOption: function (value, category, field, scope) {
