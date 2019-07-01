@@ -1,5 +1,9 @@
 <select name="{{name}}" class="form-control main-element{{#if hideMainOption}} hidden{{/if}}">
-    {{options params.options value scope=scope field=name translatedOptions=translatedOptions}}
+    {{#each params.options}}
+    <option value="{{this}}" {{#ifEqual this ../value}}selected{{/ifEqual}}>
+        {{translateOption this scope=../scope field=../name translatedOptions=../translatedOptions}}
+    </option>
+    {{/each}}
 </select>
 {{#each valueList}}
     <label class="control-label" data-name="{{name}}">
@@ -7,7 +11,11 @@
         <span class="required-sign"> *</span>
     </label>
     <select name="{{name}}" class="form-control main-element">
-        {{options params.options value scope=scope field=name translatedOptions=translatedOptions}}
+        {{#each params.options}}
+        <option value="{{this}}" {{#ifEqual this ../value}}selected{{/ifEqual}}>
+            {{translateOption this scope=../scope field=../name translatedOptions=../translatedOptions}}
+        </option>
+    {{/each}}
     </select>
 {{/each}}
 <style>

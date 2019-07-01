@@ -37,18 +37,17 @@ Espo.define('multilang:views/admin/field-manager/fields/mainOptionMultiLang', 'v
             };
         },
 
-        fetch: function () {
-            var data = Dep.prototype.fetch.call(this) || {};
+        fetch() {
+            let data = Dep.prototype.fetch.call(this) || {};
 
             data.translatedOptions = {};
             data.translatedOptions[this.name] = {};
-            (data[this.name] || []).forEach(function (value) {
-                var valueSanitized = this.getHelper().stripTags(value).replace(/"/g, '&quot;');
-                valueSanitized = valueSanitized.replace(/\\/g, '&bsol;');
-                data.translatedOptions[this.name][value] = this.$el.find('input[name="translatedValue"][data-value="' + valueSanitized + '"]').val() || value;
-                data.translatedOptions[this.name][value] = data.translatedOptions[this.name][value].toString();
-
-            }, this);
+            (data[this.name] || []).forEach(value => {
+                let valueSanitized = this.getHelper().stripTags(value);
+                let valueInternal = valueSanitized.replace(/"/g, '-quote-').replace(/\\/g, '-backslash-');
+                let translatedValue = this.$el.find('input[name="translatedValue"][data-value="'+valueInternal+'"]').val() || value;
+                data.translatedOptions[this.name][value] = translatedValue.toString();
+            });
 
             //Check if exists other options and add it
             if (typeof this.model.attributes.translatedOptions === 'object') {
