@@ -74,7 +74,8 @@ class RevisionField extends ParentRevisionField
             ->getInjection('metadata')
             ->get('entityDefs.'.$params['entity'].'.fields.'.$params['field'].'.type');
 
-        if ($this->getConfig()->get('isMultilangActive') && in_array($fieldType, $this->getMultilangFields())) {
+        if ($this->getConfig()->get('isMultilangActive')
+            && in_array($fieldType, array_keys($this->getMultilangFields()))) {
             foreach ($notes as $note) {
                 // prepare data
                 $data = Json::decode(Json::encode($note->get('data')), true);
