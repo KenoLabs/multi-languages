@@ -82,7 +82,10 @@ class RevisionField extends ParentRevisionField
 
                 // prepare list
                 if (isset($data['fields']) && in_array($params['field'], $data['fields'])) {
-                    if ($max > count($result['list']) && $result['total'] >= $offset) {
+                    $was       = $data['attributes']['was'][$params['field']];
+                    $became    = $data['attributes']['became'][$params['field']];
+
+                    if ($max > count($result['list']) && $result['total'] >= $offset && $was != $became) {
                         $result['list'][] = [
                             "id"       => $note->get('id'),
                             "date"     => $note->get('createdAt'),
