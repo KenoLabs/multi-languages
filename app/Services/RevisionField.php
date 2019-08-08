@@ -82,19 +82,24 @@ class RevisionField extends ParentRevisionField
 
                 // prepare list
                 if (isset($data['fields']) && in_array($params['field'], $data['fields'])) {
-                    if ($max > count($result['list']) && $result['total'] >= $offset) {
-                        $result['list'][] = [
-                            "id"       => $note->get('id'),
-                            "date"     => $note->get('createdAt'),
-                            "userId"   => $note->get('createdById'),
-                            "userName" => $note->get('createdBy')->get('name'),
-                            "locale"   => '',
-                            "was"      => $data['attributes']['was'][$params['field']],
-                            "became"   => $data['attributes']['became'][$params['field']],
-                            "field"    => $params['field']
-                        ];
+                    $was       = $data['attributes']['was'][$params['field']];
+                    $became    = $data['attributes']['became'][$params['field']];
+
+                    if ($was != $became) {
+                        if ($max > count($result['list']) && $result['total'] >= $offset) {
+                            $result['list'][] = [
+                                "id" => $note->get('id'),
+                                "date" => $note->get('createdAt'),
+                                "userId" => $note->get('createdById'),
+                                "userName" => $note->get('createdBy')->get('name'),
+                                "locale" => '',
+                                "was" => $data['attributes']['was'][$params['field']],
+                                "became" => $data['attributes']['became'][$params['field']],
+                                "field" => $params['field']
+                            ];
+                        }
+                        $result['total']++;
                     }
-                    $result['total'] = $result['total'] + 1;
 
                     foreach ($this->getConfig()->get('inputLanguageList') as $locale) {
                         // prepare data
@@ -115,7 +120,7 @@ class RevisionField extends ParentRevisionField
                                     "field"    => $fieldName
                                 ];
                             }
-                            $result['total'] = $result['total'] + 1;
+                            $result['total']++;
                         }
                     }
                 }
