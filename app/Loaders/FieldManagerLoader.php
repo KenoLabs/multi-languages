@@ -22,7 +22,7 @@ declare(strict_types = 1);
 
 namespace Multilang\Loaders;
 
-use Espo\Core\Loaders\Base;
+use Treo\Core\Loaders\Base;
 use Multilang\Core\Utils\FieldManager;
 
 /**
