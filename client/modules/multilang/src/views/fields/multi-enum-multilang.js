@@ -32,6 +32,8 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
 
         hideMainOption: false,
 
+        expandLocales: false,
+
         hiddenLocales: [],
 
         _timeouts: {},
@@ -80,7 +82,7 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
             data.fontSize = fontSize ? fontSize + 'em' : '100%';
             data.hasLangValues = !!this.langFieldNameList.length;
             data.hideMainOption = this.hideMainOption;
-            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
+            data.expandLocales = this.expandLocales || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name) || [];
                 let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});

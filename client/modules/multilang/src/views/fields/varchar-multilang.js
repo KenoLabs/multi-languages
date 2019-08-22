@@ -30,6 +30,8 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
 
         hideMainOption: false,
 
+        expandLocales: false,
+
         hiddenLocales: [],
 
         _timeouts: {},
@@ -81,7 +83,7 @@ Espo.define('multilang:views/fields/varchar-multilang', ['views/fields/varchar',
             let data = Dep.prototype.data.call(this);
             data.hasLangValues = !!this.langFieldNameList.length;
             data.hideMainOption = this.hideMainOption;
-            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
+            data.expandLocales = this.expandLocales || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {
