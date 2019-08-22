@@ -174,14 +174,14 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
 
         addValue(value, name) {
             name = this.getHelper().stripTags(name);
-            let modelValue = this.fetchFromDom()[name] || [];
+            let values = this.fetchFromDom();
+            let modelValue = values[name] || [];
             if (modelValue.indexOf(value) === -1) {
                 let html = this.getItemHtml(value, name);
                 this.$list.filter(`[data-name="${name}"]`).append(html);
                 modelValue.push(value);
-                let data = {};
-                data[name] = modelValue;
-                this.model.set(data);
+                values[name] = modelValue;
+                this.model.set(values);
                 this.trigger('change');
             }
         },
