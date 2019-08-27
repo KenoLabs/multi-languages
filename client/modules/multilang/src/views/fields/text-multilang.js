@@ -32,6 +32,8 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
 
         hideMainOption: false,
 
+        expandLocales: false,
+
         hiddenLocales: [],
 
         _timeouts: {},
@@ -91,7 +93,7 @@ Espo.define('multilang:views/fields/text-multilang', ['views/fields/text', 'mult
             data.value = this.getTextValueForDisplay(this.model.get(this.name), this.name);
             data.hasLangValues = !!this.langFieldNameList.length;
             data.hideMainOption = this.hideMainOption;
-            data.expandLocales = !!this.hiddenLocales.length || this.hideMainOption;
+            data.expandLocales = this.expandLocales || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
                 return {
