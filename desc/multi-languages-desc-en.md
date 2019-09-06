@@ -61,7 +61,7 @@ Currently the following multi-language field types are available in the TreoPIM 
 | Multi-Enum MultiLang | Field type for storing multi-language values of the drop-down list with the possibility to select one or more variants |
 | Text MultiLang       | Field type for storing long multi-language text values |
 | Varchar MultiLang    | Field type for storing short multi-language text values (up to 255 characters) |
-| Wysiwig MultiLang    | Field type for storing long multiline texts that contains a built-in text editor with separate values for each locale |
+| Wysiwyg MultiLang    | Field type for storing long multiline texts that contains a built-in text editor with separate values for each locale |
 
 *If your system is already integrated with an external system, and you add a multi-language field instead of the simple field (for example, product name), you may need to change the mapping to ensure correct work with the external systems.*
 
@@ -97,11 +97,11 @@ The possible values of the `Enum MultiLang` and `Multi-Enum MultiLang` fields ar
 
 ![Multi-language Enum MultiLang And Multi-Enum MultiLang](_assets/enum-multienum-multilang.jpg)
 
-For the fields of the `Text MultiLang`, `Varchar MultiLang`, and `Wysiwig MultiLang` types, the additional input fields are added for all languages that have been activated in the [module settings](#module-configuration) and that are filled in by the users.  
+For the fields of the `Text MultiLang`, `Varchar MultiLang`, and `Wysiwyg MultiLang` types, the additional input fields are added for all languages that have been activated in the [module settings](#module-configuration) and that are filled in by the users.  
 
-![Multi-language Varchar MultiLang And Text MultiLang](_assets/text-varchar-wysiwig-multilang.jpg)
+![Multi-language Varchar MultiLang And Text MultiLang](_assets/text-varchar-wysiwyg-multilang.jpg)
 
-While saving the empty multi-language fields of the `Text MultiLang`, `Varchar MultiLang`, and `Wysiwig MultiLang` types, they are automatically filled in with the values from the main field. 
+While saving the empty multi-language fields of the `Text MultiLang`, `Varchar MultiLang`, and `Wysiwyg MultiLang` types, they are automatically filled in with the values from the main field. 
 
 In addition to operating with multilingual fields, installing TreoPIM to your system will allow you to create multilingual [attributes](https://treopim.com/help/attributes):
 
