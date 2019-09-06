@@ -4,8 +4,8 @@
       "__APPEND__",
       {
         "url": "#Settings/inputLanguage",
-        "label": "Multi-Languages",
-        "description": "Multi-Languages Settings"
+        "label": "multiLanguages",
+        "description": "multiLanguagesSettings"
       }
     ]
   }
