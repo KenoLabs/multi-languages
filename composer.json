@@ -21,7 +21,7 @@
   "extra": {
     "treoId": "Multilang",
     "name": {
-      "default": "Multilanguage and Locales"
+      "default": "Multi-Languages"
     },
     "description": {
       "default": "The module enables storing multi-language and locale field values."
