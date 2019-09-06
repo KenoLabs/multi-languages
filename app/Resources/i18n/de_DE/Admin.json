@@ -1,9 +1,11 @@
 {
   "labels": {
-    "inputLanguage": "Spracheingabe"
+    "inputLanguage": "Spracheingabe",
+    "multiLanguages": "Mehrere Sprachen"
   },
   "descriptions": {
-    "inputLanguage": "Spracheingabe für übersetzbare Felder."
+    "inputLanguage": "Spracheingabe für übersetzbare Felder.",
+    "multiLanguagesSettings": "Einstellungen für mehrere Sprachen"
   },
   "fieldTypes": {
     "textMultiLang": "Textfeld Mehrsprachigkeit",

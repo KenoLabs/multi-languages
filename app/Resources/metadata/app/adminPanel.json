@@ -1,13 +1,12 @@
 {
-  "Multilang": {
-    "label":"Multilang",
+  "system": {
     "itemList": [
+      "__APPEND__",
       {
         "url": "#Settings/inputLanguage",
-        "label": "Settings",
-        "description": "Multilang Settings"
+        "label": "multiLanguages",
+        "description": "multiLanguagesSettings"
       }
-    ],
-    "order": 5
+    ]
   }
 }
