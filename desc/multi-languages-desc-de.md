@@ -4,7 +4,7 @@ Das Modul „Multi-Languages“  ermöglicht es, Sprachen einzufügen und mehrsp
 
 ## Installationsanleitung 
 
-Um das Modul „Multi-Languages“ in Ihrem TreoPIM-System zu installieren, gehen Sie zu `Administration > Modulmanager`; suchen Sie dieses Modul in der Liste „Shop“ und klicken Sie auf `Installieren`:
+Um das Modul „Multi-Languages“ in Ihrem System zu installieren, gehen Sie zu `Administration > Modulmanager`; suchen Sie dieses Modul in der Liste „Shop“ und klicken Sie auf `Installieren`:
 
 ![Multilang install](_assets/multilang-install.jpg)
 
@@ -12,7 +12,7 @@ Wählen Sie im angezeigten Installations-Pop-up die gewünschte Version aus und 
 
 Bitte beachten Sie, dass nach dem Systemupdate alle Nutzer abgemeldet werden. 
 
-Um das Modul „Multi-Languages“ zu aktualisieren / zu entfernen, nutzen Sie die entsprechenden Optionen aus der Drop-down-Liste für einzelne Datensatzaktionen `Administration > Modulmanager`.
+Um das Modul „Multi-Languages“ zu aktualisieren / zu entfernen, nutzen Sie die entsprechenden Optionen aus der Menü für einzelne Datensatzaktionen `Administration > Modulmanager`.
 
 *Bitte beachten Sie, dass das Modul „Multi-Languages“ zusammen mit TreoPIM installiert werden kann und PIM-abhängig ist. Wenn also ein PIM im System installiert ist, kann das Modul „Multi-Languages“ nicht entfernt werden.*
 
@@ -38,7 +38,7 @@ Wenn zu jedem mehrsprachigen Feld eine neue Sprache hinzugefügt wird, wird auf 
 
 Die Namen von mehrsprachigen Feldern enthalten den Namen ihres Locales: „en_US“, „de_DE“ usw.
 
-*Wenn das mehrsprachige Feld ein Pflichtfeld ist, ist die Eingabe von Werten für alle aktivierten Sprachen im TreoPIM-System ebenfalls erforderlich.*
+*Wenn das mehrsprachige Feld ein Pflichtfeld ist, ist die Eingabe von Werten für alle aktivierten Sprachen im TreoCore-System ebenfalls erforderlich.*
 
 Beim Ausschalten einer bestimmten Sprache werden das Eingabefeld und dessen Wert aus dem Layout entfernt. Wenn diese Sprache jedoch wieder eingeschaltet wird, werden die vorher eingegebenen Werte wiederhergestellt.
 
@@ -48,11 +48,11 @@ Um ein mehrsprachiges Feld zu erstellen, gehen Sie zu  `Administration > Entity 
 
 ![Entity manager](_assets/entity-mngr-fields.jpg)
 
-Im angezeigten Fenster werden alle Felder der ausgewählten Entität eingeblendet. Klicken Sie auf den Button `Feld hinzufügen` , wählen Sie die mehrsprachigen Feldtypen aus und geben Sie alle für diesen Typ erforderlichen Metadaten an:
+Im angezeigten Fenster werden alle Felder der ausgewählten Entität eingeblendet. Klicken Sie auf den Button `Feld hinzufügen`, wählen Sie die mehrsprachigen Feldtypen aus und geben Sie alle für diesen Typ erforderlichen Metadaten an:
 
 ![Multilang fields selection](_assets/multilang-fields-select.jpg)
 
-Derzeit stehen im TreoPIM-System die folgenden mehrsprachigen Feldtypen zur Verfügung:
+Derzeit stehen im TreoCore-System die folgenden mehrsprachigen Feldtypen zur Verfügung:
 
 | Feldtyp              | Beschreibung                             |
 | -------------------- | ---------------------------------------- |
