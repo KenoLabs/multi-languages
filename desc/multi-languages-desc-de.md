@@ -10,7 +10,7 @@ Um das Modul „Multi-Languages“ in Ihrem TreoPIM-System zu installieren, gehe
 
 Wählen Sie im angezeigten Installations-Pop-up die gewünschte Version aus und klicken Sie auf den Button `Installieren`. Der Modulhintergrund wird grün und in den Bereich „installiert“ des Modulmanagers verschoben. Klicken Sie auf `das Update starten`, um die Installation zu bestätigen.
 
-> Bitte beachten Sie, dass nach dem Systemupdate alle Nutzer abgemeldet werden. 
+Bitte beachten Sie, dass nach dem Systemupdate alle Nutzer abgemeldet werden. 
 
 Um das Modul „Multi-Languages“ zu aktualisieren / zu entfernen, nutzen Sie die entsprechenden Optionen aus der Drop-down-Liste für einzelne Datensatzaktionen `Administration > Modulmanager`.
 
