@@ -52,7 +52,7 @@ In the new window that opens, all fields of the selected entity are displayed. C
 
 ![Multilang fields selection](_assets/multilang-fields-select.jpg)
 
-Currently the following multi-language field types are available in the TreoPIM system:
+Currently the following multi-language field types are available in the TreoCore system:
 
 | Field Type            | Description                              |
 | --------------------- | ---------------------------------------- |
