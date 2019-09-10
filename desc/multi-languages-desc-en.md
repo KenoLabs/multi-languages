@@ -20,7 +20,7 @@ To update/remove the "Multi-Languages" module from the system, use the correspon
 
 ### Module Configuration 
 
-To configure the multi-language settings, go to `Administration > Multilang > Settings`:
+To configure the multi-language settings, go to `Administration > Multi-languages`:
 
 ![Default settings](_assets/default-settings.jpg)
 
