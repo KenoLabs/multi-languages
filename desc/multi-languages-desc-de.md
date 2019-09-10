@@ -20,7 +20,7 @@ Um das Modul „Multi-Languages“ zu aktualisieren / zu entfernen, nutzen Sie d
 
 ### Konfiguration des Moduls 
 
-Um die mehrsprachigen Einstellungen zu konfigurieren, gehen Sie zu  `Administration > Multilang > Settings`:
+Um die mehrsprachigen Einstellungen zu konfigurieren, gehen Sie zu  `Administration > Multi-languages`:
 
 ![Default settings](_assets/default-settings.jpg)
 
