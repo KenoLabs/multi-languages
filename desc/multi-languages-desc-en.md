@@ -1,5 +1,3 @@
-# Multi-Languages 
-
 The "Multi-Languages" module allows you to add languages and create multi-language fields of the `Array MultiLang`, `Enum MultiLang`, `Multi-Enum MultiLang`, `Text MultiLang`, `Varchar MultiLang`, or `Wysiwyg MultiLang` types for any entity in the system. 
 
 ## Installation Guide 
