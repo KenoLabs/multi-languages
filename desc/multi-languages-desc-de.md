@@ -1,5 +1,3 @@
-# Multilanguage and Locales 
-
 Das Modul „Multi-Languages“  ermöglicht es, Sprachen einzufügen und mehrsprachige Felder der Typen `Array MultiLang`, `Enum Multilang`, `Multi-Enum Multilang`, `Text Multilang`, `Varchar MultiLang`, oder `Wysiwyg MultiLang` für jede Entität im System zu erstellen. 
 
 ## Installationsanleitung 
