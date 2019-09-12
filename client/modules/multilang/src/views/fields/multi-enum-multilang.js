@@ -139,6 +139,19 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                 this.$element.next().find('.selectize-input').attr('data-name', this.name);
 
                 this.$element.on('change', function () {
+                    this.langFieldNameList.forEach(name => {
+                        const options = this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`) || [];
+                        let element = this.$el.find('[name="' + name + '"]');
+                        element[0].selectize.clear(true);
+
+                        (this.$element[0].selectize.items || []).forEach(item => {
+                            const index = (this.params.options || []).indexOf(item);
+                            if (index > -1 && typeof options[index] !== 'undefined') {
+                                element[0].selectize.addItem(options[index], true);
+                            }
+                        });
+                    });
+
                     this.trigger('change');
                 }.bind(this));
 

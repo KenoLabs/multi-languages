@@ -4,7 +4,7 @@
         <span class="label-text">{{#if customLabel}}{{customLabel}}{{else}}{{translate ../../name category='fields' scope=../../scope}}{{/if}} &rsaquo; {{shortLang}}</span>
         <span class="required-sign"> *</span>
     </label>
-    <input name="{{name}}" type="text">
+    <input name="{{name}}" type="text" disabled>
 {{/each}}
 <style>
     .control-label.multilang-error-label {
