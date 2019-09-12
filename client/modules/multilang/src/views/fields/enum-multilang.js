@@ -70,6 +70,24 @@ Espo.define('multilang:views/fields/enum-multilang', ['views/fields/enum', 'mult
             SharedMultilang.prototype.addClickAndCaretToField.call(this);
         },
 
+        initElement: function () {
+            this.$element = this.$el.find('[name="' + this.name + '"]');
+            if (this.mode === 'edit') {
+                this.$element.on('change', function () {
+                    const index = (this.params.options || []).indexOf(this.$element.val());
+                    if (index > -1) {
+                        this.langFieldNameList.forEach(name => {
+                            const options = this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`) || [];
+                            if (typeof options[index] !== 'undefined') {
+                                this.$el.find(`[name="${name}"]`).val(options[index]);
+                            }
+                        });
+                    }
+                    this.trigger('change');
+                }.bind(this));
+            }
+        },
+
         data() {
             let data = Dep.prototype.data.call(this);
             let fontSize = this.model.getFieldParam(this.name, 'fontSize');

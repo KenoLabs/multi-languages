@@ -10,7 +10,7 @@
         <span class="label-text">{{#if customLabel}}{{customLabel}}{{else}}{{translate ../../name category='fields' scope=../../scope}}{{/if}} &rsaquo; {{shortLang}}</span>
         <span class="required-sign"> *</span>
     </label>
-    <select name="{{name}}" class="form-control main-element">
+    <select name="{{name}}" class="form-control main-element" disabled>
         {{#each params.options}}
         <option value="{{this}}" {{#ifEqual this ../value}}selected{{/ifEqual}}>
             {{translateOption this scope=../scope field=../name translatedOptions=../translatedOptions}}
