@@ -89,6 +89,9 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
         showValidationMessage: function (message, target) {
             let $el;
 
+            this.areDestroyed = Espo.Utils.cloneDeep(this.areDestroyed);
+            this._timeouts = Espo.Utils.cloneDeep(this._timeouts);
+
             target = target || '.main-element';
 
             if (typeof target === 'string' || target instanceof String) {
