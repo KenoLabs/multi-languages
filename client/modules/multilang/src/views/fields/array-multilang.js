@@ -269,7 +269,7 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
         validateNumberOfOptions() {
             let error = false;
             this.langFieldNameList.some(lang => {
-                if (this.model.get(this.name).length !== this.model.get(lang).length) {
+                if ((this.model.get(this.name) || []).length !== (this.model.get(lang) || []).length) {
                     let msg = this.translate('sameNumberOptions', 'messages');
                     this.showValidationMessage(msg);
                     this.trigger('invalid');
