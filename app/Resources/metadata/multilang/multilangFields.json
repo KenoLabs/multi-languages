@@ -13,5 +13,8 @@
   },
   "arrayMultiLang": {
     "fieldType": "array"
+  },
+  "wysiwygMultiLang": {
+    "fieldType": "text"
   }
 }
