@@ -246,7 +246,7 @@ Espo.define('multilang:views/fields/multi-enum-multilang', ['views/fields/multi-
                 this.langFieldNameList.forEach(name => {
                     if (!this.model.get(name) || this.model.get(name).length === 0) {
                         let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
-                            + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
+                            + " &#8250; " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
                         this.showValidationMessage(msg, '[data-name="' + name + '"].selectize-input');
                         this.trigger('customInvalid', name);
                         errorMultiFields = true;
