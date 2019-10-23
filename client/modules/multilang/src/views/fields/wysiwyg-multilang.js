@@ -724,7 +724,7 @@ Espo.define('multilang:views/fields/wysiwyg-multilang', ['views/fields/wysiwyg',
                     let value = this.model.get(name);
                     if (!value || !value.replace(/<\/?p>|<br>/g, '')) {
                         let msg = this.translate('fieldIsRequired', 'messages').replace('{field}', this.translate(this.name, 'fields', this.model.name)
-                            + " › " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
+                            + " &#8250; " + name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase());
                         this.showValidationMessage(msg, `.summernote[data-name="${name}"] + .note-editor`);
                         this.trigger('customInvalid', name);
                         errorMultiFields = true;

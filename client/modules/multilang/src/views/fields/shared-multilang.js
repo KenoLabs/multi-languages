@@ -108,7 +108,8 @@ Espo.define('multilang:views/fields/shared-multilang', [], function () {
                 placement: 'bottom',
                 container: 'body',
                 content: message,
-                trigger: 'manual'
+                trigger: 'manual',
+                html: true
             }).popover('show');
 
             this.areDestroyed[target] = false;
