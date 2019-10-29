@@ -38,7 +38,7 @@ Die Namen von mehrsprachigen Feldern enthalten den Namen ihres Locales: „en_US
 
 *Wenn das mehrsprachige Feld ein Pflichtfeld ist, ist die Eingabe von Werten für alle aktivierten Sprachen im TreoCore-System ebenfalls erforderlich.*
 
-Beim Ausschalten einer bestimmten Sprache werden das Eingabefeld und dessen Wert aus dem Layout entfernt. Wenn diese Sprache jedoch wieder eingeschaltet wird, werden die vorher eingegebenen Werte wiederhergestellt.
+Beim Ausschalten einer bestimmten Sprache oder bei der Entfernung des Moduls „Multi-Languages“ werden das Eingabefeld und dessen Wert aus der Datenbank und dem Systeminterface entfernt. Wenn diese Sprache jedoch wieder eingeschaltet oder das Modul neu installiert wird, werden die Eingabefelder im Systeminterface wiederhergestellt, aber ohne die vorher eingegebenen Daten. Also, seien Sie bitte vorsichtig mit diesen Aktionen.
 
 ### Mehrsprachige Felderstellung 
 
