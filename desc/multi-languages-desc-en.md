@@ -29,7 +29,6 @@ To enable the function for inputting the field values in multiple languages, sel
 ![Multilang configured](_assets/multilang-configured.jpg)
 
 To change the languages for which the multi-language fields must be filled (e.g. delete the previously defined locales, add new ones), also use the `Input Language List` setting. 
-
 When a new language is added to each multi-language field, a new input field (without values) is displayed on the entity creation/editing pages:
 
 ![Entity creation page](_assets/entity-creation.jpg)
@@ -38,7 +37,7 @@ Names of multi-language fields include the name of their locale: "en_US", "de_DE
 
 *If the multi-language field is mandatory, input of values for all activated languages in the TreoPIM system is also mandatory.*
 
-When turning off a certain language, the input field and its value will be removed from the layout. However, if this language is turned on again, the previously entered values will be restored. 
+When turning off a certain language or completely removing the "Multi-Languages" module, the input field and its value will be removed both from the database and system interface. If this language is turned on again or the module is re-installed, the input fields will be restored to the system interface, but without any data in them. So please, be careful with these actions.
 
 ### Multi-Language Field Creation 
 
