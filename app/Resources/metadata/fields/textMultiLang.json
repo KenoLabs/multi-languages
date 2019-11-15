@@ -50,5 +50,7 @@
     },
     "hookClassName": "\\Multilang\\FieldManager\\Hooks\\TextMultilang",
     "view": "multilang:views/fields/text-multilang",
-    "defaultFieldType": "text"
+    "defaultFieldType": "text",
+    "textFilter": true,
+    "fullTextSearch": true
 }
