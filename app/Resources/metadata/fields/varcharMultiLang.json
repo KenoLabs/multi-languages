@@ -38,5 +38,7 @@
   "isMultilang": true,
   "hookClassName": "\\Multilang\\FieldManager\\Hooks\\VarcharMultilang",
   "view": "multilang:views/fields/varchar-multilang",
-  "defaultFieldType": "varchar"
+  "defaultFieldType": "varchar",
+  "textFilter": true,
+  "fullTextSearch": true
 }
