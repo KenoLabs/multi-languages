@@ -113,8 +113,9 @@ Espo.define('multilang:views/fields/array-multilang', ['views/fields/array', 'mu
             data.expandLocales = this.expandLocales || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name) || [];
-                let translatedOptions = (this.allTranslatedOptions[`options${name.replace(this.name, '')}`] || {});
-                let options = this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`);
+                let optionKey = `options${name.replace(this.name, '')}`;
+                let translatedOptions = (this.allTranslatedOptions[optionKey] || {});
+                let options = this.model.getFieldParam(this.name, optionKey) || this.params[optionKey];
                 return {
                     itemHtmlList: value.map(item => this.getItemHtml(item, name)),
                     hasOptions: options ? true : false,
