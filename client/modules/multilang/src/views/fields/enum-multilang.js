@@ -77,7 +77,8 @@ Espo.define('multilang:views/fields/enum-multilang', ['views/fields/enum', 'mult
                     const index = (this.params.options || []).indexOf(this.$element.val());
                     if (index > -1) {
                         this.langFieldNameList.forEach(name => {
-                            const options = this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`) || [];
+                            const optionKey = `options${name.replace(this.name, '')}`;
+                            const options = this.model.getFieldParam(this.name, optionKey) || this.params[optionKey] || [];
                             if (typeof options[index] !== 'undefined') {
                                 this.$el.find(`[name="${name}"]`).val(options[index]);
                             }
@@ -97,12 +98,13 @@ Espo.define('multilang:views/fields/enum-multilang', ['views/fields/enum', 'mult
             data.expandLocales = this.expandLocales || this.hideMainOption;
             data.valueList = this.langFieldNameList.map(name => {
                 let value = this.model.get(name);
+                let optionKey = `options${name.replace(this.name, '')}`;
                 return {
                     name: name,
                     params: {
-                        options: this.model.getFieldParam(this.name, `options${name.replace(this.name, '')}`)
+                        options: this.model.getFieldParam(this.name, optionKey) || this.params[optionKey]
                     },
-                    translatedOptions: (data.translatedOptions || {})[`options${name.replace(this.name, '')}`],
+                    translatedOptions: (data.translatedOptions || {})[optionKey],
                     value: value,
                     isNotEmpty: value !== null && value !== '',
                     shortLang: name.slice(-4, -2).toLowerCase() + '_' + name.slice(-2).toUpperCase(),
