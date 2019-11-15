@@ -24,6 +24,7 @@ namespace Multilang\Listeners;
 
 use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
+use Treo\Core\Utils\Util;
 
 /**
  * Class I18nController
@@ -37,5 +38,44 @@ class I18nController extends AbstractListener
      */
     public function afterActionRead(Event $event)
     {
+        if (empty($this->getConfig()->get('isMultilangActive'))) {
+            return false;
+        }
+
+        // get locales
+        if (empty($locales = $this->getConfig()->get('inputLanguageList', []))) {
+            return false;
+        }
+
+        // get result
+        $result = $event->getArgument('result');
+
+        // get entity defs
+        $entityDefs = $this->getContainer()->get('metadata')->get('entityDefs');
+
+        foreach ($entityDefs as $scope => $data) {
+            if (!isset($data['fields']) || !is_array($data['fields'])) {
+                continue 1;
+            }
+
+            foreach ($data['fields'] as $field => $params) {
+                if (!empty($params['isMultilang'])) {
+                    if (isset($result[$scope]['fields'][$field])) {
+                        $value = $result[$scope]['fields'][$field];
+                    } elseif (isset($result['Global']['fields'][$field])) {
+                        $value = $result['Global']['fields'][$field];
+                    } else {
+                        continue 1;
+                    }
+
+                    foreach ($locales as $locale) {
+                        $multilangField = $field . ucfirst(Util::toCamelCase(strtolower($locale)));
+                        $result[$scope]['fields'][$multilangField] = $value . ' (' . $locale . ')';
+                    }
+                }
+            }
+        }
+
+        $event->setArgument('result', $result);
     }
 }
