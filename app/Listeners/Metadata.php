@@ -53,6 +53,21 @@ class Metadata extends AbstractListener
         // get data
         $data = $event->getArgument('data');
 
+        /**
+         * Set multi-lang params to few fields
+         */
+        $fields = ['array', 'enum', 'multiEnum', 'text', 'varchar', 'wysiwyg'];
+        foreach ($fields as $field) {
+            $data['fields'][$field]['params'][] = [
+                'name'    => 'isMultilang',
+                'type'    => 'bool',
+                'tooltip' => true
+            ];
+        }
+
+        /**
+         * Set multi-lang fields to entity defs
+         */
         foreach ($data['entityDefs'] as $scope => $rows) {
             if (!isset($rows['fields']) || !is_array($rows['fields'])) {
                 continue 1;
