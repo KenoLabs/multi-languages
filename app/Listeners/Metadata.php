@@ -60,15 +60,15 @@ class Metadata extends AbstractListener
             foreach ($rows['fields'] as $field => $params) {
                 if (!empty($params['isMultilang'])) {
                     foreach ($locales as $locale) {
-                        // prepare key
-                        $key = ucfirst(Util::toCamelCase(strtolower($locale)));
+                        // prepare multi-lang field
+                        $mField = $field . ucfirst(Util::toCamelCase(strtolower($locale)));
 
                         // prepare params
                         $mParams = $params;
                         $mParams['isMultilang'] = false;
                         $mParams['isCustom'] = false;
 
-                        $data['entityDefs'][$scope]['fields'][$field . $key] = $mParams;
+                        $data['entityDefs'][$scope]['fields'][$mField] = $mParams;
                     }
                 }
             }
