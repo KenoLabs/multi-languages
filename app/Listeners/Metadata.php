@@ -81,6 +81,7 @@ class Metadata extends AbstractListener
                         // prepare params
                         $mParams = $params;
                         $mParams['isMultilang'] = false;
+                        $mParams['hideMultilang'] = true;
                         $mParams['isCustom'] = false;
 
                         if (isset($data['entityDefs'][$scope]['fields'][$mField])) {
