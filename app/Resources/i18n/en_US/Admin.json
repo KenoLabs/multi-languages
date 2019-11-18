@@ -6,19 +6,5 @@
   "descriptions": {
     "inputLanguage": "Input languages for translatable fields.",
     "multiLanguagesSettings": "Multi-Languages Settings"
-  },
-  "fieldTypes": {
-    "textMultiLang": "Text MultiLang",
-    "varcharMultiLang": "Varchar MultiLang",
-    "enumMultiLang": "Enum MultiLang",
-    "multiEnumMultiLang": "Multi-Enum MultiLang",
-    "arrayMultiLang": "Array MultiLang",
-    "wysiwygMultiLang": "Wysiwyg MultiLang"
-  },
-  "fields": {
-    "optionsEnUs": "Option English",
-    "optionsDeDe": "Option Deutsch",
-    "showMoreDisabled": "Disable text hiding",
-    "displayedHeight": "Displayed Height (px)"
   }
 }

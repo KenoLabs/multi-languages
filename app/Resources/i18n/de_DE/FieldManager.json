@@ -1,7 +1,0 @@
-{
-  "tooltips": {
-    "showMoreDisabled": "Wenn nicht angehakt, wird nur (Angezeigt Höhe) angezeigt.",
-    "displayedHeight": "Textteil in (px), der angezeigt wird.",
-    "useIframe": "Die angezeigten Optionen werden ignoriert und das Feld wird mit voller Höhe angezeigt."
-  }
-}
