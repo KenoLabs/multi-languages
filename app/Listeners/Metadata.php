@@ -68,6 +68,10 @@ class Metadata extends AbstractListener
                         $mParams['isMultilang'] = false;
                         $mParams['isCustom'] = false;
 
+                        if (isset($data['entityDefs'][$scope]['fields'][$mField])) {
+                            $mParams = array_merge($mParams, $data['entityDefs'][$scope]['fields'][$mField]);
+                        }
+
                         $data['entityDefs'][$scope]['fields'][$mField] = $mParams;
                     }
                 }
