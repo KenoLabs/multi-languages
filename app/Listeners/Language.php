@@ -22,54 +22,48 @@ declare(strict_types=1);
 
 namespace Multilang\Listeners;
 
-use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
 use Treo\Core\Utils\Util;
+use Treo\Listeners\AbstractListener;
 
 /**
- * Class Metadata
+ * Class Language
  *
- * @author r.ratsun@treolabs.com
+ * @author r.ratsun <r.ratsun@treolabs.com>
  */
-class Metadata extends AbstractListener
+class Language extends AbstractListener
 {
     /**
-     * Modify
-     *
      * @param Event $event
      */
     public function modify(Event $event)
     {
-        // is multi-lang activated
         if (empty($this->getConfig()->get('isMultilangActive'))) {
             return false;
         }
 
-        // get locales
-        if (empty($locales = $this->getConfig()->get('inputLanguageList', []))) {
+        // get languages
+        if (empty($languages = $this->getConfig()->get('inputLanguageList', []))) {
             return false;
         }
 
         // get data
         $data = $event->getArgument('data');
 
-        foreach ($data['entityDefs'] as $scope => $rows) {
-            if (!isset($rows['fields']) || !is_array($rows['fields'])) {
-                continue 1;
-            }
-            foreach ($rows['fields'] as $field => $params) {
-                if (!empty($params['isMultilang'])) {
-                    foreach ($locales as $locale) {
+        foreach ($data as $locale => $rows) {
+            foreach ($rows as $scope => $items) {
+                if (!isset($items['fields'])) {
+                    continue 1;
+                }
+
+                foreach ($items['fields'] as $field => $value) {
+                    foreach ($languages as $language) {
                         // prepare key
-                        $key = ucfirst(Util::toCamelCase(strtolower($locale)));
+                        $key = ucfirst(Util::toCamelCase(strtolower($language)));
 
-                        // prepare params
-                        $mParams = $params;
-                        $mParams['isMultilang'] = false;
-                        $mParams['isCustom'] = false;
-
-                        $data['entityDefs'][$scope]['fields'][$field . $key] = $mParams;
+                        $data[$locale][$scope]['fields'][$field . $key] = $value . ' › ' . $language;
                     }
+
                 }
             }
         }
