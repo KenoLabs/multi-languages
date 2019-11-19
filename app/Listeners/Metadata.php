@@ -24,8 +24,7 @@ namespace Multilang\Listeners;
 
 use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
-use Espo\Core\Utils\Util;
-use function foo\func;
+use Treo\Core\Utils\Util;
 
 /**
  * Class Metadata
@@ -35,203 +34,67 @@ use function foo\func;
 class Metadata extends AbstractListener
 {
     /**
-     * All MultiLang fields
-     *
-     * @access protected
-     * @var array
-     */
-    protected $fieldsMultiLang
-        = [
-            'textMultiLang'      => [
-                'fieldType'        => 'text',
-                'typeNestedFields' => 'text',
-                'paramsDefault'    => false
-            ],
-            'varcharMultiLang'   => [
-                'fieldType'        => 'varchar',
-                'typeNestedFields' => 'varchar',
-                'paramsDefault'    => false
-            ],
-            'enumMultiLang'      => [
-                'typeNestedFields' => 'varchar',
-                'fieldType'        => 'enum',
-                'isOptions'        => true,
-                'paramsDefault'    => true
-            ],
-            'multiEnumMultiLang' => [
-                'typeNestedFields' => 'jsonArray',
-                'fieldType'        => 'multiEnum',
-                'isOptions'        => true,
-                'paramsDefault'    => true
-            ],
-            'arrayMultiLang'     => [
-                'typeNestedFields' => 'jsonArray',
-                'fieldType'        => 'array',
-                'isOptions'        => true,
-                'paramsDefault'    => true
-            ],
-            'wysiwygMultiLang'   => [
-                'typeNestedFields' => 'text',
-                'fieldType'        => 'wysiwyg',
-                'paramsDefault'    => false
-            ]
-        ];
-
-
-    /**
-     * Default field definitions for nested fields.
-     *
-     * @access protected
-     * @var string
-     */
-    protected $multiLangFieldDefs
-        = [
-            'layoutListDisabled'       => true,
-            'layoutDetailDisabled'     => true,
-            'layoutFiltersDisabled'    => true,
-            'layoutMassUpdateDisabled' => true,
-            'customizationDisabled'    => true
-        ];
-
-    /**
      * Modify
      *
      * @param Event $event
      */
     public function modify(Event $event)
     {
+        // is multi-lang activated
+        if (empty($this->getConfig()->get('isMultilangActive'))) {
+            return false;
+        }
+
+        // get locales
+        if (empty($locales = $this->getConfig()->get('inputLanguageList', []))) {
+            return false;
+        }
+
         // get data
         $data = $event->getArgument('data');
 
-        // get languages
-        $languages = $this->getContainer()->get('config')->get('inputLanguageList') ?? [];
-
-        // add get MultiLang metadata
-        $multilangMetadata = $this->getMultiLangMetadata($languages);
-
-        // load additional metadata for multilang fields
-        foreach ($multilangMetadata as $fieldName => $fieldData) {
-            if (isset($data['fields'][$fieldName])) {
-                $data['fields'][$fieldName] = array_merge_recursive($data['fields'][$fieldName], $fieldData);
-            }
+        /**
+         * Set multi-lang params to few fields
+         */
+        $fields = ['array', 'bool', 'enum', 'multiEnum', 'text', 'varchar', 'wysiwyg'];
+        foreach ($fields as $field) {
+            $data['fields'][$field]['params'][] = [
+                'name'    => 'isMultilang',
+                'type'    => 'bool',
+                'tooltip' => true
+            ];
         }
 
-        // modify fields in entity to multilang type
-        $data['entityDefs'] = $this->modifyEntityFieldsToMultilang($data['entityDefs'], $multilangMetadata);
+        /**
+         * Set multi-lang fields to entity defs
+         */
+        foreach ($data['entityDefs'] as $scope => $rows) {
+            if (!isset($rows['fields']) || !is_array($rows['fields'])) {
+                continue 1;
+            }
+            foreach ($rows['fields'] as $field => $params) {
+                if (!empty($params['isMultilang'])) {
+                    foreach ($locales as $locale) {
+                        // prepare multi-lang field
+                        $mField = $field . ucfirst(Util::toCamelCase(strtolower($locale)));
 
-        // set data
-        $event->setArgument('data', $data);
-    }
+                        // prepare params
+                        $mParams = $params;
+                        $mParams['isMultilang'] = false;
+                        $mParams['hideMultilang'] = true;
+                        $mParams['isCustom'] = false;
 
-    /**
-     * Change fields type to multilang type
-     *
-     * @param array $entityDefs
-     * @param array $multilangMetadata
-     *
-     * @return array
-     */
-    protected function modifyEntityFieldsToMultilang(array $entityDefs, array $multilangMetadata): array
-    {
-        // get isMultilangActive param
-        $isMultilangActive = $this->getContainer()->get('config')->get('isMultilangActive');
-
-        // search multilang fields in entity
-        foreach ($entityDefs as $entityName => $defs) {
-            if (!empty($defs['fields']) && is_array($defs['fields'])) {
-                foreach ($defs['fields'] as $fieldName => $feidsDefs) {
-                    // check is a multilang field
-                    if (isset($feidsDefs['isMultilang']) ?? false) {
-                        $multilangType = $this->getMultilangTypeName($feidsDefs['type']);
-
-                        if (isset($multilangType)) {
-                            // change fields type  on type multilang
-                            if ($isMultilangActive) {
-                                $entityDefs[$entityName]['fields'][$fieldName]['type'] = $multilangType;
-                            }
-
-                            // load additional multilang fields to entity
-                            foreach ($multilangMetadata[$multilangType]['fields'] as $lPrefix => $additionalData) {
-                                $entityDefs[$entityName]['fields'] = array_merge(
-                                    $entityDefs[$entityName]['fields'],
-                                    [$fieldName . ucfirst(Util::toCamelCase($lPrefix)) => $additionalData]
-                                );
-                            }
+                        if (isset($data['entityDefs'][$scope]['fields'][$mField])) {
+                            $mParams = array_merge($mParams, $data['entityDefs'][$scope]['fields'][$mField]);
                         }
+
+                        $data['entityDefs'][$scope]['fields'][$mField] = $mParams;
                     }
                 }
             }
         }
 
-        return $entityDefs;
-    }
-
-    /**
-     * Get multilang type name
-     * (examle: $fieldType = 'text' - return 'textMultilang')
-     *
-     * @param string $fieldType
-     *
-     * @return null|string
-     */
-    protected function getMultilangTypeName(string $fieldType)
-    {
-        // find if exists multilang type
-        foreach ($this->fieldsMultiLang as $multilangTypeName => $data) {
-            // find if exists multilang type
-            if ($data['fieldType'] === $fieldType) {
-                return $multilangTypeName;
-            }
-        }
-    }
-
-    /**
-     * Get Metadata for multiLang fields
-     *
-     * @param array $languages
-     *
-     * @access protected
-     * @return array
-     */
-    protected function getMultiLangMetadata(array $languages = [])
-    {
-        $metadataFields = [];
-
-        foreach ($this->fieldsMultiLang as $fields => $data) {
-            $metadataFields[$fields]['actualFields'] = [''];
-            $metadataFields[$fields]['fields'] = [];
-
-            //Set data for all type multiLang fields
-            foreach ($languages as $language) {
-                $language = Util::toCamelCase(strtolower($language));
-                $metadataFields[$fields]['actualFields'][] = $language;
-                $metadataFields[$fields]['fields'][$language] = $this->multiLangFieldDefs;
-                $metadataFields[$fields]['fields'][$language]['type'] = $data['typeNestedFields'];
-
-                //If fields is enum and multiEnum - set options
-                if ($data['isOptions'] ?? false) {
-                    $metadataFields[$fields]['params'][] = $this->getOptionsMultiLang($language);
-                }
-            }
-        }
-
-        return $metadataFields;
-    }
-
-    /**
-     * Get options for enum and multiEnum fields
-     *
-     * @param string $language
-     *
-     * @return array
-     */
-    protected function getOptionsMultiLang(string $language): array
-    {
-        $options = [];
-        $options['name'] = 'options' . ucfirst($language);
-        $options['type'] = 'array';
-        $options['view'] = 'multilang:views/admin/field-manager/fields/optionsMultiLang';
-
-        return $options;
+        // set data
+        $event->setArgument('data', $data);
     }
 }

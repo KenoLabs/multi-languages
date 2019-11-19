@@ -1,7 +1,5 @@
 {
   "tooltips": {
-    "showMoreDisabled": "If not checked then only (Displayed Height) will be shown.",
-    "displayedHeight": "Part of text in (px) that will be shown.",
-    "useIframe": "Displayed options will be ignored and field will be shown with full height."
+    "isMultilang": "Automatic creation of fields via cloning the current one as many times as there are locales activated in the Multi-Languages Settings."
   }
 }
