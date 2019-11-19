@@ -56,7 +56,7 @@ class Metadata extends AbstractListener
         /**
          * Set multi-lang params to few fields
          */
-        $fields = ['array', 'enum', 'multiEnum', 'text', 'varchar', 'wysiwyg'];
+        $fields = ['array', 'bool', 'enum', 'multiEnum', 'text', 'varchar', 'wysiwyg'];
         foreach ($fields as $field) {
             $data['fields'][$field]['params'][] = [
                 'name'    => 'isMultilang',
