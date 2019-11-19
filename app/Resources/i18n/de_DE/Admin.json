@@ -7,18 +7,7 @@
     "inputLanguage": "Spracheingabe für übersetzbare Felder.",
     "multiLanguagesSettings": "Einstellungen für mehrere Sprachen"
   },
-  "fieldTypes": {
-    "textMultiLang": "Textfeld Mehrsprachigkeit",
-    "varcharMultiLang": "Zusätzliches Feld für andere Sprache",
-    "enumMultiLang": "Auswahlfeld Mehrsprachigkeit",
-    "multiEnumMultiLang": "Mehrfachauswahlfeld Mehrsprachigkeit",
-    "arrayMultiLang": "Listenfeld Mehrsprachigkeit",
-    "wysiwygMultiLang": "Wysiwyg MultiLang"
-  },
   "fields": {
-    "optionsEnUs": "Option Englisch",
-    "optionsDeDe": "Option Deutsch",
-    "showMoreDisabled": "Deaktivieren Sie das Ausblenden von Text",
-    "displayedHeight": "Angezeigte Höhe (px)"
+    "isMultilang": "Mehrsprachig"
   }
 }
