@@ -52,20 +52,22 @@ class Language extends AbstractListener
 
         foreach ($data as $locale => $rows) {
             foreach ($rows as $scope => $items) {
-                if (!isset($items['fields'])) {
-                    continue 1;
-                }
+                foreach (['fields', 'tooltips'] as $type) {
+                    if (isset($items[$type])) {
+                        foreach ($items[$type] as $field => $value) {
+                            foreach ($languages as $language) {
+                                // prepare multi-lang field
+                                $mField = $field . ucfirst(Util::toCamelCase(strtolower($language)));
 
-                foreach ($items['fields'] as $field => $value) {
-                    foreach ($languages as $language) {
-                        // prepare multi-lang field
-                        $mField = $field . ucfirst(Util::toCamelCase(strtolower($language)));
-
-                        if (!isset($data[$locale][$scope]['fields'][$mField])) {
-                            $data[$locale][$scope]['fields'][$mField] = $value . ' › ' . $language;
+                                if (!isset($data[$locale][$scope][$type][$mField])) {
+                                    if ($type == 'fields') {
+                                        $value .= ' › ' . $language;
+                                    }
+                                    $data[$locale][$scope][$type][$mField] = $value;
+                                }
+                            }
                         }
                     }
-
                 }
             }
         }
