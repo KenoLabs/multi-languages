@@ -80,22 +80,21 @@ class Metadata extends AbstractListener
 
                         // prepare params
                         $mParams = $params;
-                        $mParams['isMultilang'] = false;
-                        $mParams['hideMultilang'] = true;
-                        $mParams['multilangField'] = $field;
-                        $mParams['isCustom'] = false;
-
                         if (isset($data['entityDefs'][$scope]['fields'][$mField])) {
                             if (in_array($mParams['type'], ['enum', 'multiEnum'])) {
-                                $data['entityDefs'][$scope]['fields'][$mField]['readOnly'] = true;
                                 $data['entityDefs'][$scope]['fields'][$mField]['options'] = $mParams['options'];
                                 if (isset($mParams['optionColors'])) {
                                     $data['entityDefs'][$scope]['fields'][$mField]['optionColors'] = $mParams['optionColors'];
                                 }
                             }
-
                             $mParams = array_merge($mParams, $data['entityDefs'][$scope]['fields'][$mField]);
                         }
+                        $mParams['isMultilang'] = false;
+                        $mParams['hideMultilang'] = true;
+                        $mParams['multilangField'] = $field;
+                        $mParams['isCustom'] = false;
+                        $mParams['required'] = $params['required'];
+                        $mParams['readOnly'] = in_array($mParams['type'], ['enum', 'multiEnum']);
 
                         $data['entityDefs'][$scope]['fields'][$mField] = $mParams;
                     }
