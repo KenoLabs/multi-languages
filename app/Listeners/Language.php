@@ -61,9 +61,10 @@ class Language extends AbstractListener
 
                                 if (!isset($data[$locale][$scope][$type][$mField])) {
                                     if ($type == 'fields') {
-                                        $value .= ' › ' . $language;
+                                        $data[$locale][$scope][$type][$mField] = $value . ' › ' . $language;
+                                    } else {
+                                        $data[$locale][$scope][$type][$mField] = $value;
                                     }
-                                    $data[$locale][$scope][$type][$mField] = $value;
                                 }
                             }
                         }

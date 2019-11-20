@@ -36,7 +36,7 @@ class Entity extends AbstractListener
     /**
      * @param Event $event
      */
-    public function afterSave(Event $event)
+    public function beforeSave(Event $event)
     {
         /** @var OrmEntity $entity */
         $entity = $event->getArgument('entity');
@@ -44,7 +44,6 @@ class Entity extends AbstractListener
         // get fields
         $fields = $this->getContainer()->get('metadata')->get(['entityDefs', $entity->getEntityType(), 'fields'], []);
 
-        $isUpdated = false;
         foreach ($fields as $field => $data) {
             if ($data['type'] == 'enum' && !empty($data['isMultilang']) && $entity->isAttributeChanged($field)) {
                 // find key
@@ -52,7 +51,6 @@ class Entity extends AbstractListener
                 foreach ($fields as $mField => $mData) {
                     if (isset($mData['multilangField']) && $mData['multilangField'] == $field) {
                         $entity->set($mField, $mData['options'][$key]);
-                        $isUpdated = true;
                     }
                 }
             }
@@ -69,14 +67,9 @@ class Entity extends AbstractListener
                             $values[] = $mData['options'][$key];
                         }
                         $entity->set($mField, $values);
-                        $isUpdated = true;
                     }
                 }
             }
-        }
-
-        if ($isUpdated) {
-            $this->getEntityManager()->saveEntity($entity, ['skipAll' => true]);
         }
     }
 }

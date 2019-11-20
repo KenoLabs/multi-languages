@@ -93,7 +93,7 @@ class Metadata extends AbstractListener
                         $mParams['hideMultilang'] = true;
                         $mParams['multilangField'] = $field;
                         $mParams['isCustom'] = false;
-                        $mParams['required'] = $params['required'];
+                        $mParams['required'] = (in_array($mParams['type'], ['enum', 'multiEnum'])) ? false : $mParams['required'];
                         $mParams['readOnly'] = in_array($mParams['type'], ['enum', 'multiEnum']);
 
                         $data['entityDefs'][$scope]['fields'][$mField] = $mParams;
