@@ -30,6 +30,7 @@ Espo.define('multilang:views/admin/field-manager/edit', 'class-replace!multilang
                 $('div[data-name="required"]').remove();
                 $('a[data-action="removeValue"]').remove();
                 $('.array-control-container').remove();
+                $('input[name="coloredValue"]').remove();
             }
         }
     });
