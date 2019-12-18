@@ -53,25 +53,25 @@ class Metadata extends AbstractListener
                 'paramsDefault'    => false
             ],
             'enumMultiLang'      => [
-                'typeNestedFields' => 'varchar',
+                'typeNestedFields' => 'enum',
                 'fieldType'        => 'enum',
                 'isOptions'        => true,
                 'paramsDefault'    => true
             ],
             'multiEnumMultiLang' => [
-                'typeNestedFields' => 'jsonArray',
+                'typeNestedFields' => 'multiEnum',
                 'fieldType'        => 'multiEnum',
                 'isOptions'        => true,
                 'paramsDefault'    => true
             ],
             'arrayMultiLang'     => [
-                'typeNestedFields' => 'jsonArray',
+                'typeNestedFields' => 'array',
                 'fieldType'        => 'array',
                 'isOptions'        => true,
                 'paramsDefault'    => true
             ],
             'wysiwygMultiLang'   => [
-                'typeNestedFields' => 'text',
+                'typeNestedFields' => 'wysiwyg',
                 'fieldType'        => 'wysiwyg',
                 'paramsDefault'    => false
             ]
