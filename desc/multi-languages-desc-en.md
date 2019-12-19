@@ -58,7 +58,7 @@ On the entity field creation page that opens, specify all necessary parameters f
 
 ![Multilang field creation](_assets/multilang-field-creation.jpg)
 
-As a result, several entity field records will be created – the main one and locale fields in as many languages as there are activated on the ["Multi-Languages Settings"](#module-configuration) page:
+As a result, several entity field records will be created â€“ the main one and locale fields in as many languages as there are activated on the ["Multi-Languages Settings"](#module-configuration) page:
 
 ![Entity fields](_assets/entity-fields.jpg)
 
@@ -82,7 +82,7 @@ Please, note if the main multilingual field is mandatory, so are its all locale 
 
 Moreover, input of values in the given multilingual fields is also required for all languages activated in the TreoCore system. Learn more about TreoCore and its advantages [here](https://treopim.com/help/what-is-treocore).
 
-The	`DYNAMIC LOGIC` panel settings are not inherited – it is configured separately for each multilingual field:
+The	`DYNAMIC LOGIC` panel settings are not inherited â€“ it is configured separately for each multilingual field:
 
 ![Dynamic logic](_assets/dynamic-logic.jpg)
 
@@ -92,7 +92,7 @@ To display the newly created multilingual field(s), go to `Administration > Layo
 
 ![Layout Manager](_assets/layout-mngr-multilang.jpg)
 
-Please, note that adding the main multilingual field to the layout does not lead to automatic adding of its locale fields – each field is added separately for each layout type.  
+Please, note that adding the main multilingual field to the layout does not lead to automatic adding of its locale fields â€“ each field is added separately for each layout type.  
 
 Click `Save` to complete the operation. The added field will be displayed on the configured layout type for the given entity:
 
@@ -122,7 +122,7 @@ To remove the entity field with the activated `Multi-Language` checkbox, click `
 
 Please, note that locale fields cannot be removed apart from their main multilingual field. To do this, you need to either remove the selection of the `Multi-Language` checkbox on the main field editing page or remove the main multilingual field from the system as it is described above. 
 
-> Please, note that if the "Multi-Languages" module is deactivated and/or removed from the system, *main* multilingual fields for the configured entities remain together with their values, but their *locale* fields and values disappear. Also, these fields lose their multilingual character (the `Multi-Language` checkbox is removed). When the module is activated again, all the multilingual fields and their values are restored. However, re-installing the module leads to restoring only locale fields, but not their values. The exception is multilingual fields of the`Varchar` type – their values are also restored for locale fields.
+> Please, note that if the "Multi-Languages" module is deactivated and/or removed from the system, *main* multilingual fields for the configured entities remain together with their values, but their *locale* fields and values disappear. Also, these fields lose their multilingual character (the `Multi-Language` checkbox is removed). When the module is activated again, all the multilingual fields and their values are restored. However, re-installing the module leads to restoring only locale fields, but not their values. The exception is multilingual fields of the`Varchar` type â€“ their values are also restored for locale fields.
  
 ### Access Rights
 
@@ -158,7 +158,7 @@ For the fields of the `Text`, `Varchar`, and `Wysiwyg` types, the additional inp
 
 ### Multilingual Attributes
 
-In addition to operating with multilingual fields, installing TreoPIM to your system will allow you to make [attributes](https://treopim.com/help/attributes) of the  `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, and `Wysiwyg` type multilingual – there is the `Multi-Language` checkbox on their detail view pages:
+In addition to operating with multilingual fields, installing TreoPIM to your system will allow you to make [attributes](https://treopim.com/help/attributes) of the  `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, and `Wysiwyg` type multilingual â€“ there is the `Multi-Language` checkbox on their detail view pages:
 
 ![ML attribute](_assets/ml-attribute.jpg)
 
