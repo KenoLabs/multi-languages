@@ -1,4 +1,4 @@
-The "Multi-Languages" module allows you to add languages, i.e. locales, and create multi-language fields of the `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, or `Wysiwyg` types for any entity in the system. 
+The "Multi-Languages" module enables you to store your data in more than one language by adding to your system as many locales as needed. It also allows you to make fields of the `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, or `Wysiwyg` types multilingual for any entity in the system and assign user roles different read/edit permissions to these multilingual fields separately for each locale.
 
 ## Installation Guide 
 
@@ -39,12 +39,11 @@ Currently the following field types can be made multilingual in the TreoPIM syst
 | **Field Type** | **Description**                                           |
 |----------------|-----------------------------------------------------------|
 | Boolean        | Checkbox for the product attribute that can be added for each active locale                                                                   |
-| Enum           | Field type for storing drop-down list values for each active locale  with the ability to select only one of the variants                        |
-| Multi-Enum     | Field type for storing drop-down list values for each active locale  with the ability to select one or more variants                            |
+| Enum           | Field type for storing drop-down list values for each active locale with the ability to select only one of the variants                        |
+| Multi-Enum     | Field type for storing drop-down list values for each active locale with the ability to select one or more variants                            |
 | Text           | Field type for storing long text values in multiple languages    |
 | Varchar        | Field type for storing short text values (up to 255 characters) in multiple languages                                                         |
 | Wysiwyg        | Field type for storing long multiline texts in multiple languages, which contains separate built-in text editors for each active locale |
-
 
 To create a field that can be made multilingual, go to `Administration > Entity Manager` and click `Fields` for the desired entity:
 
@@ -122,7 +121,7 @@ To remove the entity field with the activated `Multi-Language` checkbox, click `
 
 Please, note that locale fields cannot be removed apart from their main multilingual field. To do this, you need to either remove the selection of the `Multi-Language` checkbox on the main field editing page or remove the main multilingual field from the system as it is described above. 
 
-> Please, note that if the "Multi-Languages" module is deactivated and/or removed from the system, *main* multilingual fields for the configured entities remain together with their values, but their *locale* fields and values disappear. Also, these fields lose their multilingual character (the `Multi-Language` checkbox is removed). When the module is activated again, all the multilingual fields and their values are restored. However, re-installing the module leads to restoring only locale fields, but not their values. The exception is multilingual fields of the`Varchar` type – their values are also restored for locale fields.
+> Please, note that if the "Multi-Languages" module is deactivated and/or removed from the system, *main* multilingual fields for the configured entities remain together with their values, but their *locale* fields and values disappear. Also, these fields lose their multilingual character (the `Multi-Language` checkbox is removed). When the module is activated again, all the locale multilingual fields and their values are restored. However, re-installing the module leads to restoring only locale fields, but not their values. The exception is multilingual fields of the`Varchar` type – their values are also restored for locale fields.
  
 ### Access Rights
 
@@ -146,7 +145,7 @@ Use `-` to remove the unnecessary field(s).
 
 Once the "Multi-Languages" module is installed and configured by the [administrator](#administrator-functions), user can work with multilingual fields in accordance with his role rights that are predefined by the administrator.
 
-The possible values of the `Enum` and `Multi-Enum` fields are specified for each language by the [administrator](#administrator-functions).  For the `Enum` fields the default values, assigned by the administrator, are displayed, and for the `Multi-Enum` fields, users can select the desired options from the existing values:
+The possible values of the `Enum` and `Multi-Enum` fields are specified for each language by the [administrator](#administrator-functions). For the `Enum` fields the default values, assigned by the administrator, are displayed, and for the `Multi-Enum` fields, users can select the desired options from the existing values:
 
 ![ML enum, multi-enum](_assets/ml-enum-multienum.jpg)
 
@@ -158,7 +157,7 @@ For the fields of the `Text`, `Varchar`, and `Wysiwyg` types, the additional inp
 
 ### Multilingual Attributes
 
-In addition to operating with multilingual fields, installing TreoPIM to your system will allow you to make [attributes](https://treopim.com/help/attributes) of the  `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, and `Wysiwyg` type multilingual – there is the `Multi-Language` checkbox on their detail view pages:
+In addition to operating with multilingual fields, installing TreoPIM to your system will allow you to make [attributes](https://treopim.com/help/attributes) of the `Boolean`, `Enum`, `Multi-Enum`, `Text`, `Varchar`, and `Wysiwyg` type multilingual – there is the `Multi-Language` checkbox on their detail view pages:
 
 ![ML attribute](_assets/ml-attribute.jpg)
 
