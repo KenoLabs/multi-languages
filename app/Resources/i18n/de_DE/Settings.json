@@ -1,6 +1,7 @@
 {
   "labels": {
-    "inputLanguage": "Spracheingabe"
+    "inputLanguage": "Spracheingabe",
+    "сonfirmLocaleChanges": "Wenn das Locale entfernt wird, werden auch alle seine Daten entfernt, die Sie vorher in die mehrsprachigen Felder für dieses Locale eingegeben haben."
   },
   "fields": {
     "inputLanguageList": "Spracheingabe Liste"
