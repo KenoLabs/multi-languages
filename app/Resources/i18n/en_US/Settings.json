@@ -1,6 +1,7 @@
 {
   "labels": {
-    "inputLanguage": "Input Language"
+    "inputLanguage": "Input Language",
+    "сonfirmLocaleChanges": "If the locale is removed, so are all your data previously entered in the multi-language fields for this locale."
   },
   "fields": {
     "inputLanguageList": "Input Language List",

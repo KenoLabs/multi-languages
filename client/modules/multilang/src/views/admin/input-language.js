@@ -33,5 +33,27 @@ Espo.define('multilang:views/admin/input-language', 'views/settings/record/edit'
             }.bind(this));
         },
 
+        actionSave() {
+            const oldList = this.attributes.inputLanguageList || [];
+            const newList = this.model.get('inputLanguageList') || [];
+            let hasDeletedElements = false;
+
+            if (oldList.length > newList.length) {
+                hasDeletedElements = true;
+            } else {
+                hasDeletedElements = oldList.some(lang => !newList.includes(lang))
+            }
+
+            if (hasDeletedElements) {
+                Espo.Ui.confirm(this.translate('сonfirmLocaleChanges', 'labels', 'Settings'), {
+                    confirmText: this.translate('Apply', 'labels', 'Global'),
+                    cancelText: this.translate('Cancel', 'labels', 'Global')
+                }, () => {
+                    this.save();
+                })
+            } else {
+                this.save();
+            }
+        }
     })
 );
