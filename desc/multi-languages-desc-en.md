@@ -30,7 +30,11 @@ To enable the function for inputting the field values in multiple languages, sel
 
 To change the languages for which the multilingual fields must be filled (e.g. delete the previously defined locales, add new ones), also use the `Input Language List` setting.
 
-When turning off a certain language or completely removing the "Multi-Languages" module, the input field and its value will be removed both from the database and system interface. If this language is turned on again or the module is re-installed, the input fields will be restored to the system interface, but without any data in them. So please, be careful with these actions.
+When turning off a certain language or completely removing the "Multi-Languages" module, the input field and its value will be removed both from the database and system interface. You will be notified about it with the following warning message:
+
+![Warning](_assets/warning.jpg)
+
+If this language is turned on again or the module is re-installed, the input fields will be restored to the system interface, but with no data in them. So please, be careful with these actions.
 
 ### Multilingual Field Creation 
 
