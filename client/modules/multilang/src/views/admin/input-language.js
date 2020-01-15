@@ -63,10 +63,8 @@ Espo.define('multilang:views/admin/input-language', 'views/settings/record/edit'
                 confirmText: this.translate('Apply', 'labels', 'Global'),
                 cancelText: this.translate('Cancel', 'labels', 'Global')
             }, () => {
-                this.ajaxPostRequest('Settings/action/updateLayouts').then(response => {
-                    if (response) {
-                        this.notify(this.translate('success', 'messages', 'Global'), 'success', 3000);
-                    }
+                this.ajaxPostRequest('Multilang/action/updateLayouts').then(response => {
+                    this.notify(this.translate('success', 'messages', 'Global'), 'success', 3000);
                 });
             })
         }
