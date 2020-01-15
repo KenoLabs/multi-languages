@@ -6,5 +6,8 @@
   "fields": {
     "inputLanguageList": "Input Language List",
     "isMultilangActive": "Is Active"
+  },
+  "messages": {
+    "updateLayouts": "Are you sure you want to update the layouts and automatically add the previously missing required locale fields to them?"
   }
 }
