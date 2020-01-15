@@ -65,6 +65,9 @@ Espo.define('multilang:views/admin/input-language', 'views/settings/record/edit'
             }, () => {
                 this.ajaxPostRequest('Multilang/action/updateLayouts').then(response => {
                     this.notify(this.translate('success', 'messages', 'Global'), 'success', 3000);
+                    setTimeout(function () {
+                        window.location.reload(true);
+                    }, 2000);
                 });
             })
         }
