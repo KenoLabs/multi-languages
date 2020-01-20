@@ -36,6 +36,12 @@ When turning off a certain language or completely removing the "Multi-Languages"
 
 If this language is turned on again or the module is re-installed, the input fields will be restored to the system interface, but with no data in them. So please, be careful with these actions.
 
+On the same "Multi-Languages" module configuration page, you can automatically update the layouts for all entities to include locale fields on the ones where the main multilingual field is already displayed. To do this, click the `Update Layouts` button and confirm your decision in the pop-up that appears:
+
+![Update layouts](_assets/update-layouts.jpg)
+
+Once the action is applied, the missing locale fields are added at the bottom of the entity records overview. To customize the field order display, go to the [Layout Manager](#multilingual-field-display-on-the-layout) and make the desired changes for each entity separately. Moreover, you can configure each layout for each multilingual field separately as described [below](#multilingual-field-display-on-the-layout).
+
 ### Multilingual Field Creation 
 
 Currently the following field types can be made multilingual in the TreoPIM system:
