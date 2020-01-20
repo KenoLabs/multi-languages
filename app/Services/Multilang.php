@@ -34,6 +34,9 @@ use Treo\Services\AbstractService;
  */
 class Multilang extends AbstractService
 {
+    /** @var array  */
+    public const LAYOUTS = ['detail', 'detailSmall'];
+
     /**
      * @return bool
      */
@@ -51,14 +54,28 @@ class Multilang extends AbstractService
             if (!isset($data['fields'])) {
                 continue 1;
             }
-            foreach ($data['fields'] as $field => $row) {
-                if (!empty($row['multilangLocale'])) {
-                    foreach (['detail', 'detailSmall'] as $layoutName) {
-                        if (!in_array($field, $this->getLayoutFields($scope, $layoutName))) {
-                            $this->updateLayout($scope, $layoutName, $field);
-                            $isUpdated = true;
+            $layoutFields = $this->getLayoutsFields($scope);
+            $row = [];
+            foreach ($data['fields'] as $field => $defs) {
+                if (!empty($defs['multilangLocale'])) {
+                    foreach (self::LAYOUTS as $layoutName) {
+                        if ($this->isNeedAddField($field, $layoutFields[$layoutName], $defs)) {
+                            $row[$layoutName][] = ['name' => $field];
+                            if (\count($row[$layoutName]) === 2) {
+                                $this->updateLayout($scope, $layoutName, $row[$layoutName]);
+                                $isUpdated = true;
+                                $row[$layoutName] = [];
+                            }
                         }
                     }
+                }
+            }
+            foreach (self::LAYOUTS as $layoutName) {
+                if (!empty($row[$layoutName])) {
+                    $row[$layoutName][] = false;
+                    $this->updateLayout($scope, $layoutName, $row[$layoutName]);
+                    $isUpdated = true;
+                    $row[$layoutName] = [];
                 }
             }
         }
@@ -70,6 +87,12 @@ class Multilang extends AbstractService
         return true;
     }
 
+    protected function isNeedAddField(string $field, array $layoutFields, array $row): bool
+    {
+       return !in_array($field, $layoutFields, true)
+         && in_array($row['multilangField'], $layoutFields, true);
+    }
+
     /**
      * @param string $scope
      * @param string $layout
@@ -77,14 +100,27 @@ class Multilang extends AbstractService
      *
      * @return bool
      */
-    protected function updateLayout(string $scope, string $layout, string $field): bool
+    protected function updateLayout(string $scope, string $layout, array $row): bool
     {
         $data = Json::decode($this->getLayout()->get($scope, $layout), true);
-        $data[0]['rows'][] = [['name' => $field], false];
-
+        $data[0]['rows'][] = $row;
         $this->getLayout()->set($data, $scope, $layout);
 
         return true;
+    }
+
+    /**
+     * @param $scope
+     * @return array
+     */
+    protected function getLayoutsFields($scope): array
+    {
+        $layoutFields = [];
+        foreach (self::LAYOUTS as $layoutName) {
+            $layoutFields[$layoutName] = $this->getLayoutFields($scope, $layoutName);
+        }
+
+        return $layoutFields;
     }
 
     /**
