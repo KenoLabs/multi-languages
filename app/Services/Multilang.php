@@ -34,8 +34,10 @@ use Treo\Services\AbstractService;
  */
 class Multilang extends AbstractService
 {
-    /** @var array  */
+    /** @var array */
     public const LAYOUTS = ['detail', 'detailSmall'];
+    /** @var array */
+    public const SKIP_ENTITIES  = ['ProductAttributeValue'];
 
     /**
      * @return bool
@@ -51,13 +53,13 @@ class Multilang extends AbstractService
         $isUpdated = false;
 
         foreach ($this->getMetadata()->get(['entityDefs'], []) as $scope => $data) {
-            if (!isset($data['fields'])) {
+            if (!isset($data['fields']) || in_array($scope, self::SKIP_ENTITIES, true)) {
                 continue 1;
             }
             $layoutFields = $this->getLayoutsFields($scope);
             $row = [];
             foreach ($data['fields'] as $field => $defs) {
-                if (!empty($defs['multilangLocale'])) {
+                if (!empty($defs['multilangLocale']) && empty($defs['isCompleteness'])) {
                     foreach (self::LAYOUTS as $layoutName) {
                         if ($this->isNeedAddField($field, $layoutFields[$layoutName], $defs)) {
                             $row[$layoutName][] = ['name' => $field];
