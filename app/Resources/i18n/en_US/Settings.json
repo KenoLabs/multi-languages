@@ -8,6 +8,6 @@
     "isMultilangActive": "Is Active"
   },
   "messages": {
-    "updateLayouts": "Are you sure you want to update the layouts and automatically add the previously missing required locale fields to them?"
+    "updateLayouts": "Are you sure you want to update the layouts and automatically add the previously missing locale fields to them?"
   }
 }
