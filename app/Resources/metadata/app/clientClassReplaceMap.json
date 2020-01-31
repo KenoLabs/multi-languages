@@ -2,5 +2,9 @@
   "views/admin/field-manager/edit": [
     "__APPEND__",
     "multilang"
+  ],
+  "views/admin/field-manager/fields/options": [
+    "__APPEND__",
+    "multilang"
   ]
 }
