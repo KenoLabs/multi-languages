@@ -20,6 +20,14 @@
 Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace!multilang:views/admin/field-manager/fields/options',
     Dep => Dep.extend({
 
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            //todo: new translatedOptions
+
+            //todo: new optionColors
+        },
+
         afterRender() {
             Dep.prototype.afterRender.call(this);
 
@@ -28,8 +36,18 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
 
         updateReadOnlyElements() {
             if (this.model.get('hideMultilang')) {
-                $('a[data-action="removeValue"]').remove();
-                $('.array-control-container').remove();
+                //remove actions with options
+                this.$el.find('a[data-action="removeValue"]').remove();
+                this.$el.find('.array-control-container').remove();
+                this.$el.find(`[data-name="${this.name}"] input`).attr({disabled: 'disabled'});
+
+                //remove colours selection
+                this.$el.find(`[data-name="${this.name}"] input[name="coloredValue"]`).get().forEach(item => {
+                    item._jscLinkedInstance.showOnClick = false;
+                });
+
+                //remove sortable
+                this.$list.sortable('destroy');
             }
         },
 
@@ -39,7 +57,7 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
             const inputLanguageList = this.getConfig().get('inputLanguageList') || [];
             if (this.getConfig().get('isMultilangActive') && inputLanguageList.length) {
                 inputLanguageList.forEach(lang => {
-                    if (!this.model.get('hideMutltilang') || this.model.get('multilangLocale') === lang) {
+                    if (!this.model.get('hideMultilang') || this.model.get('multilangLocale') === lang) {
                         resultHtml += this.getLangTranslation(value, valueInternal, translatedValue, lang);
                     }
                 });
@@ -50,12 +68,40 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
 
         getLangTranslation(value, valueInternal, translatedValue, lang) {
             const coloredValue = this.optionColors[value] || this.defaultColor;
+            const name = this.getMultilangName(lang, this.name);
+
             return `
-                <div class="pull-left" style="width: 92%; display: inline-block;">
+                <div class="pull-left" style="width: 92%; display: inline-block;"  data-name="${name}">
                     <input name="coloredValue" data-value="${valueInternal}" class="role form-control input-sm pull-right" value="${coloredValue}">
                     <input name="translatedValue" data-value="${valueInternal}" class="role form-control input-sm pull-right" value="${translatedValue}">
                     <span class="lang-option pull-right">${lang} &#8250;</span>
                 </div>`;
+        },
+
+        getMultilangName(lang, base) {
+            lang = lang || this.model.get('multilangLocale');
+            base = typeof base === 'string' ? base : this.name;
+
+            return lang.split('_').reduce((prev, curr) => prev + Espo.Utils.upperCaseFirst(curr.toLowerCase()), base);
+        },
+
+        fetch() {
+            const data = Dep.prototype.fetch.call(this);
+
+            if (this.model.get('hideMultilang')) {
+                data.translatedOptions = {};
+                (data[this.name] || []).forEach(value => {
+                    data.translatedOptions[value] = this.getTranslatedOption(value, this.getMultilangName());
+                });
+
+                if (data.optionColors) {
+                    (data[this.name] || []).forEach(value => {
+                        data.optionColors[value] = this.getColoredOption(value, this.getMultilangName());
+                    });
+                }
+            }
+
+            return data;
         }
 
     })

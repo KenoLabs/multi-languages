@@ -17,19 +17,36 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 
-Espo.define('multilang:views/admin/field-manager/edit', 'class-replace!multilang:views/admin/field-manager/edit', function (Dep) {
+Espo.define('multilang:views/admin/field-manager/edit', 'class-replace!multilang:views/admin/field-manager/edit',
+    Dep => Dep.extend({
 
-    return Dep.extend({
+        data() {
+            const data = Espo.Utils.cloneDeep(Dep.prototype.data.call(this));
 
-        afterRender: function () {
-            // call parent
-            Dep.prototype.afterRender.call(this);
+            data.hasDynamicLogicPanel = !this.defs.hideMultilang;
+            data.paramList = data.paramList.filter(item => !this.getPreventedFields().includes(item.name));
 
-            if (this.defs.hideMultilang) {
-                $('div[data-name="readOnly"]').remove();
-                $('div[data-name="required"]').remove();
+            return data;
+        },
+
+        createFieldView(type, name, readOnly, params, options, callback) {
+            if (!this.getPreventedFields().includes(name)) {
+                Dep.prototype.createFieldView.call(this, type, name, readOnly, params, options, callback)
             }
-        }
-    });
+        },
 
-});
+        getPreventedFields() {
+            const fields = [];
+            if (this.defs.hideMultilang) {
+                fields.push('readOnly', 'required');
+
+                if (['enum', 'multiEnum'].includes(this.model.get('type'))) {
+                    fields.push('default', 'fontSize', 'isSorted');
+                }
+            }
+
+            return fields;
+        }
+
+    })
+);
