@@ -50,7 +50,15 @@ class Entity extends AbstractListener
                 $key = array_search($entity->get($field), $data['options']);
                 foreach ($fields as $mField => $mData) {
                     if (isset($mData['multilangField']) && $mData['multilangField'] == $field) {
-                        $entity->set($mField, $mData['options'][$key]);
+                        if ($entity->get($field) == '') {
+                            $value = $entity->get($field);
+                        } elseif (isset($mData['options'][$key])) {
+                            $value = $mData['options'][$key];
+                        }
+
+                        if (isset($value)) {
+                            $entity->set($mField, $value);
+                        }
                     }
                 }
             }
