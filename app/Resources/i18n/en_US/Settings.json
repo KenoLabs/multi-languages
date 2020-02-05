@@ -1,7 +1,7 @@
 {
   "labels": {
     "inputLanguage": "Input Language",
-    "сonfirmLocaleChanges": "If the locale is removed, so are all your data previously entered in the multi-language fields for this locale."
+    "сonfirmLocaleChanges": "If the locale is removed, all your data previously entered in the multi-language fields for this locale are automatically removed via the <a href=\"/#ScheduledJob\" target=\"_blank\">cron job</a>."
   },
   "fields": {
     "inputLanguageList": "Input Language List",
