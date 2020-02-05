@@ -46,6 +46,24 @@ Espo.define('multilang:views/admin/field-manager/edit', 'class-replace!multilang
             }
 
             return fields;
+        },
+
+        updateLanguage() {
+            Dep.prototype.updateLanguage.call(this);
+
+            const langData = this.getLanguage().data;
+            if (this.scope in langData && this.model.get('isMultilang')) {
+                ['', ...(this.getConfig().get('inputLanguageList') || [])].forEach(lang => {
+                    const suffix = lang.split('_').reduce((prev, curr) => prev + Espo.Utils.upperCaseFirst(curr.toLowerCase()), '');
+                    const translatesKey = `translatedOptions${suffix}`;
+                    const nameKey = `${this.model.get('name')}${suffix}`;
+
+                    if (['array', 'enum', 'multiEnum'].includes(this.model.get('type')) && this.model.get(translatesKey)) {
+                        langData[this.scope].options = langData[this.scope].options || {};
+                        langData[this.scope]['options'][nameKey] = this.model.get(translatesKey) || {};
+                    }
+                });
+            }
         }
 
     })

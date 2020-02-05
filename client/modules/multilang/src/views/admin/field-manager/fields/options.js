@@ -23,15 +23,57 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
         setup() {
             Dep.prototype.setup.call(this);
 
-            //todo: new translatedOptions
+            if (this.getConfig().get('isMultilangActive')) {
+                this.setMultilanguageParams();
 
-            //todo: new optionColors
+                this.listenTo(this.model, 'change:isMultilang', () => {
+                    this.setMultilanguageParams();
+                    this.reRender();
+                });
+            }
         },
 
         afterRender() {
             Dep.prototype.afterRender.call(this);
 
             this.updateReadOnlyElements();
+        },
+
+        setMultilanguageParams() {
+            this.setTranslatedOptions();
+            this.setColorOptions();
+        },
+
+        setTranslatedOptions() {
+            this.translatedOptions = {};
+
+            (this.model.get(this.name) || []).forEach(value => {
+                ['', ...(this.getConfig().get('inputLanguageList') || []).map(lang => this.getMultilangName(lang, ''))]
+                    .forEach(suffix => {
+                        const translatesKey = `translatedOptions${suffix}`;
+                        const fieldName = this.model.get('multilangField') || this.model.get('name');
+                        const nameKey = `${fieldName}${suffix}`;
+
+                        this[translatesKey] = this[translatesKey] || {};
+                        this[translatesKey][value] = this.getLanguage().translateOption(value, nameKey, this.options.scope);
+
+                        this.model.fetchedAttributes[translatesKey] = this[translatesKey];
+                    });
+            });
+        },
+
+        setColorOptions() {
+            this.optionColors = {};
+
+            ['', ...(this.getConfig().get('inputLanguageList') || []).map(lang => this.getMultilangName(lang, ''))]
+                .forEach(suffix => {
+                    const colorsKey = `optionColors${suffix}`;
+                    const fieldName = this.model.get('multilangField') || this.model.get('name');
+                    const nameKey = `${fieldName}${suffix}`;
+                    const path = ['entityDefs', this.options.scope, 'fields', nameKey, 'optionColors'];
+
+                    this[colorsKey] = this.getMetadata().get(path) || {};
+                });
         },
 
         updateReadOnlyElements() {
@@ -55,9 +97,13 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
             let resultHtml = Dep.prototype.getTranslationContainer.call(this, value, valueInternal, translatedValue, valueSanitized);
 
             const inputLanguageList = this.getConfig().get('inputLanguageList') || [];
-            if (this.getConfig().get('isMultilangActive') && inputLanguageList.length) {
+            if (this.getConfig().get('isMultilangActive') && inputLanguageList.length
+                && (this.model.get('isMultilang') || this.model.has('hideMultilang'))
+            ) {
                 inputLanguageList.forEach(lang => {
                     if (!this.model.get('hideMultilang') || this.model.get('multilangLocale') === lang) {
+                        const translatesKey = this.getMultilangName(lang, 'translatedOptions');
+                        translatedValue = this[translatesKey][value] || translatedValue;
                         resultHtml += this.getLangTranslation(value, valueInternal, translatedValue, lang);
                     }
                 });
@@ -67,7 +113,8 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
         },
 
         getLangTranslation(value, valueInternal, translatedValue, lang) {
-            const coloredValue = this.optionColors[value] || this.defaultColor;
+            const colorsKey = this.getMultilangName(lang, 'optionColors');
+            const coloredValue = this[colorsKey][value] || this.defaultColor;
             const name = this.getMultilangName(lang, this.name);
 
             return `
@@ -86,8 +133,42 @@ Espo.define('multilang:views/admin/field-manager/fields/options', 'class-replace
         },
 
         fetch() {
-            const data = Dep.prototype.fetch.call(this);
+            const data = Espo.Utils.cloneDeep(Dep.prototype.fetch.call(this));
 
+            if (this.getConfig().get('isMultilangActive')) {
+                this.modifyDataWithMultilanguage(data);
+            }
+
+            return data;
+        },
+
+        modifyDataWithMultilanguage(data) {
+            //for main multilang field
+            if (this.model.get('isMultilang')) {
+                (data[this.name] || []).forEach(value => {
+                    (this.getConfig().get('inputLanguageList') || []).forEach(lang => {
+                        const suffix = this.getMultilangName(lang, '');
+                        const translatesKey = `translatedOptions${suffix}`;
+
+                        data[translatesKey] = data[translatesKey] || {};
+                        data[translatesKey][value] = this.getTranslatedOption(value, `options${suffix}`);
+                    });
+                });
+
+                if (data.optionColors) {
+                    (data[this.name] || []).forEach(value => {
+                        (this.getConfig().get('inputLanguageList') || []).forEach(lang => {
+                            const suffix = this.getMultilangName(lang, '');
+                            const colorsKey = `optionColors${suffix}`;
+
+                            data[colorsKey] = data[colorsKey] || {};
+                            data[colorsKey][value] = this.getColoredOption(value, `options${suffix}`);
+                        });
+                    });
+                }
+            }
+
+            // for multilang locales
             if (this.model.get('hideMultilang')) {
                 data.translatedOptions = {};
                 (data[this.name] || []).forEach(value => {
